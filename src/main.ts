@@ -3,7 +3,7 @@ import "bpmn-js/dist/assets/diagram-js.css";
 import "./styles.css";
 import { loadBundledDiagram, loadCatalog } from "./content";
 import { adjacentElement, elementBounds, focusViewbox, navigableElements } from "./focus";
-import { notationFor } from "./notation";
+import { notationFor, notationPlacement } from "./notation";
 import { buildOutline, filterOutline } from "./outline";
 import type { OutlineItem } from "./outline";
 import { tracePath } from "./trace";
@@ -89,15 +89,18 @@ app.innerHTML = `
       <div id="diagram-canvas" tabindex="0" aria-label="Interactive read-only BPMN diagram"></div>
       <aside id="notation-overlay" class="notation-overlay" aria-live="polite" hidden>
         <button id="close-notation" class="notation-close" type="button" aria-label="Close notation explanation">×</button>
-        <span class="eyebrow">BPMN notation</span>
-        <h3 id="notation-title"></h3>
-        <p id="notation-symbol" class="notation-symbol"></p>
-        <p id="notation-meaning" class="notation-meaning"></p>
-        <p id="notation-selection" class="notation-selection"></p>
+        <div id="notation-content" class="notation-content">
+          <span class="eyebrow">BPMN notation</span>
+          <h3 id="notation-title"></h3>
+          <p id="notation-symbol" class="notation-symbol"></p>
+          <p id="notation-meaning" class="notation-meaning"></p>
+          <p id="notation-selection" class="notation-selection"></p>
+        </div>
       </aside>
       <p id="status" class="status" role="status" aria-live="polite">Preparing the local viewer…</p>
     </main>
     <aside id="explanation-panel" class="explanation-panel" aria-labelledby="explanation-title">
+      <section id="notation-dock" class="notation-dock" aria-live="polite" hidden></section>
       <div id="explanation-content"></div>
     </aside>
   </div>
@@ -124,6 +127,8 @@ const status = get<HTMLParagraphElement>("#status");
 const filePicker = get<HTMLInputElement>("#file-picker");
 const dialog = get<HTMLDialogElement>("#about-dialog");
 const notationOverlay = get<HTMLElement>("#notation-overlay");
+const notationDock = get<HTMLElement>("#notation-dock");
+const notationContent = get<HTMLDivElement>("#notation-content");
 const workspace = get<HTMLDivElement>("#workspace");
 const diagramNav = get<HTMLElement>("#diagram-nav");
 const explanationPanel = get<HTMLElement>("#explanation-panel");
@@ -151,6 +156,7 @@ let outlineItems: OutlineItem[] = [];
 let activeNavView: "processes" | "outline" = "processes";
 let traceDirection: TraceDirection | undefined;
 let traceMarkerIds = new Set<string>();
+let notationDismissed = false;
 let applyingNamedView = false;
 let resizeFrame: number | undefined;
 const panelStorageKey = "bpmn-lens.panels.v1";
@@ -240,6 +246,7 @@ function applyPanelLayout(refit = true): void {
   detailsToggle.setAttribute("aria-label", `${detailsOpen ? "Hide" : "Show"} details panel`);
   processesToggle.classList.toggle("is-collapsed", !processesOpen);
   detailsToggle.classList.toggle("is-collapsed", !detailsOpen);
+  placeNotation();
   if (refit && activeViewMode !== "manual") window.requestAnimationFrame(() => applyActiveView(false));
 }
 
@@ -255,8 +262,17 @@ function toggleDetails(): void {
   applyPanelLayout();
 }
 
+function placeNotation(): void {
+  const placement = notationPlacement(detailsOpen, Boolean(selectedElementId), notationDismissed);
+  notationOverlay.hidden = placement !== "overlay";
+  notationDock.hidden = placement !== "dock";
+  if (placement === "dock" && notationContent.parentElement !== notationDock) notationDock.append(notationContent);
+  if (placement === "overlay" && notationContent.parentElement !== notationOverlay) notationOverlay.append(notationContent);
+}
+
 function hideNotation(): void {
-  notationOverlay.hidden = true;
+  notationDismissed = true;
+  placeNotation();
 }
 
 function showNotation(type: string, selectedLabel?: string): void {
@@ -267,7 +283,8 @@ function showNotation(type: string, selectedLabel?: string): void {
   const selection = get<HTMLParagraphElement>("#notation-selection");
   selection.textContent = selectedLabel ? `Selected: ${selectedLabel}` : "";
   selection.hidden = !selectedLabel;
-  notationOverlay.hidden = false;
+  notationDismissed = false;
+  placeNotation();
 }
 
 function updateUrl(diagramId?: string, elementId?: string): void {
@@ -498,6 +515,7 @@ function selectElement(id: string, shouldFocus = false): void {
   showNotation(type, label);
   syncOutlineSelection();
   updateViewControls();
+  updateTraceControls();
   if (shouldFocus || activeViewMode === "selection") setViewMode("selection");
   else updateUrl(activeItem?.id, id);
   if (traceDirection) applyTrace(traceDirection);

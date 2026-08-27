@@ -4,6 +4,14 @@ export interface NotationExplanation {
   meaning: string;
 }
 
+export type NotationPlacement = "dock" | "overlay" | "hidden";
+
+export function notationPlacement(detailsOpen: boolean, selected: boolean, dismissed: boolean): NotationPlacement {
+  if (!selected) return "hidden";
+  if (detailsOpen) return "dock";
+  return dismissed ? "hidden" : "overlay";
+}
+
 function fallbackTitle(type: string): string {
   return type
     .replace(/^bpmn:/, "")

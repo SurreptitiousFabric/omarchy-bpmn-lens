@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { notationFor } from "../src/notation";
+import { notationFor, notationPlacement } from "../src/notation";
 
 describe("BPMN notation explanations", () => {
   it.each([
@@ -20,5 +20,21 @@ describe("BPMN notation explanations", () => {
       symbol: "BPMN element",
       meaning: "A component of the process model."
     });
+  });
+});
+
+describe("notation placement", () => {
+  it("docks a selected explanation when Details is open", () => {
+    expect(notationPlacement(true, true, false)).toBe("dock");
+  });
+
+  it("uses the canvas fallback when Details is collapsed", () => {
+    expect(notationPlacement(false, true, false)).toBe("overlay");
+  });
+
+  it("honours an explicit canvas dismissal until the selection changes", () => {
+    expect(notationPlacement(false, true, true)).toBe("hidden");
+    expect(notationPlacement(true, true, true)).toBe("dock");
+    expect(notationPlacement(true, false, false)).toBe("hidden");
   });
 });

@@ -57,6 +57,8 @@ The semantic outline is a derived read model over the bpmn-js element registry. 
 
 Path tracing is a cycle-safe traversal over the existing incoming/outgoing connection references. Independent visited sets calculate upstream and downstream closure, including sequence flows, without a graph package. The viewer layer owns removable markers for traced elements and their labels; it does not recolor or rewrite BPMN source. Trace direction remains explicit in pressed controls and status text, and dashed highlighted flows provide a color-independent distinction.
 
+Notation has one DOM content node and a pure placement decision. With Details open, the node is docked above the product explanation; with Details collapsed, it moves into the canvas fallback card. Canvas dismissal is explicitly scoped to that fallback, so reopening Details restores the selected notation. This avoids duplicated content, competing live regions, and synchronization state.
+
 The classification vocabulary protects product reasoning:
 
 - `observed-current`: supported by direct observation or executable evidence;

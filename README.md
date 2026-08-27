@@ -12,6 +12,7 @@ The first bundled suite covers Nicelydrapped’s observed TUI behavior and targe
 - Select any BPMN element, then use Selection or <kbd>F</kbd> for a readable close view. <kbd>P</kbd>/<kbd>N</kbd> move through elements; <kbd>0</kbd> fits the complete diagram, <kbd>W</kbd> fits its width, and <kbd>1</kbd> shows one diagram unit per CSS pixel. A focused deep link uses `?diagram=…&element=…&view=focus`.
 - The Outline tab provides a searchable HTML list of lanes, tasks, events, gateways, and named paths. Selecting a result synchronizes the SVG, URL, notation, explanation, and selection view. It is an accessible navigation companion, not a claim that the SVG itself is a complete screen-reader representation; the broader audit remains tracked in issue #4.
 - A selection can trace its upstream, downstream, or complete connected path. Traced flows use both a stronger accent and a dashed line while unrelated elements remain faint; Clear removes the trace and Overview restores the complete camera view.
+- Generic BPMN notation is docked at the top of Details when that panel is open. If Details is collapsed, the same content node moves to a dismissible canvas card; reopening Details restores the dock even after the fallback card was dismissed.
 - Plain TypeScript, HTML, and CSS keep the frontend small and inspectable.
 - JSON sidecars keep explanation claims reviewable and separate from BPMN semantics.
 - A tiny QML panel integrates with Omarchy without running the web application inside `omarchy-shell`.
