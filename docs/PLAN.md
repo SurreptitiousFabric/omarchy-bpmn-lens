@@ -20,6 +20,8 @@ The initial repository release completes delivery phases 1–7 above. The open i
 
 ## Open roadmap
 
+Tracked in the public [BPMN Lens GitHub Project](https://github.com/users/SurreptitiousFabric/projects/8).
+
 - [#1 Add an automated Omarchy panel smoke test](https://github.com/SurreptitiousFabric/omarchy-bpmn-lens/issues/1)
 - [#2 Add deterministic Nicelydrapped content synchronization](https://github.com/SurreptitiousFabric/omarchy-bpmn-lens/issues/2)
 - [#3 Publish and validate the explanation sidecar JSON Schema](https://github.com/SurreptitiousFabric/omarchy-bpmn-lens/issues/3)
