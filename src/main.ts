@@ -4,6 +4,8 @@ import "./styles.css";
 import { loadBundledDiagram, loadCatalog } from "./content";
 import { activeFilterLabels, filterCatalog, groupCatalog } from "./catalog";
 import type { CatalogFilters } from "./catalog";
+import { nextDrawer, wrappedFocusIndex } from "./drawers";
+import type { Drawer } from "./drawers";
 import { adjacentElement, elementBounds, focusViewbox, navigableElements } from "./focus";
 import { notationFor, notationPlacement } from "./notation";
 import { buildOutline, filterOutline } from "./outline";
@@ -39,11 +41,13 @@ app.innerHTML = `
       <button id="about-button" class="quiet-button" type="button">About</button>
     </div>
   </header>
+  <button id="drawer-backdrop" class="drawer-backdrop" type="button" aria-label="Close open panel" hidden tabindex="-1"></button>
   <div id="workspace" class="workspace">
-    <nav id="diagram-nav" class="diagram-nav" aria-label="BPMN explorer">
+    <nav id="diagram-nav" class="diagram-nav" aria-label="BPMN explorer" tabindex="-1">
       <div class="panel-heading">
         <div><span class="eyebrow">Capability suite</span><h1>Explore</h1></div>
         <span id="diagram-count" class="count"></span>
+        <button id="close-processes-drawer" class="drawer-close" type="button" aria-label="Close processes drawer">×</button>
       </div>
       <div class="nav-tabs" role="tablist" aria-label="Explorer view">
         <button id="processes-tab" role="tab" type="button" aria-selected="true" aria-controls="processes-view">Processes</button>
@@ -121,7 +125,8 @@ app.innerHTML = `
       <p id="status" class="status" role="status" aria-live="polite">Preparing the local viewer…</p>
     </main>
     <div id="details-resizer" class="panel-resizer" role="separator" aria-label="Resize details panel" aria-controls="explanation-panel" aria-orientation="vertical" tabindex="0" title="Drag or use arrow keys; Home or double-click resets"></div>
-    <aside id="explanation-panel" class="explanation-panel" aria-labelledby="explanation-title">
+    <aside id="explanation-panel" class="explanation-panel" aria-labelledby="explanation-title" tabindex="-1">
+      <button id="close-details-drawer" class="drawer-close" type="button" aria-label="Close details drawer">×</button>
       <section id="notation-dock" class="notation-dock" aria-live="polite" hidden></section>
       <div id="explanation-content"></div>
     </aside>
@@ -159,10 +164,12 @@ const notationOverlay = get<HTMLElement>("#notation-overlay");
 const notationDock = get<HTMLElement>("#notation-dock");
 const notationContent = get<HTMLDivElement>("#notation-content");
 const workspace = get<HTMLDivElement>("#workspace");
+const diagramRegion = get<HTMLElement>(".diagram-region");
 const diagramNav = get<HTMLElement>("#diagram-nav");
 const explanationPanel = get<HTMLElement>("#explanation-panel");
 const processesToggle = get<HTMLButtonElement>("#toggle-processes");
 const detailsToggle = get<HTMLButtonElement>("#toggle-details");
+const drawerBackdrop = get<HTMLButtonElement>("#drawer-backdrop");
 const processesResizer = get<HTMLDivElement>("#processes-resizer");
 const detailsResizer = get<HTMLDivElement>("#details-resizer");
 const diagramCanvas = get<HTMLDivElement>("#diagram-canvas");
@@ -197,6 +204,9 @@ const panelStorageKey = "bpmn-lens.panels.v2";
 const legacyPanelStorageKey = "bpmn-lens.panels.v1";
 let processesOpen = true;
 let detailsOpen = true;
+const narrowMedia = window.matchMedia("(max-width: 60rem)");
+let activeDrawer: Drawer | undefined;
+let drawerReturnFocus: HTMLElement | undefined;
 
 function escapeHtml(value: string): string {
   const node = document.createElement("span");
@@ -288,35 +298,75 @@ function applyActiveView(announce = false): void {
 }
 
 function applyPanelLayout(refit = true): void {
+  const narrow = narrowMedia.matches;
+  const processesVisible = narrow ? activeDrawer === "processes" : processesOpen;
+  const detailsVisible = narrow ? activeDrawer === "details" : detailsOpen;
   workspace.classList.toggle("processes-collapsed", !processesOpen);
   workspace.classList.toggle("details-collapsed", !detailsOpen);
-  diagramNav.hidden = !processesOpen;
-  explanationPanel.hidden = !detailsOpen;
-  processesResizer.hidden = !processesOpen;
-  detailsResizer.hidden = !detailsOpen;
-  processesToggle.setAttribute("aria-expanded", String(processesOpen));
-  detailsToggle.setAttribute("aria-expanded", String(detailsOpen));
-  processesToggle.title = `${processesOpen ? "Hide" : "Show"} processes panel ([)`;
-  detailsToggle.title = `${detailsOpen ? "Hide" : "Show"} details panel (])`;
-  processesToggle.setAttribute("aria-label", `${processesOpen ? "Hide" : "Show"} processes panel`);
-  detailsToggle.setAttribute("aria-label", `${detailsOpen ? "Hide" : "Show"} details panel`);
-  processesToggle.classList.toggle("is-collapsed", !processesOpen);
-  detailsToggle.classList.toggle("is-collapsed", !detailsOpen);
+  workspace.classList.toggle("processes-drawer-open", narrow && processesVisible);
+  workspace.classList.toggle("details-drawer-open", narrow && detailsVisible);
+  diagramNav.hidden = !processesVisible;
+  explanationPanel.hidden = !detailsVisible;
+  processesResizer.hidden = narrow || !processesOpen;
+  detailsResizer.hidden = narrow || !detailsOpen;
+  drawerBackdrop.hidden = !narrow || !activeDrawer;
+  diagramRegion.inert = narrow && Boolean(activeDrawer);
+  processesToggle.setAttribute("aria-expanded", String(processesVisible));
+  detailsToggle.setAttribute("aria-expanded", String(detailsVisible));
+  processesToggle.title = `${processesVisible ? "Close" : "Open"} processes ${narrow ? "drawer" : "panel"} ([)`;
+  detailsToggle.title = `${detailsVisible ? "Close" : "Open"} details ${narrow ? "drawer" : "panel"} (])`;
+  processesToggle.setAttribute("aria-label", `${processesVisible ? "Close" : "Open"} processes ${narrow ? "drawer" : "panel"}`);
+  detailsToggle.setAttribute("aria-label", `${detailsVisible ? "Close" : "Open"} details ${narrow ? "drawer" : "panel"}`);
+  processesToggle.classList.toggle("is-collapsed", !processesVisible);
+  detailsToggle.classList.toggle("is-collapsed", !detailsVisible);
   placeNotation();
   applyPanelWidths();
   if (refit && activeViewMode !== "manual") window.requestAnimationFrame(() => applyActiveView(false));
 }
 
 function toggleProcesses(): void {
+  if (narrowMedia.matches) {
+    toggleDrawer("processes", processesToggle);
+    return;
+  }
   processesOpen = !processesOpen;
   savePanelPreferences();
   applyPanelLayout();
 }
 
 function toggleDetails(): void {
+  if (narrowMedia.matches) {
+    toggleDrawer("details", detailsToggle);
+    return;
+  }
   detailsOpen = !detailsOpen;
   savePanelPreferences();
   applyPanelLayout();
+}
+
+function toggleDrawer(requested: Drawer, returnFocus: HTMLElement): void {
+  activeDrawer = nextDrawer(activeDrawer, requested);
+  drawerReturnFocus = activeDrawer ? returnFocus : drawerReturnFocus;
+  applyPanelLayout();
+  if (activeDrawer) {
+    const panel = activeDrawer === "processes" ? diagramNav : explanationPanel;
+    window.requestAnimationFrame(() => {
+      const first = panel.querySelector<HTMLElement>("button:not([disabled]), input:not([disabled]), select:not([disabled]), [href], [tabindex='0']");
+      (first || panel).focus();
+    });
+  } else {
+    drawerReturnFocus?.focus();
+    drawerReturnFocus = undefined;
+  }
+}
+
+function closeDrawer(returnFocus = true): void {
+  if (!activeDrawer) return;
+  const target = drawerReturnFocus;
+  activeDrawer = undefined;
+  drawerReturnFocus = undefined;
+  applyPanelLayout();
+  if (returnFocus) target?.focus();
 }
 
 function setupResizer(handle: HTMLElement, kind: PanelKind): void {
@@ -369,7 +419,8 @@ function setupResizer(handle: HTMLElement, kind: PanelKind): void {
 }
 
 function placeNotation(): void {
-  const placement = notationPlacement(detailsOpen, Boolean(selectedElementId), notationDismissed);
+  const effectiveDetailsOpen = narrowMedia.matches ? activeDrawer === "details" : detailsOpen;
+  const placement = notationPlacement(effectiveDetailsOpen, Boolean(selectedElementId), notationDismissed);
   notationOverlay.hidden = placement !== "overlay";
   notationDock.hidden = placement !== "dock";
   if (placement === "dock" && notationContent.parentElement !== notationDock) notationDock.append(notationContent);
@@ -538,7 +589,13 @@ function renderList(): void {
     </section>
   `).join("");
   for (const button of list.querySelectorAll<HTMLButtonElement>("[data-diagram-id]")) {
-    button.addEventListener("click", () => void openBundled(button.dataset.diagramId || ""));
+    button.addEventListener("click", async () => {
+      await openBundled(button.dataset.diagramId || "");
+      if (narrowMedia.matches) {
+        closeDrawer(false);
+        diagramCanvas.focus();
+      }
+    });
   }
 }
 
@@ -576,7 +633,13 @@ function renderOutline(): void {
     </button></li>
   `).join("");
   for (const button of outlineList.querySelectorAll<HTMLButtonElement>("[data-outline-id]")) {
-    button.addEventListener("click", () => selectElement(button.dataset.outlineId || "", true));
+    button.addEventListener("click", () => {
+      selectElement(button.dataset.outlineId || "", true);
+      if (narrowMedia.matches) {
+        closeDrawer(false);
+        diagramCanvas.focus();
+      }
+    });
   }
   syncOutlineSelection();
 }
@@ -723,6 +786,9 @@ get<HTMLButtonElement>("#trace-both").addEventListener("click", () => applyTrace
 get<HTMLButtonElement>("#trace-clear").addEventListener("click", () => clearTrace());
 processesToggle.addEventListener("click", toggleProcesses);
 detailsToggle.addEventListener("click", toggleDetails);
+drawerBackdrop.addEventListener("click", () => closeDrawer());
+get<HTMLButtonElement>("#close-processes-drawer").addEventListener("click", () => closeDrawer());
+get<HTMLButtonElement>("#close-details-drawer").addEventListener("click", () => closeDrawer());
 setupResizer(processesResizer, "processes");
 setupResizer(detailsResizer, "details");
 get<HTMLFormElement>("#catalog-filters").addEventListener("submit", (event) => event.preventDefault());
@@ -770,8 +836,26 @@ get<HTMLButtonElement>("#close-notation").addEventListener("click", hideNotation
 dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
 window.addEventListener("keydown", (event) => {
   const target = event.target as HTMLElement | null;
-  if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey ||
-      target?.matches("input, textarea, select, button, [contenteditable='true']")) return;
+  if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
+  if (activeDrawer && event.key === "Escape") {
+    event.preventDefault();
+    closeDrawer();
+    return;
+  }
+  if (activeDrawer && event.key === "Tab") {
+    const panel = activeDrawer === "processes" ? diagramNav : explanationPanel;
+    const focusable = [...panel.querySelectorAll<HTMLElement>("button:not([disabled]), input:not([disabled]), select:not([disabled]), [href], [tabindex='0']")]
+      .filter((element) => !element.hidden && element.getClientRects().length > 0);
+    if (focusable.length) {
+      const current = focusable.indexOf(document.activeElement as HTMLElement);
+      if (current < 0 || (event.shiftKey && current === 0) || (!event.shiftKey && current === focusable.length - 1)) {
+        event.preventDefault();
+        focusable[wrappedFocusIndex(focusable.length, current < 0 ? (event.shiftKey ? 0 : -1) : current, event.shiftKey ? -1 : 1)]?.focus();
+      }
+    }
+    return;
+  }
+  if (target?.matches("input, textarea, select, button, [contenteditable='true']")) return;
   if (event.key === "[") {
     event.preventDefault();
     toggleProcesses();
@@ -818,6 +902,11 @@ async function start(): Promise<void> {
 
 loadPanelPreferences();
 applyPanelLayout(false);
+narrowMedia.addEventListener("change", () => {
+  activeDrawer = undefined;
+  drawerReturnFocus = undefined;
+  applyPanelLayout();
+});
 window.addEventListener("resize", () => {
   if (activeViewMode === "manual") return;
   if (resizeFrame) window.cancelAnimationFrame(resizeFrame);

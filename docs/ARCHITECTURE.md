@@ -63,6 +63,8 @@ Panel sizing is a small DOM boundary over CSS grid custom properties. A pure pol
 
 Catalog schema v2 requires reviewed `group`, `channels`, and `implementationState` fields on every item. Those fields originate in `content-blueprints.json`, are copied deterministically into the catalog, and are validated at generation, build, and runtime boundaries. A pure filter/group module drives the process navigator; filenames and prose are never parsed to infer product claims. Catalog-only metadata is not duplicated into explanation sidecars.
 
+Responsive drawer state is intentionally separate from persisted desktop panel state. A media-query boundary switches the existing panels into one-at-a-time fixed drawers; a pure transition owns mutual exclusion and focus wrapping. The DOM layer manages backdrop, inert canvas state, visible Close controls, Escape, focus entry/containment/return, and post-selection focus. Drawers have no motion, so reduced-motion users receive the same immediate state changes without a parallel animation path.
+
 The classification vocabulary protects product reasoning:
 
 - `observed-current`: supported by direct observation or executable evidence;

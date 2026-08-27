@@ -96,6 +96,10 @@ button { color: inherit; }
 .panel-resizer:hover::after, .panel-resizer:focus-visible::after, .panel-resizer.is-resizing::after { inset-inline: 1px; background: var(--omarchy-accent); }
 .panel-resizer:focus-visible { outline: 2px solid var(--omarchy-accent); outline-offset: -2px; }
 body.is-resizing { cursor: col-resize; user-select: none; }
+.drawer-backdrop { position: fixed; z-index: 19; inset: 4rem 0 0; border: 0; background: color-mix(in srgb, var(--omarchy-background) 68%, transparent); cursor: default; }
+.drawer-backdrop[hidden] { display: none; }
+.drawer-close { display: none; border: 0; background: transparent; color: var(--muted-text); cursor: pointer; font-size: 1.4rem; line-height: 1; }
+.drawer-close:hover, .drawer-close:focus-visible { color: var(--omarchy-foreground); outline: 2px solid var(--omarchy-accent); }
 .panel-heading { display: flex; justify-content: space-between; align-items: end; padding: 1.1rem 1rem 0.8rem; }
 .panel-heading h1, .explanation-panel h2, .diagram-title-block h2 { margin: 0.2rem 0 0; line-height: 1.2; }
 .panel-heading h1 { font-size: 1rem; }
@@ -277,20 +281,20 @@ dialog kbd { padding: 0.08rem 0.35rem; border: 1px solid var(--border-strong); b
 }
 
 @media (max-width: 60rem) {
-  body { overflow: auto; }
-  .app-header { position: sticky; z-index: 10; top: 0; }
-  .workspace { display: block; height: auto; }
+  body { overflow: hidden; }
+  .app-header { position: relative; z-index: 30; }
+  .workspace { display: block; height: calc(100% - 4rem); }
   .panel-resizer { display: none; }
-  .diagram-nav { border-right: 0; border-bottom: 1px solid var(--border); }
-  .diagram-list { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(13rem, 18rem); overflow-x: auto; padding-bottom: 0.7rem; }
-  .catalog-filters { grid-template-columns: minmax(12rem, 1fr) 2fr auto; align-items: end; }
-  .catalog-filter-grid { grid-template-columns: repeat(3, minmax(7rem, 1fr)); }
-  .catalog-filter-grid label:last-child { grid-column: auto; }
-  .catalog-filter-status { align-self: center; }
-  .catalog-active-filters { grid-column: 1 / -1; }
+  .diagram-nav, .explanation-panel { position: fixed; z-index: 21; top: 4rem; bottom: 0; width: min(25rem, calc(100% - 1.5rem)); max-width: none; min-height: 0; border: 1px solid var(--border-strong); background: var(--surface); box-shadow: 0 1rem 3rem #0009; }
+  .drawer-close { display: block; }
+  .explanation-panel > .drawer-close { float: right; margin: -0.35rem -0.35rem 0.35rem 0.5rem; }
+  .diagram-nav { left: 0; right: auto; border-left: 0; border-radius: 0 var(--radius) var(--radius) 0; }
+  .explanation-panel { right: 0; left: auto; border-right: 0; border-radius: var(--radius) 0 0 var(--radius); }
+  .diagram-list { display: flex; overflow: visible; padding-bottom: 0.7rem; }
+  .catalog-filters, .catalog-filter-grid { grid-template-columns: 1fr; }
+  .catalog-filter-grid label:last-child, .catalog-active-filters { grid-column: auto; }
   .legend { display: none; }
-  .diagram-region { height: 68vh; min-height: 31rem; padding-right: 0; }
-  .explanation-panel { position: static; width: auto; min-height: 20rem; border-left: 0; border-top: 1px solid var(--border); box-shadow: none; }
+  .diagram-region { height: 100%; min-height: 0; padding-right: 0; }
   .notation-overlay { bottom: 3rem; }
   .diagram-toolbar { flex-wrap: wrap; }
   .diagram-controls { width: 100%; justify-content: space-between; }
@@ -301,7 +305,7 @@ dialog kbd { padding: 0.08rem 0.35rem; border: 1px solid var(--border-strong); b
   .app-header { height: auto; min-height: 4rem; align-items: flex-start; padding-block: 0.65rem; }
   .brand span:last-child, #about-button, .panel-toggle-label { display: none; }
   .view-actions { margin-left: 0.35rem; padding-left: 0.35rem; }
-  .workspace { height: auto; }
+  .workspace { height: calc(100% - 4rem); }
   .diagram-toolbar { align-items: flex-end; }
   .diagram-title-block h2 { white-space: normal; }
   .focus-controls button span { display: none; }
