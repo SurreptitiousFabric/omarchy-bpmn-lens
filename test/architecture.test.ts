@@ -40,6 +40,7 @@ describe("architecture constraints", () => {
     expect(mise).toContain('[tasks."app:install"]');
     expect(installer).toContain(".local/share/applications");
     expect(installer).toContain("Exec=mise -C");
+    expect(installer).toContain("Categories=Office;ProjectManagement;");
     expect(installer).not.toContain("sudo");
     expect(installer).not.toContain("shell: true");
   });

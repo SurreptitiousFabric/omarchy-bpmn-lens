@@ -20,7 +20,7 @@ Comment=Explore local BPMN diagrams with structured explanations
 Exec=mise -C ${desktopQuote(root)} run open
 Icon=${icon}
 Terminal=false
-Categories=Development;Office;
+Categories=Office;ProjectManagement;
 Keywords=BPMN;Process;Workflow;Diagram;
 StartupNotify=true
 `;
