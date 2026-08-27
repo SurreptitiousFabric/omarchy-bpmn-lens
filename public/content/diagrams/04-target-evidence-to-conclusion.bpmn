@@ -155,7 +155,8 @@
       <bpmndi:BPMNEdge id="Edge_Flow_03" bpmnElement="Flow_03">
         <di:waypoint x="530.0" y="266.0" />
         <di:waypoint x="530.0" y="156.0" />
-        <di:waypoint x="640.0" y="156.0" />
+        <di:waypoint x="628" y="156.0" />
+        <di:waypoint x="640" y="156.0" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_04" bpmnElement="Flow_04">
         <di:waypoint x="800.0" y="156.0" />
@@ -194,16 +195,18 @@
       <bpmndi:BPMNEdge id="Edge_Flow_10" bpmnElement="Flow_10">
         <di:waypoint x="1629.0" y="151.0" />
         <di:waypoint x="1742" y="151.0" />
-        <di:waypoint x="1742" y="302.0" />
-        <di:waypoint x="1970.0" y="302.0" />
+        <di:waypoint x="1742" y="290.0" />
+        <di:waypoint x="1958" y="290.0" />
+        <di:waypoint x="1970" y="290.0" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1661.5" y="91.0" width="48" height="24" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_11" bpmnElement="Flow_11">
         <di:waypoint x="1860.0" y="192.0" />
-        <di:waypoint x="1860.0" y="302.0" />
-        <di:waypoint x="1970.0" y="302.0" />
+        <di:waypoint x="1860.0" y="314.0" />
+        <di:waypoint x="1958" y="314.0" />
+        <di:waypoint x="1970" y="314.0" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_12" bpmnElement="Flow_12">
         <di:waypoint x="2050.0" y="338.0" />
@@ -233,10 +236,11 @@
       <bpmndi:BPMNEdge id="Edge_Flow_16" bpmnElement="Flow_16">
         <di:waypoint x="2810.0" y="266.0" />
         <di:waypoint x="2810.0" y="212.0" />
-        <di:waypoint x="720.0" y="212.0" />
-        <di:waypoint x="720.0" y="192.0" />
+        <di:waypoint x="812" y="212.0" />
+        <di:waypoint x="812" y="156.0" />
+        <di:waypoint x="800" y="156.0" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2030.3" y="180.0" width="180" height="24" />
+          <dc:Bounds x="2060.7" y="180.0" width="180" height="24" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_17" bpmnElement="Flow_17">

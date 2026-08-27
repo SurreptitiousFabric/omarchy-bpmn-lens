@@ -129,8 +129,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Edge_Flow_01" bpmnElement="Flow_01">
         <di:waypoint x="116.0" y="135.0" />
-        <di:waypoint x="340.0" y="135.0" />
-        <di:waypoint x="340.0" y="340.0" />
+        <di:waypoint x="248" y="135.0" />
+        <di:waypoint x="248" y="376.0" />
+        <di:waypoint x="260" y="376.0" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_02" bpmnElement="Flow_02">
         <di:waypoint x="340.0" y="412.0" />
@@ -189,23 +190,26 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_11" bpmnElement="Flow_11">
         <di:waypoint x="1670.0" y="252.0" />
-        <di:waypoint x="1670.0" y="150.0" />
-        <di:waypoint x="1800.0" y="150.0" />
+        <di:waypoint x="1670.0" y="138.0" />
+        <di:waypoint x="1788" y="138.0" />
+        <di:waypoint x="1800" y="138.0" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_12" bpmnElement="Flow_12">
         <di:waypoint x="1750.0" y="376.0" />
-        <di:waypoint x="1880.0" y="376.0" />
-        <di:waypoint x="1880.0" y="186.0" />
+        <di:waypoint x="1788" y="376.0" />
+        <di:waypoint x="1788" y="162.0" />
+        <di:waypoint x="1800" y="162.0" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1774.1" y="384.0" width="126" height="24" />
+          <dc:Bounds x="1731.0" y="74.0" width="126" height="24" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_13" bpmnElement="Flow_13">
         <di:waypoint x="1590.0" y="464.0" />
-        <di:waypoint x="340.0" y="464.0" />
-        <di:waypoint x="340.0" y="412.0" />
+        <di:waypoint x="432" y="464.0" />
+        <di:waypoint x="432" y="376.0" />
+        <di:waypoint x="420" y="376.0" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="940.5" y="432.0" width="49" height="24" />
+          <dc:Bounds x="986.5" y="432.0" width="49" height="24" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_14" bpmnElement="Flow_14">

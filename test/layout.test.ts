@@ -176,6 +176,32 @@ describe("BPMN Diagram Interchange routing", () => {
     }
   });
 
+  it("gives converging task flows distinct target ports", async () => {
+    const files = (await readdir(diagramsDir)).filter((file) => file.endsWith(".bpmn")).sort();
+    for (const file of files) {
+      const parsed = await moddle.fromXML(await readFile(path.join(diagramsDir, file), "utf8"));
+      const definitions = parsed.rootElement as unknown as { diagrams?: Array<{ plane?: { planeElement?: PlaneElement[] } }> };
+      const edges = (definitions.diagrams?.[0]?.plane?.planeElement || []).filter(
+        (element) => element.$type === "bpmndi:BPMNEdge" && element.bpmnElement.$type === "bpmn:SequenceFlow"
+      );
+      const incoming = new Map<string, PlaneElement[]>();
+      for (const edge of edges) {
+        const target = edge.bpmnElement.targetRef;
+        if (!target || !target.$type.endsWith("Task")) continue;
+        incoming.set(target.id, [...(incoming.get(target.id) || []), edge]);
+      }
+      for (const [targetId, targetEdges] of incoming) {
+        if (targetEdges.length < 2) continue;
+        const endpoints = targetEdges.map((edge) => edge.waypoint?.at(-1)).filter(Boolean) as Point[];
+        expect(endpoints.length, `${file} ${targetId} incoming endpoints`).toBe(targetEdges.length);
+        expect(
+          new Set(endpoints.map((point) => `${point.x},${point.y}`)).size,
+          `${file} ${targetId} distinct incoming ports`
+        ).toBe(targetEdges.length);
+      }
+    }
+  });
+
   it("keeps sequence flows out of unrelated text-bearing nodes", async () => {
     const files = (await readdir(diagramsDir)).filter((file) => file.endsWith(".bpmn")).sort();
     for (const file of files) {

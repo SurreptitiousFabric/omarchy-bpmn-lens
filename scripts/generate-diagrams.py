@@ -487,13 +487,62 @@ def gateway_port(bounds, other_center, outbound, clearance):
     return None, None
 
 
-def route_points(source_id, target_id, centers, bounds, label_bounds, kinds):
+def merge_target_ports(model, bounds, centers, clearance=12):
+    """Assign distinct task-edge ports wherever multiple sequence flows converge."""
+    nodes = {node["id"]: node for node in model["nodes"]}
+    incoming = {}
+    for index, seq in enumerate(model["flows"], 1):
+        incoming.setdefault(seq["target"], []).append((index, seq))
+
+    assignments = {}
+    for target_id, entries in incoming.items():
+        if len(entries) < 2 or nodes[target_id]["kind"] != "task":
+            continue
+        x, y, width, height = bounds[target_id]
+        by_side = {"top": [], "right": [], "bottom": [], "left": []}
+        for index, seq in entries:
+            source_x, source_y = centers[seq["source"]]
+            if source_x < x:
+                side = "left"
+                sort_value = source_y
+            elif source_x > x + width:
+                side = "right"
+                sort_value = source_y
+            elif source_y < y:
+                side = "top"
+                sort_value = source_x
+            else:
+                side = "bottom"
+                sort_value = source_x
+            by_side[side].append((sort_value, index))
+
+        for side, side_entries in by_side.items():
+            side_entries.sort()
+            for rank, (_, index) in enumerate(side_entries, 1):
+                fraction = rank / (len(side_entries) + 1)
+                if side == "top":
+                    port = (x + width * fraction, y)
+                    stub = (port[0], y - clearance)
+                elif side == "bottom":
+                    port = (x + width * fraction, y + height)
+                    stub = (port[0], y + height + clearance)
+                elif side == "left":
+                    port = (x, y + height * fraction)
+                    stub = (x - clearance, port[1])
+                else:
+                    port = (x + width, y + height * fraction)
+                    stub = (x + width + clearance, port[1])
+                assignments[index] = (port, stub)
+    return assignments
+
+
+def route_points(source_id, target_id, centers, bounds, label_bounds, kinds, target_hint=None):
     """Find a deterministic, low-bend Manhattan route around other nodes."""
     clearance = 12
     source = centers[source_id]
     target = centers[target_id]
     source_port = source_stub = None
-    target_port = target_stub = None
+    target_port, target_stub = target_hint or (None, None)
     if kinds[source_id] == "gateway":
         source_port, source_stub = gateway_port(bounds[source_id], target, True, GATEWAY_BRANCH_STUB)
     if kinds[target_id] == "gateway":
@@ -698,9 +747,12 @@ def build_model(model):
         centers[node["id"]] = (x + width / 2, y + height / 2)
 
     kinds = {node["id"]: node["kind"] for node in model["nodes"]}
+    target_ports = merge_target_ports(model, bounds, centers)
     routes = []
     for i, seq in enumerate(model["flows"], 1):
-        routes.append((i, seq, route_points(seq["source"], seq["target"], centers, bounds, label_bounds, kinds)))
+        routes.append((i, seq, route_points(
+            seq["source"], seq["target"], centers, bounds, label_bounds, kinds, target_ports.get(i)
+        )))
 
     occupied = list(bounds.values()) + list(label_bounds.values())
     flow_labels = {}
