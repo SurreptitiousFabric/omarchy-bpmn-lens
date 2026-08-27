@@ -55,6 +55,8 @@ The camera has one explicit mode: overview, width, selection, actual size, or ma
 
 The semantic outline is a derived read model over the bpmn-js element registry. A pure module selects supported semantic element kinds, supplies explicit unnamed labels, humanizes BPMN types, and filters without mutating the registry. The DOM layer renders native lists, buttons, search, tabs, and status text; every activation returns through the same `selectElement` boundary used by canvas clicks. The outline deliberately complements rather than overstates the SVG accessibility tree.
 
+Path tracing is a cycle-safe traversal over the existing incoming/outgoing connection references. Independent visited sets calculate upstream and downstream closure, including sequence flows, without a graph package. The viewer layer owns removable markers for traced elements and their labels; it does not recolor or rewrite BPMN source. Trace direction remains explicit in pressed controls and status text, and dashed highlighted flows provide a color-independent distinction.
+
 The classification vocabulary protects product reasoning:
 
 - `observed-current`: supported by direct observation or executable evidence;

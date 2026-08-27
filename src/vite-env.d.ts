@@ -25,6 +25,10 @@ declare module "bpmn-js/lib/NavigatedViewer" {
     width?: number;
     height?: number;
     waypoints?: Array<{ x: number; y: number }>;
+    incoming?: BpmnElement[];
+    outgoing?: BpmnElement[];
+    source?: BpmnElement;
+    target?: BpmnElement;
     businessObject?: { id?: string; name?: string; $type?: string };
   }
 

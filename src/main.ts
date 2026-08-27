@@ -6,6 +6,8 @@ import { adjacentElement, elementBounds, focusViewbox, navigableElements } from 
 import { notationFor } from "./notation";
 import { buildOutline, filterOutline } from "./outline";
 import type { OutlineItem } from "./outline";
+import { tracePath } from "./trace";
+import type { TraceDirection } from "./trace";
 import type { Catalog, CatalogItem, DiagramExplanation, ElementExplanation } from "./types";
 import { actualSizeViewbox, diagramBounds, widthViewbox } from "./view";
 import type { ViewMode } from "./view";
@@ -68,6 +70,12 @@ app.innerHTML = `
             <button id="focus-previous" type="button" title="Previous element (P)">← <span>Previous</span></button>
             <button id="focus-next" type="button" title="Next element (N)"><span>Next</span> →</button>
           </div>
+          <div id="trace-controls" class="trace-controls" aria-label="Trace selected path" hidden>
+            <button id="trace-upstream" type="button" title="Trace incoming path" aria-pressed="false">Upstream</button>
+            <button id="trace-downstream" type="button" title="Trace outgoing path" aria-pressed="false">Downstream</button>
+            <button id="trace-both" type="button" title="Trace incoming and outgoing paths" aria-pressed="false">Both</button>
+            <button id="trace-clear" type="button" title="Clear path trace" hidden>Clear</button>
+          </div>
           <div class="zoom-controls" aria-label="Diagram view">
             <button id="view-overview" type="button" title="Fit complete diagram (0)" aria-pressed="true">Overview</button>
             <button id="view-width" type="button" title="Fit diagram width (W)" aria-pressed="false">Width</button>
@@ -123,6 +131,7 @@ const processesToggle = get<HTMLButtonElement>("#toggle-processes");
 const detailsToggle = get<HTMLButtonElement>("#toggle-details");
 const diagramCanvas = get<HTMLDivElement>("#diagram-canvas");
 const focusControls = get<HTMLDivElement>("#focus-controls");
+const traceControls = get<HTMLDivElement>("#trace-controls");
 const processesView = get<HTMLDivElement>("#processes-view");
 const outlineView = get<HTMLDivElement>("#outline-view");
 const processesTab = get<HTMLButtonElement>("#processes-tab");
@@ -140,6 +149,8 @@ let activeViewMode: ViewMode = "overview";
 let focusOrder: ReturnType<typeof navigableElements> = [];
 let outlineItems: OutlineItem[] = [];
 let activeNavView: "processes" | "outline" = "processes";
+let traceDirection: TraceDirection | undefined;
+let traceMarkerIds = new Set<string>();
 let applyingNamedView = false;
 let resizeFrame: number | undefined;
 const panelStorageKey = "bpmn-lens.panels.v1";
@@ -280,6 +291,55 @@ function updateViewControls(): void {
   }
 }
 
+function updateTraceControls(): void {
+  traceControls.hidden = !selectedElementId;
+  for (const direction of ["upstream", "downstream", "both"] as const) {
+    get<HTMLButtonElement>(`#trace-${direction}`).setAttribute("aria-pressed", String(traceDirection === direction));
+  }
+  get<HTMLButtonElement>("#trace-clear").hidden = !traceDirection;
+}
+
+function removeTraceMarkers(): void {
+  const canvas = viewer.get("canvas");
+  for (const id of traceMarkerIds) canvas.removeMarker(id, "is-traced");
+  traceMarkerIds = new Set();
+  diagramCanvas.classList.remove("trace-mode");
+}
+
+function clearTrace(announce = true): void {
+  removeTraceMarkers();
+  traceDirection = undefined;
+  updateTraceControls();
+  if (announce) status.textContent = "Path trace cleared.";
+}
+
+function applyTrace(direction: TraceDirection, announce = true): void {
+  if (!selectedElementId) return;
+  const registry = viewer.get("elementRegistry");
+  const selected = registry.get(selectedElementId);
+  if (!selected) return;
+  removeTraceMarkers();
+  traceDirection = direction;
+  const canvas = viewer.get("canvas");
+  const traced = tracePath(selected, direction);
+  for (const id of traced) {
+    canvas.addMarker(id, "is-traced");
+    traceMarkerIds.add(id);
+    const label = registry.get(`${id}_label`);
+    if (label) {
+      canvas.addMarker(label.id, "is-traced");
+      traceMarkerIds.add(label.id);
+    }
+  }
+  diagramCanvas.classList.add("trace-mode");
+  setViewMode("overview", false);
+  updateTraceControls();
+  if (announce) {
+    const label = direction === "both" ? "upstream and downstream" : direction;
+    status.textContent = `Tracing ${label} from the selected element. ${traced.size} path elements shown.`;
+  }
+}
+
 function viewStatus(mode: ViewMode): string {
   const labels: Record<ViewMode, string> = {
     overview: "Overview fitted to the complete diagram.",
@@ -383,6 +443,7 @@ function setNavView(view: "processes" | "outline", focusTab = false): void {
 }
 
 async function importXml(xml: string): Promise<void> {
+  clearTrace(false);
   const result = await viewer.importXML(xml);
   focusOrder = navigableElements(viewer.get("elementRegistry").getAll());
   outlineItems = buildOutline(viewer.get("elementRegistry").getAll());
@@ -391,6 +452,7 @@ async function importXml(xml: string): Promise<void> {
   activeViewMode = "overview";
   diagramCanvas.classList.remove("focus-mode");
   updateViewControls();
+  updateTraceControls();
   applyActiveView(false);
   status.textContent = result.warnings.length ? `Opened with ${result.warnings.length} BPMN warning(s).` : "Diagram ready. Select an element to explain it.";
 }
@@ -438,6 +500,7 @@ function selectElement(id: string, shouldFocus = false): void {
   updateViewControls();
   if (shouldFocus || activeViewMode === "selection") setViewMode("selection");
   else updateUrl(activeItem?.id, id);
+  if (traceDirection) applyTrace(traceDirection);
 }
 
 viewer.get("eventBus").on("element.click", (event) => {
@@ -502,6 +565,10 @@ get<HTMLButtonElement>("#view-selection").addEventListener("click", () => setVie
 get<HTMLButtonElement>("#view-actual").addEventListener("click", () => setViewMode("actual"));
 get<HTMLButtonElement>("#focus-previous").addEventListener("click", () => moveFocus(-1));
 get<HTMLButtonElement>("#focus-next").addEventListener("click", () => moveFocus(1));
+get<HTMLButtonElement>("#trace-upstream").addEventListener("click", () => applyTrace("upstream"));
+get<HTMLButtonElement>("#trace-downstream").addEventListener("click", () => applyTrace("downstream"));
+get<HTMLButtonElement>("#trace-both").addEventListener("click", () => applyTrace("both"));
+get<HTMLButtonElement>("#trace-clear").addEventListener("click", () => clearTrace());
 processesToggle.addEventListener("click", toggleProcesses);
 detailsToggle.addEventListener("click", toggleDetails);
 processesTab.addEventListener("click", () => setNavView("processes"));

@@ -57,7 +57,7 @@ button { color: inherit; }
 .view-actions { display: flex; align-items: center; gap: 0.3rem; margin-left: 1rem; padding-left: 1rem; border-left: 1px solid var(--border); }
 .header-actions { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
 #file-picker { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-.file-action, .quiet-button, .panel-toggle, .zoom-controls button, .focus-controls button {
+.file-action, .quiet-button, .panel-toggle, .zoom-controls button, .focus-controls button, .trace-controls button {
   min-height: 2.25rem;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) - 2px);
@@ -65,8 +65,8 @@ button { color: inherit; }
   padding: 0.5rem 0.75rem;
   cursor: pointer;
 }
-.file-action:hover, .quiet-button:hover, .panel-toggle:hover, .zoom-controls button:hover, .focus-controls button:hover,
-.file-action:focus-visible, .quiet-button:focus-visible, .panel-toggle:focus-visible, .zoom-controls button:focus-visible, .focus-controls button:focus-visible {
+.file-action:hover, .quiet-button:hover, .panel-toggle:hover, .zoom-controls button:hover, .focus-controls button:hover, .trace-controls button:hover,
+.file-action:focus-visible, .quiet-button:focus-visible, .panel-toggle:focus-visible, .zoom-controls button:focus-visible, .focus-controls button:focus-visible, .trace-controls button:focus-visible {
   outline: none;
   border-color: var(--omarchy-accent);
   background: color-mix(in srgb, var(--omarchy-accent) 10%, transparent);
@@ -148,11 +148,13 @@ button { color: inherit; }
 .classification { display: inline-block; color: var(--target); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; }
 .classification[data-kind="observed-current"] { color: var(--current); }
 .classification[data-kind="local"] { color: var(--muted-text); }
-.diagram-controls { display: flex; align-items: center; flex-shrink: 0; gap: 0.65rem; }
-.focus-controls, .zoom-controls { display: flex; flex-shrink: 0; gap: 0.25rem; }
-.focus-controls[hidden], .focus-controls button[hidden] { display: none; }
+.diagram-controls { display: flex; align-items: center; justify-content: flex-end; flex-shrink: 0; flex-wrap: wrap; gap: 0.65rem; }
+.focus-controls, .trace-controls, .zoom-controls { display: flex; flex-shrink: 0; gap: 0.25rem; }
+.focus-controls[hidden], .trace-controls[hidden], .focus-controls button[hidden], .trace-controls button[hidden] { display: none; }
 .focus-controls button { padding: 0.35rem 0.55rem; font-size: 0.66rem; }
 .focus-controls button:disabled { opacity: 0.38; cursor: not-allowed; }
+.trace-controls button { padding: 0.35rem 0.5rem; font-size: 0.62rem; }
+.trace-controls button[aria-pressed="true"] { border-color: var(--omarchy-accent); color: var(--omarchy-accent); box-shadow: inset 0 -2px 0 var(--omarchy-accent); }
 .zoom-controls button { min-width: 2.25rem; padding: 0.35rem 0.55rem; }
 .zoom-controls button:disabled { opacity: 0.38; cursor: not-allowed; }
 .zoom-controls button[aria-pressed="true"] {
@@ -208,6 +210,21 @@ button { color: inherit; }
 #diagram-canvas.focus-mode .djs-element.is-focused .djs-visual > :first-child {
   stroke: var(--omarchy-accent) !important;
   stroke-width: 5px !important;
+}
+#diagram-canvas.trace-mode .djs-element { opacity: 0.13; }
+#diagram-canvas.trace-mode .djs-element.is-traced { opacity: 1; }
+#diagram-canvas.trace-mode .djs-shape.is-traced .djs-visual > :first-child {
+  stroke: var(--omarchy-accent) !important;
+  stroke-width: 3px !important;
+}
+#diagram-canvas.trace-mode .djs-connection.is-traced .djs-visual > path {
+  stroke: var(--omarchy-accent) !important;
+  stroke-width: 4px !important;
+  stroke-dasharray: 9 4;
+}
+#diagram-canvas.trace-mode .djs-connection.is-traced marker path {
+  fill: var(--omarchy-accent) !important;
+  stroke: var(--omarchy-accent) !important;
 }
 .djs-palette, .djs-context-pad, .bjs-powered-by { display: none !important; }
 
