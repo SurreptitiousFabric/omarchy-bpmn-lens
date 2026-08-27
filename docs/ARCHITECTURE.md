@@ -47,6 +47,8 @@ The standard-library-only `scripts/generate-diagrams.py` owns node placement and
 
 Selection has two independent explanation layers. `src/notation.ts` maps BPMN element types to concise, generic notation help in a canvas overlay, so it also works for arbitrary local files. A bundled diagram's JSON sidecar supplies the separate product-specific explanation panel. The generic layer never guesses domain meaning.
 
+Workspace layout state is deliberately local and dependency-free. Native controls expose the process and explanation panels through `aria-controls`/`aria-expanded`; a small versioned `localStorage` value remembers visibility without adding a state library or placing it in shareable diagram URLs. The responsive layout stacks navigation, canvas, and explanation before the side panels would make the canvas unusably narrow.
+
 The classification vocabulary protects product reasoning:
 
 - `observed-current`: supported by direct observation or executable evidence;
@@ -68,4 +70,5 @@ The classification vocabulary protects product reasoning:
 - BPMN parse warnings are gate failures.
 - Every sequence flow begins and ends on its source/target shape perimeter, never at the text-bearing centre.
 - Named sequence-flow labels have explicit bounds and do not collide with process nodes, external labels, other named-flow labels, or connector routes.
+- Forward gateway branches have visible, staggered exit stubs; immediate-turn condition labels remain near the gateway so cross-lane flows do not read as incoming traffic.
 - Static build budget: 2.5 MB uncompressed.

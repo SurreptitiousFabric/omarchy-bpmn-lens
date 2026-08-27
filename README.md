@@ -8,6 +8,7 @@ The first bundled suite covers Nicelydrapped’s observed TUI behavior and targe
 
 - `bpmn-js` `NavigatedViewer` provides pan, zoom, and selection without modeling tools.
 - Selecting an element opens a compact notation card explaining what its BPMN shape means; bundled diagrams also show the source-grounded product explanation in the side panel.
+- The process navigator and explanation panel collapse independently, remember their state locally, and automatically return the canvas to a useful fit. Use <kbd>[</kbd> and <kbd>]</kbd> to toggle them, or <kbd>0</kbd> to fit the diagram.
 - Plain TypeScript, HTML, and CSS keep the frontend small and inspectable.
 - JSON sidecars keep explanation claims reviewable and separate from BPMN semantics.
 - A tiny QML panel integrates with Omarchy without running the web application inside `omarchy-shell`.

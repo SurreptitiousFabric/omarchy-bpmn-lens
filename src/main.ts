@@ -14,14 +14,22 @@ app.innerHTML = `
       <span class="brand-mark" aria-hidden="true">◇</span>
       <div><strong>BPMN Lens</strong><span>Local process explorer</span></div>
     </div>
+    <div class="view-actions" aria-label="Workspace panels">
+      <button id="toggle-processes" class="panel-toggle" type="button" aria-label="Hide processes panel" aria-controls="diagram-nav" aria-expanded="true">
+        <span aria-hidden="true">◧</span><span class="panel-toggle-label">Processes</span>
+      </button>
+      <button id="toggle-details" class="panel-toggle" type="button" aria-label="Hide details panel" aria-controls="explanation-panel" aria-expanded="true">
+        <span aria-hidden="true">◨</span><span class="panel-toggle-label">Details</span>
+      </button>
+    </div>
     <div class="header-actions">
       <label class="file-action" for="file-picker">Open BPMN</label>
       <input id="file-picker" type="file" accept=".bpmn,.xml,application/xml,text/xml" />
       <button id="about-button" class="quiet-button" type="button">About</button>
     </div>
   </header>
-  <div class="workspace">
-    <nav class="diagram-nav" aria-label="BPMN diagrams">
+  <div id="workspace" class="workspace">
+    <nav id="diagram-nav" class="diagram-nav" aria-label="BPMN diagrams">
       <div class="panel-heading">
         <div><span class="eyebrow">Capability suite</span><h1>Processes</h1></div>
         <span id="diagram-count" class="count"></span>
@@ -55,7 +63,7 @@ app.innerHTML = `
       </aside>
       <p id="status" class="status" role="status" aria-live="polite">Preparing the local viewer…</p>
     </main>
-    <aside class="explanation-panel" aria-labelledby="explanation-title">
+    <aside id="explanation-panel" class="explanation-panel" aria-labelledby="explanation-title">
       <div id="explanation-content"></div>
     </aside>
   </div>
@@ -64,6 +72,7 @@ app.innerHTML = `
     <p>This is a read-only design companion. It renders BPMN locally and keeps explanatory claims in reviewable JSON sidecars.</p>
     <p><strong>Current</strong> means observed or executable evidence supports the behavior. <strong>Target</strong> means a product or data contract says the behavior should exist; it is not an implementation claim.</p>
     <p>No BPMN file is uploaded. Files opened from your computer remain in this browser session.</p>
+    <p><strong>Keyboard:</strong> <kbd>[</kbd> processes, <kbd>]</kbd> details, <kbd>0</kbd> fit diagram, <kbd>Esc</kbd> close notation.</p>
   </dialog>
 `;
 
@@ -81,12 +90,20 @@ const status = get<HTMLParagraphElement>("#status");
 const filePicker = get<HTMLInputElement>("#file-picker");
 const dialog = get<HTMLDialogElement>("#about-dialog");
 const notationOverlay = get<HTMLElement>("#notation-overlay");
+const workspace = get<HTMLDivElement>("#workspace");
+const diagramNav = get<HTMLElement>("#diagram-nav");
+const explanationPanel = get<HTMLElement>("#explanation-panel");
+const processesToggle = get<HTMLButtonElement>("#toggle-processes");
+const detailsToggle = get<HTMLButtonElement>("#toggle-details");
 const viewer = new NavigatedViewer({ container: "#diagram-canvas" });
 
 let catalog: Catalog;
 let activeItem: CatalogItem | undefined;
 let activeExplanation: DiagramExplanation | undefined;
 let selectedElementId: string | undefined;
+const panelStorageKey = "bpmn-lens.panels.v1";
+let processesOpen = true;
+let detailsOpen = true;
 
 function escapeHtml(value: string): string {
   const node = document.createElement("span");
@@ -102,6 +119,59 @@ function classLabel(value: string): string {
     "target-unimplemented": "Target · unimplemented"
   };
   return labels[value] || value;
+}
+
+function loadPanelPreferences(): void {
+  try {
+    const stored = JSON.parse(window.localStorage.getItem(panelStorageKey) || "{}") as {
+      processesOpen?: boolean;
+      detailsOpen?: boolean;
+    };
+    if (typeof stored.processesOpen === "boolean") processesOpen = stored.processesOpen;
+    if (typeof stored.detailsOpen === "boolean") detailsOpen = stored.detailsOpen;
+  } catch {
+    // Invalid or unavailable local storage falls back to the fully open workspace.
+  }
+}
+
+function savePanelPreferences(): void {
+  try {
+    window.localStorage.setItem(panelStorageKey, JSON.stringify({ processesOpen, detailsOpen }));
+  } catch {
+    // Panel controls remain functional when storage is unavailable.
+  }
+}
+
+function fitDiagram(): void {
+  viewer.get("canvas").zoom("fit-viewport");
+}
+
+function applyPanelLayout(refit = true): void {
+  workspace.classList.toggle("processes-collapsed", !processesOpen);
+  workspace.classList.toggle("details-collapsed", !detailsOpen);
+  diagramNav.hidden = !processesOpen;
+  explanationPanel.hidden = !detailsOpen;
+  processesToggle.setAttribute("aria-expanded", String(processesOpen));
+  detailsToggle.setAttribute("aria-expanded", String(detailsOpen));
+  processesToggle.title = `${processesOpen ? "Hide" : "Show"} processes panel ([)`;
+  detailsToggle.title = `${detailsOpen ? "Hide" : "Show"} details panel (])`;
+  processesToggle.setAttribute("aria-label", `${processesOpen ? "Hide" : "Show"} processes panel`);
+  detailsToggle.setAttribute("aria-label", `${detailsOpen ? "Hide" : "Show"} details panel`);
+  processesToggle.classList.toggle("is-collapsed", !processesOpen);
+  detailsToggle.classList.toggle("is-collapsed", !detailsOpen);
+  if (refit) window.requestAnimationFrame(fitDiagram);
+}
+
+function toggleProcesses(): void {
+  processesOpen = !processesOpen;
+  savePanelPreferences();
+  applyPanelLayout();
+}
+
+function toggleDetails(): void {
+  detailsOpen = !detailsOpen;
+  savePanelPreferences();
+  applyPanelLayout();
 }
 
 function hideNotation(): void {
@@ -168,7 +238,7 @@ function renderList(): void {
 
 async function importXml(xml: string): Promise<void> {
   const result = await viewer.importXML(xml);
-  viewer.get("canvas").zoom("fit-viewport");
+  fitDiagram();
   status.textContent = result.warnings.length ? `Opened with ${result.warnings.length} BPMN warning(s).` : "Diagram ready. Select an element to explain it.";
 }
 
@@ -246,11 +316,30 @@ get<HTMLButtonElement>("#zoom-out").addEventListener("click", () => {
   const canvas = viewer.get("canvas");
   canvas.zoom(Math.max(0.2, canvas.zoom() / 1.2));
 });
-get<HTMLButtonElement>("#zoom-fit").addEventListener("click", () => viewer.get("canvas").zoom("fit-viewport"));
+get<HTMLButtonElement>("#zoom-fit").addEventListener("click", fitDiagram);
+processesToggle.addEventListener("click", toggleProcesses);
+detailsToggle.addEventListener("click", toggleDetails);
 get<HTMLButtonElement>("#about-button").addEventListener("click", () => dialog.showModal());
 get<HTMLButtonElement>("#close-about").addEventListener("click", () => dialog.close());
 get<HTMLButtonElement>("#close-notation").addEventListener("click", hideNotation);
 dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
+window.addEventListener("keydown", (event) => {
+  const target = event.target as HTMLElement | null;
+  if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey ||
+      target?.matches("input, textarea, select, button, [contenteditable='true']")) return;
+  if (event.key === "[") {
+    event.preventDefault();
+    toggleProcesses();
+  } else if (event.key === "]") {
+    event.preventDefault();
+    toggleDetails();
+  } else if (event.key === "0") {
+    event.preventDefault();
+    fitDiagram();
+  } else if (event.key === "Escape" && !notationOverlay.hidden) {
+    hideNotation();
+  }
+});
 
 async function start(): Promise<void> {
   try {
@@ -267,4 +356,6 @@ async function start(): Promise<void> {
   }
 }
 
+loadPanelPreferences();
+applyPanelLayout(false);
 void start();

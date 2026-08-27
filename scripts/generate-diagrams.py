@@ -21,6 +21,7 @@ LANE_TOP = 80
 LANE_MIN_HEIGHT = 140
 LANE_PADDING = 32
 STACK_GAP = 16
+GATEWAY_BRANCH_STUB = 56
 
 
 def q(prefix, name):
@@ -469,7 +470,8 @@ def gateway_port(bounds, other_center, outbound, clearance):
 
     if outbound:
         if delta_x > 0:
-            return (x + width, center_y), (x + width + clearance, center_y)
+            branch_spacing = 44 if other_center[1] > center_y else 0
+            return (x + width, center_y), (x + width + clearance + branch_spacing, center_y)
         return None, None
     if delta_x < 0:
         return (x, center_y), (x - clearance, center_y)
@@ -484,7 +486,7 @@ def route_points(source_id, target_id, centers, bounds, label_bounds, kinds):
     source_port = source_stub = None
     target_port = target_stub = None
     if kinds[source_id] == "gateway":
-        source_port, source_stub = gateway_port(bounds[source_id], target, True, clearance)
+        source_port, source_stub = gateway_port(bounds[source_id], target, True, GATEWAY_BRANCH_STUB)
     if kinds[target_id] == "gateway":
         target_port, target_stub = gateway_port(bounds[target_id], source, False, clearance)
     route_start = source_stub or source
@@ -579,17 +581,17 @@ def rectangles_overlap(first, second, padding=0):
             first_y + first_height + padding > second_y)
 
 
-def place_flow_label(text, points, occupied, all_routes):
+def place_flow_label(text, points, occupied, all_routes, prefer_first=False):
     """Place a named-flow label beside a long segment, clear of shapes and lines."""
     width = min(180, max(48, len(text) * 7 + 14))
     height = 24
     segments = []
-    for start, end in zip(points, points[1:]):
+    for index, (start, end) in enumerate(zip(points, points[1:])):
         length = abs(end[0] - start[0]) + abs(end[1] - start[1])
-        segments.append((start[1] == end[1], length, start, end))
-    segments.sort(key=lambda item: (item[0], item[1]), reverse=True)
+        segments.append((prefer_first and index == 0, start[1] == end[1], length, start, end))
+    segments.sort(key=lambda item: (item[0], item[1], item[2]), reverse=True)
 
-    for _, _, start, end in segments:
+    for _, _, _, start, end in segments:
         for fraction in (0.5, 0.33, 0.67):
             center_x = start[0] + (end[0] - start[0]) * fraction
             center_y = start[1] + (end[1] - start[1]) * fraction
@@ -697,7 +699,11 @@ def build_model(model):
     for i, seq, points in routes:
         if not seq["label"]:
             continue
-        flow_labels[i] = place_flow_label(seq["label"], points, occupied, all_route_points)
+        first_turns = (kinds[seq["source"]] == "gateway" and len(points) > 2 and
+                       (points[0][0] == points[1][0]) != (points[1][0] == points[2][0]))
+        flow_labels[i] = place_flow_label(
+            seq["label"], points, occupied, all_route_points, prefer_first=first_turns
+        )
         occupied.append(flow_labels[i])
 
     for i, seq, points in routes:

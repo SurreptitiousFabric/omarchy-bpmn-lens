@@ -149,21 +149,20 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_06" bpmnElement="Flow_06">
         <di:waypoint x="1072" y="138.0" />
-        <di:waypoint x="1084" y="138.0" />
-        <di:waypoint x="1290.0" y="138.0" />
-        <di:waypoint x="1290.0" y="264.0" />
+        <di:waypoint x="1172" y="138.0" />
+        <di:waypoint x="1172" y="300.0" />
+        <di:waypoint x="1210.0" y="300.0" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1155.5" y="106.0" width="63" height="24" />
+          <dc:Bounds x="1090.5" y="106.0" width="63" height="24" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_07" bpmnElement="Flow_07">
         <di:waypoint x="1072" y="138.0" />
-        <di:waypoint x="1084" y="138.0" />
-        <di:waypoint x="1198" y="138.0" />
-        <di:waypoint x="1198" y="388.0" />
+        <di:waypoint x="1172" y="138.0" />
+        <di:waypoint x="1172" y="388.0" />
         <di:waypoint x="1210.0" y="388.0" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1113.0" y="146.0" width="56" height="24" />
+          <dc:Bounds x="1094.0" y="50.0" width="56" height="24" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_08" bpmnElement="Flow_08">
@@ -206,16 +205,16 @@
         <di:waypoint x="720.0" y="100.0" />
         <di:waypoint x="720.0" y="120.0" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1429.0" y="68.0" width="48" height="24" />
+          <dc:Bounds x="2222.0" y="94.0" width="48" height="24" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_15" bpmnElement="Flow_15">
         <di:waypoint x="2212" y="138.0" />
-        <di:waypoint x="2224" y="138.0" />
-        <di:waypoint x="2224" y="141.0" />
+        <di:waypoint x="2312" y="138.0" />
+        <di:waypoint x="2312" y="141.0" />
         <di:waypoint x="2350.0" y="141.0" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2263.0" y="109.0" width="48" height="24" />
+          <dc:Bounds x="2238.0" y="50.0" width="48" height="24" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

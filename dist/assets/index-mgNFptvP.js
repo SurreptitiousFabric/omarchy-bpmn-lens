@@ -12,14 +12,22 @@
       <span class="brand-mark" aria-hidden="true">◇</span>
       <div><strong>BPMN Lens</strong><span>Local process explorer</span></div>
     </div>
+    <div class="view-actions" aria-label="Workspace panels">
+      <button id="toggle-processes" class="panel-toggle" type="button" aria-label="Hide processes panel" aria-controls="diagram-nav" aria-expanded="true">
+        <span aria-hidden="true">◧</span><span class="panel-toggle-label">Processes</span>
+      </button>
+      <button id="toggle-details" class="panel-toggle" type="button" aria-label="Hide details panel" aria-controls="explanation-panel" aria-expanded="true">
+        <span aria-hidden="true">◨</span><span class="panel-toggle-label">Details</span>
+      </button>
+    </div>
     <div class="header-actions">
       <label class="file-action" for="file-picker">Open BPMN</label>
       <input id="file-picker" type="file" accept=".bpmn,.xml,application/xml,text/xml" />
       <button id="about-button" class="quiet-button" type="button">About</button>
     </div>
   </header>
-  <div class="workspace">
-    <nav class="diagram-nav" aria-label="BPMN diagrams">
+  <div id="workspace" class="workspace">
+    <nav id="diagram-nav" class="diagram-nav" aria-label="BPMN diagrams">
       <div class="panel-heading">
         <div><span class="eyebrow">Capability suite</span><h1>Processes</h1></div>
         <span id="diagram-count" class="count"></span>
@@ -53,7 +61,7 @@
       </aside>
       <p id="status" class="status" role="status" aria-live="polite">Preparing the local viewer…</p>
     </main>
-    <aside class="explanation-panel" aria-labelledby="explanation-title">
+    <aside id="explanation-panel" class="explanation-panel" aria-labelledby="explanation-title">
       <div id="explanation-content"></div>
     </aside>
   </div>
@@ -62,8 +70,9 @@
     <p>This is a read-only design companion. It renders BPMN locally and keeps explanatory claims in reviewable JSON sidecars.</p>
     <p><strong>Current</strong> means observed or executable evidence supports the behavior. <strong>Target</strong> means a product or data contract says the behavior should exist; it is not an implementation claim.</p>
     <p>No BPMN file is uploaded. Files opened from your computer remain in this browser session.</p>
+    <p><strong>Keyboard:</strong> <kbd>[</kbd> processes, <kbd>]</kbd> details, <kbd>0</kbd> fit diagram, <kbd>Esc</kbd> close notation.</p>
   </dialog>
-`;var Q=e=>{let t=document.querySelector(e);if(!t)throw Error(`Missing UI element: ${e}`);return t},dc=Q(`#diagram-list`),fc=Q(`#diagram-title`),pc=Q(`#classification`),mc=Q(`#explanation-content`),hc=Q(`#status`),gc=Q(`#file-picker`),_c=Q(`#about-dialog`),vc=Q(`#notation-overlay`),yc=new ec({container:`#diagram-canvas`}),bc,xc,Sc,Cc;function $(e){let t=document.createElement(`span`);return t.textContent=e,t.innerHTML}function wc(e){return{"observed-current":`Observed current`,target:`Target`,"target-partial":`Target · partial`,"target-unimplemented":`Target · unimplemented`}[e]||e}function Tc(){vc.hidden=!0}function Ec(e,t){let n=lc(e);Q(`#notation-title`).textContent=n.title,Q(`#notation-symbol`).textContent=n.symbol,Q(`#notation-meaning`).textContent=n.meaning;let r=Q(`#notation-selection`);r.textContent=t?`Selected: ${t}`:``,r.hidden=!t,vc.hidden=!1}function Dc(e,t){let n=new URL(window.location.href);e?n.searchParams.set(`diagram`,e):n.searchParams.delete(`diagram`),t?n.searchParams.set(`element`,t):n.searchParams.delete(`element`),window.history.replaceState(null,``,n)}function Oc(e){mc.innerHTML=`
+`;var Q=e=>{let t=document.querySelector(e);if(!t)throw Error(`Missing UI element: ${e}`);return t},dc=Q(`#diagram-list`),fc=Q(`#diagram-title`),pc=Q(`#classification`),mc=Q(`#explanation-content`),hc=Q(`#status`),gc=Q(`#file-picker`),_c=Q(`#about-dialog`),vc=Q(`#notation-overlay`),yc=Q(`#workspace`),bc=Q(`#diagram-nav`),xc=Q(`#explanation-panel`),Sc=Q(`#toggle-processes`),Cc=Q(`#toggle-details`),wc=new ec({container:`#diagram-canvas`}),Tc,Ec,Dc,Oc,kc=`bpmn-lens.panels.v1`,Ac=!0,jc=!0;function $(e){let t=document.createElement(`span`);return t.textContent=e,t.innerHTML}function Mc(e){return{"observed-current":`Observed current`,target:`Target`,"target-partial":`Target · partial`,"target-unimplemented":`Target · unimplemented`}[e]||e}function Nc(){try{let e=JSON.parse(window.localStorage.getItem(kc)||`{}`);typeof e.processesOpen==`boolean`&&(Ac=e.processesOpen),typeof e.detailsOpen==`boolean`&&(jc=e.detailsOpen)}catch{}}function Pc(){try{window.localStorage.setItem(kc,JSON.stringify({processesOpen:Ac,detailsOpen:jc}))}catch{}}function Fc(){wc.get(`canvas`).zoom(`fit-viewport`)}function Ic(e=!0){yc.classList.toggle(`processes-collapsed`,!Ac),yc.classList.toggle(`details-collapsed`,!jc),bc.hidden=!Ac,xc.hidden=!jc,Sc.setAttribute(`aria-expanded`,String(Ac)),Cc.setAttribute(`aria-expanded`,String(jc)),Sc.title=`${Ac?`Hide`:`Show`} processes panel ([)`,Cc.title=`${jc?`Hide`:`Show`} details panel (])`,Sc.setAttribute(`aria-label`,`${Ac?`Hide`:`Show`} processes panel`),Cc.setAttribute(`aria-label`,`${jc?`Hide`:`Show`} details panel`),Sc.classList.toggle(`is-collapsed`,!Ac),Cc.classList.toggle(`is-collapsed`,!jc),e&&window.requestAnimationFrame(Fc)}function Lc(){Ac=!Ac,Pc(),Ic()}function Rc(){jc=!jc,Pc(),Ic()}function zc(){vc.hidden=!0}function Bc(e,t){let n=lc(e);Q(`#notation-title`).textContent=n.title,Q(`#notation-symbol`).textContent=n.symbol,Q(`#notation-meaning`).textContent=n.meaning;let r=Q(`#notation-selection`);r.textContent=t?`Selected: ${t}`:``,r.hidden=!t,vc.hidden=!1}function Vc(e,t){let n=new URL(window.location.href);e?n.searchParams.set(`diagram`,e):n.searchParams.delete(`diagram`),t?n.searchParams.set(`element`,t):n.searchParams.delete(`element`),window.history.replaceState(null,``,n)}function Hc(e){mc.innerHTML=`
     <span class="eyebrow">Diagram explanation</span>
     <h2 id="explanation-title">What this shows</h2>
     <p class="lead">${$(e.summary)}</p>
@@ -72,18 +81,18 @@
     <section><h3>Web design</h3><p>${$(e.webDesign)}</p></section>
     <section><h3>Sources</h3><ul>${e.sources.map(e=>`<li>${$(e)}</li>`).join(``)}</ul></section>
     <p class="selection-hint">Select a task, event, gateway, or path for an element-level explanation.</p>
-  `}function kc(e){mc.innerHTML=`
+  `}function Uc(e){mc.innerHTML=`
     <span class="eyebrow">Selected ${$(e.bpmnType.replace(`bpmn:`,``))}</span>
     <h2 id="explanation-title">${$(e.label)}</h2>
-    <dl class="facts"><div><dt>Owner</dt><dd>${$(e.actor)}</dd></div><div><dt>Status</dt><dd>${$(wc(e.implementation.state))}</dd></div></dl>
+    <dl class="facts"><div><dt>Owner</dt><dd>${$(e.actor)}</dd></div><div><dt>Status</dt><dd>${$(Mc(e.implementation.state))}</dd></div></dl>
     <p class="lead">${$(e.meaning)}</p>
     <section><h3>Implementation reading</h3><p>${$(e.implementation.detail)}</p></section>
     <section><h3>TUI implication</h3><p>${$(e.tui.guidance)}</p></section>
     <section><h3>Web implication</h3><p>${$(e.web.guidance)}</p></section>
     <section><h3>Sources</h3><ul>${e.sources.map(e=>`<li>${$(e)}</li>`).join(``)}</ul></section>
-  `}function Ac(){dc.innerHTML=bc.diagrams.map((e,t)=>`
-    <button class="diagram-item ${e.id===xc?.id?`active`:``}" type="button" data-diagram-id="${$(e.id)}">
+  `}function Wc(){dc.innerHTML=Tc.diagrams.map((e,t)=>`
+    <button class="diagram-item ${e.id===Ec?.id?`active`:``}" type="button" data-diagram-id="${$(e.id)}">
       <span class="diagram-number">${String(t+1).padStart(2,`0`)}</span>
-      <span><strong>${$(e.title)}</strong><small>${$(wc(e.classification))}</small></span>
+      <span><strong>${$(e.title)}</strong><small>${$(Mc(e.classification))}</small></span>
     </button>
-  `).join(``);for(let e of dc.querySelectorAll(`[data-diagram-id]`))e.addEventListener(`click`,()=>void Mc(e.dataset.diagramId||``))}async function jc(e){let t=await yc.importXML(e);yc.get(`canvas`).zoom(`fit-viewport`),hc.textContent=t.warnings.length?`Opened with ${t.warnings.length} BPMN warning(s).`:`Diagram ready. Select an element to explain it.`}async function Mc(e,t){let n=bc.diagrams.find(t=>t.id===e);if(n){hc.textContent=`Opening ${n.title}…`;try{let e=await sc(n);xc=n,Sc=e.explanation,Cc=void 0,Tc(),fc.textContent=n.title,pc.textContent=wc(n.classification),pc.dataset.kind=n.classification,Ac(),Oc(e.explanation),await jc(e.xml),Dc(n.id),t&&e.explanation.elements[t]&&Nc(t)}catch(e){hc.textContent=e instanceof Error?e.message:`The diagram could not be opened.`}}}function Nc(e){let t=Sc?.elements[e];if(!t)return;let n=yc.get(`canvas`);Cc&&n.removeMarker(Cc,`is-explained`),Cc=e,n.addMarker(e,`is-explained`),kc(t),Ec(t.bpmnType,t.label),Dc(xc?.id,e)}yc.get(`eventBus`).on(`element.click`,e=>{let t=e.element,n=t?.businessObject;t&&Ec(n?.$type||t.type,n?.name);let r=n?.id||t?.id;r&&Nc(r)}),gc.addEventListener(`change`,async()=>{let e=gc.files?.[0];if(e)try{let t=await e.text();xc=void 0,Sc=void 0,Cc=void 0,Tc(),fc.textContent=e.name,pc.textContent=`Local file · no sidecar`,pc.dataset.kind=`local`,Ac(),mc.innerHTML=`<span class="eyebrow">Local file</span><h2 id="explanation-title">No explanation sidecar</h2><p class="lead">The diagram is rendered only in this browser session. BPMN Lens does not invent product meaning for an arbitrary file.</p>`,await jc(t),Dc()}catch(e){hc.textContent=e instanceof Error?e.message:`The local file could not be opened.`}finally{gc.value=``}}),Q(`#zoom-in`).addEventListener(`click`,()=>{let e=yc.get(`canvas`);e.zoom(Math.min(4,e.zoom()*1.2))}),Q(`#zoom-out`).addEventListener(`click`,()=>{let e=yc.get(`canvas`);e.zoom(Math.max(.2,e.zoom()/1.2))}),Q(`#zoom-fit`).addEventListener(`click`,()=>yc.get(`canvas`).zoom(`fit-viewport`)),Q(`#about-button`).addEventListener(`click`,()=>_c.showModal()),Q(`#close-about`).addEventListener(`click`,()=>_c.close()),Q(`#close-notation`).addEventListener(`click`,Tc),_c.addEventListener(`click`,e=>{e.target===_c&&_c.close()});async function Pc(){try{bc=await oc(),Q(`#diagram-count`).textContent=String(bc.diagrams.length),Ac();let e=new URLSearchParams(window.location.search),t=e.get(`diagram`),n=bc.diagrams.find(e=>e.id===t)||bc.diagrams[0];if(!n)throw Error(`The catalog contains no diagrams.`);await Mc(n.id,e.get(`element`)||void 0)}catch(e){hc.textContent=e instanceof Error?e.message:`BPMN Lens could not start.`}}Pc();
+  `).join(``);for(let e of dc.querySelectorAll(`[data-diagram-id]`))e.addEventListener(`click`,()=>void Kc(e.dataset.diagramId||``))}async function Gc(e){let t=await wc.importXML(e);Fc(),hc.textContent=t.warnings.length?`Opened with ${t.warnings.length} BPMN warning(s).`:`Diagram ready. Select an element to explain it.`}async function Kc(e,t){let n=Tc.diagrams.find(t=>t.id===e);if(n){hc.textContent=`Opening ${n.title}…`;try{let e=await sc(n);Ec=n,Dc=e.explanation,Oc=void 0,zc(),fc.textContent=n.title,pc.textContent=Mc(n.classification),pc.dataset.kind=n.classification,Wc(),Hc(e.explanation),await Gc(e.xml),Vc(n.id),t&&e.explanation.elements[t]&&qc(t)}catch(e){hc.textContent=e instanceof Error?e.message:`The diagram could not be opened.`}}}function qc(e){let t=Dc?.elements[e];if(!t)return;let n=wc.get(`canvas`);Oc&&n.removeMarker(Oc,`is-explained`),Oc=e,n.addMarker(e,`is-explained`),Uc(t),Bc(t.bpmnType,t.label),Vc(Ec?.id,e)}wc.get(`eventBus`).on(`element.click`,e=>{let t=e.element,n=t?.businessObject;t&&Bc(n?.$type||t.type,n?.name);let r=n?.id||t?.id;r&&qc(r)}),gc.addEventListener(`change`,async()=>{let e=gc.files?.[0];if(e)try{let t=await e.text();Ec=void 0,Dc=void 0,Oc=void 0,zc(),fc.textContent=e.name,pc.textContent=`Local file · no sidecar`,pc.dataset.kind=`local`,Wc(),mc.innerHTML=`<span class="eyebrow">Local file</span><h2 id="explanation-title">No explanation sidecar</h2><p class="lead">The diagram is rendered only in this browser session. BPMN Lens does not invent product meaning for an arbitrary file.</p>`,await Gc(t),Vc()}catch(e){hc.textContent=e instanceof Error?e.message:`The local file could not be opened.`}finally{gc.value=``}}),Q(`#zoom-in`).addEventListener(`click`,()=>{let e=wc.get(`canvas`);e.zoom(Math.min(4,e.zoom()*1.2))}),Q(`#zoom-out`).addEventListener(`click`,()=>{let e=wc.get(`canvas`);e.zoom(Math.max(.2,e.zoom()/1.2))}),Q(`#zoom-fit`).addEventListener(`click`,Fc),Sc.addEventListener(`click`,Lc),Cc.addEventListener(`click`,Rc),Q(`#about-button`).addEventListener(`click`,()=>_c.showModal()),Q(`#close-about`).addEventListener(`click`,()=>_c.close()),Q(`#close-notation`).addEventListener(`click`,zc),_c.addEventListener(`click`,e=>{e.target===_c&&_c.close()}),window.addEventListener(`keydown`,e=>{let t=e.target;e.defaultPrevented||e.altKey||e.ctrlKey||e.metaKey||t?.matches(`input, textarea, select, button, [contenteditable='true']`)||(e.key===`[`?(e.preventDefault(),Lc()):e.key===`]`?(e.preventDefault(),Rc()):e.key===`0`?(e.preventDefault(),Fc()):e.key===`Escape`&&!vc.hidden&&zc())});async function Jc(){try{Tc=await oc(),Q(`#diagram-count`).textContent=String(Tc.diagrams.length),Wc();let e=new URLSearchParams(window.location.search),t=e.get(`diagram`),n=Tc.diagrams.find(e=>e.id===t)||Tc.diagrams[0];if(!n)throw Error(`The catalog contains no diagrams.`);await Kc(n.id,e.get(`element`)||void 0)}catch(e){hc.textContent=e instanceof Error?e.message:`BPMN Lens could not start.`}}Nc(),Ic(!1),Jc();

@@ -141,6 +141,10 @@ describe("BPMN Diagram Interchange routing", () => {
         if (targetCenterX > sourceCenterX) {
           expect(first.x, `${file} ${flow.id} forward gateway exit`).toBe(source.x + source.width);
           expect(first.y, `${file} ${flow.id} gateway exit midpoint`).toBe(source.y + source.height / 2);
+          const second = edge.waypoint?.[1];
+          expect(second, `${file} ${flow.id} gateway exit stub`).toBeDefined();
+          expect((second?.x || 0) - first.x, `${file} ${flow.id} visible gateway exit stub`).toBeGreaterThanOrEqual(48);
+          expect(second?.y, `${file} ${flow.id} level gateway exit stub`).toBe(first.y);
         }
       }
     }
@@ -245,6 +249,22 @@ describe("BPMN Diagram Interchange routing", () => {
             if (!start || !end) continue;
             expect(crossesInterior(start, end, label), `${file} ${route.bpmnElement.id} crosses ${edge.bpmnElement.id} label`).toBe(false);
           }
+        }
+
+        const points = edge.waypoint || [];
+        const sourceIsGateway = edge.bpmnElement.sourceRef?.$type === "bpmn:ExclusiveGateway";
+        const immediateTurn = points.length > 2 &&
+          ((points[0]?.x === points[1]?.x) !== (points[1]?.x === points[2]?.x));
+        if (file === "01-current-tui-startup-navigation.bpmn" && edge.bpmnElement.id === "Flow_06" &&
+            sourceIsGateway && immediateTurn) {
+          const first = points[0] as Point;
+          const second = points[1] as Point;
+          const labelCenterX = label.x + label.width / 2;
+          const labelCenterY = label.y + label.height / 2;
+          const distanceToFirstSegment = first.y === second.y
+            ? Math.abs(labelCenterY - first.y)
+            : Math.abs(labelCenterX - first.x);
+          expect(distanceToFirstSegment, `${file} ${edge.bpmnElement.id} branch label near gateway exit`).toBeLessThanOrEqual(32);
         }
       }
     }

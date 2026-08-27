@@ -43,7 +43,7 @@ button { color: inherit; }
   height: 4rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 1rem;
   padding: 0 1rem;
   background: var(--surface);
@@ -54,9 +54,10 @@ button { color: inherit; }
 .brand div { display: flex; flex-direction: column; min-width: 0; }
 .brand strong { font-size: 0.9rem; letter-spacing: 0.03em; }
 .brand span:last-child { color: var(--muted-text); font-size: 0.68rem; }
-.header-actions { display: flex; align-items: center; gap: 0.5rem; }
+.view-actions { display: flex; align-items: center; gap: 0.3rem; margin-left: 1rem; padding-left: 1rem; border-left: 1px solid var(--border); }
+.header-actions { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
 #file-picker { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-.file-action, .quiet-button, .zoom-controls button {
+.file-action, .quiet-button, .panel-toggle, .zoom-controls button {
   min-height: 2.25rem;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) - 2px);
@@ -64,18 +65,27 @@ button { color: inherit; }
   padding: 0.5rem 0.75rem;
   cursor: pointer;
 }
-.file-action:hover, .quiet-button:hover, .zoom-controls button:hover,
-.file-action:focus-visible, .quiet-button:focus-visible, .zoom-controls button:focus-visible {
+.file-action:hover, .quiet-button:hover, .panel-toggle:hover, .zoom-controls button:hover,
+.file-action:focus-visible, .quiet-button:focus-visible, .panel-toggle:focus-visible, .zoom-controls button:focus-visible {
   outline: none;
   border-color: var(--omarchy-accent);
   background: color-mix(in srgb, var(--omarchy-accent) 10%, transparent);
 }
+.panel-toggle { display: inline-flex; align-items: center; gap: 0.45rem; color: var(--muted-text); }
+.panel-toggle[aria-expanded="true"] { color: var(--omarchy-foreground); background: color-mix(in srgb, var(--omarchy-foreground) 8%, transparent); }
+.panel-toggle span[aria-hidden] { color: var(--omarchy-accent); font-size: 1rem; line-height: 1; }
+.panel-toggle-label { font-size: 0.68rem; }
 
 .workspace {
+  --processes-column: minmax(14rem, 18rem);
+  --details-column: minmax(18rem, 23rem);
   display: grid;
-  grid-template-columns: minmax(14rem, 18rem) minmax(20rem, 1fr) minmax(18rem, 23rem);
+  grid-template-columns: var(--processes-column) minmax(20rem, 1fr) var(--details-column);
   height: calc(100% - 4rem);
 }
+.workspace.processes-collapsed { --processes-column: 0px; }
+.workspace.details-collapsed { --details-column: 0px; }
+.diagram-nav[hidden], .explanation-panel[hidden] { display: none; }
 .diagram-nav, .explanation-panel { min-width: 0; overflow: auto; background: var(--surface); }
 .diagram-nav { border-right: 1px solid var(--border); }
 .explanation-panel { border-left: 1px solid var(--border); padding: 1.1rem; }
@@ -177,18 +187,21 @@ dialog {
 }
 dialog::backdrop { background: color-mix(in srgb, var(--omarchy-background) 72%, transparent); }
 dialog p { font-family: system-ui, sans-serif; line-height: 1.55; font-size: 0.88rem; }
+dialog kbd { padding: 0.08rem 0.35rem; border: 1px solid var(--border-strong); border-radius: 4px; background: var(--surface); font-family: inherit; font-size: 0.78rem; }
 .dialog-heading { display: flex; align-items: center; justify-content: space-between; }
 .dialog-heading h2 { margin: 0; font-size: 1.1rem; }
 .dialog-heading button { border: 0; background: transparent; cursor: pointer; font-size: 1.4rem; }
 .dialog-heading button:focus-visible { outline: 2px solid var(--omarchy-accent); }
 
 @media (max-width: 70rem) {
-  .workspace { grid-template-columns: 15rem minmax(20rem, 1fr); }
+  .workspace { --processes-column: 15rem; --details-column: 0px; grid-template-columns: var(--processes-column) minmax(20rem, 1fr); }
+  .workspace.processes-collapsed { --processes-column: 0px; }
   .explanation-panel { position: fixed; z-index: 5; right: 0; top: 4rem; bottom: 0; width: min(23rem, 42vw); box-shadow: -1rem 0 3rem #0006; }
   .diagram-region { padding-right: min(23rem, 42vw); }
+  .workspace.details-collapsed .diagram-region { padding-right: 0; }
 }
 
-@media (max-width: 50rem) {
+@media (max-width: 60rem) {
   body { overflow: auto; }
   .app-header { position: sticky; z-index: 10; top: 0; }
   .workspace { display: block; height: auto; }
@@ -202,7 +215,8 @@ dialog p { font-family: system-ui, sans-serif; line-height: 1.55; font-size: 0.8
 
 @media (max-width: 34rem) {
   .app-header { height: auto; min-height: 4rem; align-items: flex-start; padding-block: 0.65rem; }
-  .brand span:last-child, #about-button { display: none; }
+  .brand span:last-child, #about-button, .panel-toggle-label { display: none; }
+  .view-actions { margin-left: 0.35rem; padding-left: 0.35rem; }
   .workspace { height: auto; }
   .diagram-toolbar { align-items: flex-end; }
   .diagram-title-block h2 { white-space: normal; }
