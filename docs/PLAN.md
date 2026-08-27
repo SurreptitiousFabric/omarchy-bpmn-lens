@@ -16,4 +16,15 @@ Deliver a TypeScript + Vite + `bpmn-js` `NavigatedViewer` Omarchy plugin that is
 8. Add source synchronization without coupling this repository to Nicelydrapped.
 9. Package a reproducible release and document installation.
 
-GitHub issues mirror these work packages. The initial repository release completes 1–7; 8–9 remain explicit follow-up work rather than hidden scope.
+The initial repository release completes delivery phases 1–7 above. The open issues below harden that foundation and carry phases 8–9 forward as explicit work rather than hidden scope.
+
+## Open roadmap
+
+- [#1 Add an automated Omarchy panel smoke test](https://github.com/SurreptitiousFabric/omarchy-bpmn-lens/issues/1)
+- [#2 Add deterministic Nicelydrapped content synchronization](https://github.com/SurreptitiousFabric/omarchy-bpmn-lens/issues/2)
+- [#3 Publish and validate the explanation sidecar JSON Schema](https://github.com/SurreptitiousFabric/omarchy-bpmn-lens/issues/3)
+- [#4 Run a keyboard and screen-reader accessibility audit](https://github.com/SurreptitiousFabric/omarchy-bpmn-lens/issues/4)
+- [#5 Add responsive and deep-link browser regression tests](https://github.com/SurreptitiousFabric/omarchy-bpmn-lens/issues/5)
+- [#6 Support optional sidecars for user-opened BPMN files](https://github.com/SurreptitiousFabric/omarchy-bpmn-lens/issues/6)
+- [#7 Create reproducible tagged releases with checksums](https://github.com/SurreptitiousFabric/omarchy-bpmn-lens/issues/7)
+- [#8 Add multi-suite catalog support without a router framework](https://github.com/SurreptitiousFabric/omarchy-bpmn-lens/issues/8)
