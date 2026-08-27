@@ -43,7 +43,7 @@ There is no component framework, router, state library, CSS framework, server fr
 - one BPMN 2.0 XML document with Diagram Interchange coordinates;
 - one schema-versioned JSON sidecar keyed by stable BPMN element ID.
 
-The reviewed `content-blueprints.json` owns diagram-level claims. `mise run generate` parses BPMN and deterministically expands those claims into selectable element explanations. Generated prose never changes the BPMN document.
+The standard-library-only `scripts/generate-diagrams.py` owns node placement and boundary-aware sequence-flow routing. The reviewed `content-blueprints.json` owns diagram-level claims. `mise run generate` first regenerates BPMN, then parses it and deterministically expands those claims into selectable element explanations. Generated prose never changes the BPMN document.
 
 The classification vocabulary protects product reasoning:
 
@@ -64,4 +64,5 @@ The classification vocabulary protects product reasoning:
 - Current-versus-target classification.
 - Required TUI, web, implementation, and source fields.
 - BPMN parse warnings are gate failures.
+- Every sequence flow begins and ends on its source/target shape perimeter, never at the text-bearing centre.
 - Static build budget: 2.5 MB uncompressed.

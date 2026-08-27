@@ -30,3 +30,10 @@ declare module "bpmn-js/lib/NavigatedViewer" {
     destroy(): void;
   }
 }
+
+declare module "bpmn-moddle" {
+  export class BpmnModdle {
+    constructor(additionalPackages?: Record<string, unknown>, options?: Record<string, unknown>);
+    fromXML(xml: string): Promise<{ rootElement: unknown; warnings: Array<{ message: string }> }>;
+  }
+}
