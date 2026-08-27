@@ -19,7 +19,7 @@ declare module "bpmn-js/lib/NavigatedViewer" {
   interface BpmnElement {
     id: string;
     type: string;
-    businessObject?: { id?: string; name?: string };
+    businessObject?: { id?: string; name?: string; $type?: string };
   }
 
   export default class NavigatedViewer {

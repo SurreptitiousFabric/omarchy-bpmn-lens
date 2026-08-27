@@ -7,6 +7,7 @@ The first bundled suite covers Nicelydrapped’s observed TUI behavior and targe
 ## Why this shape
 
 - `bpmn-js` `NavigatedViewer` provides pan, zoom, and selection without modeling tools.
+- Selecting an element opens a compact notation card explaining what its BPMN shape means; bundled diagrams also show the source-grounded product explanation in the side panel.
 - Plain TypeScript, HTML, and CSS keep the frontend small and inspectable.
 - JSON sidecars keep explanation claims reviewable and separate from BPMN semantics.
 - A tiny QML panel integrates with Omarchy without running the web application inside `omarchy-shell`.
@@ -42,7 +43,7 @@ Do not invoke `npm` directly. The npm commands are implementation details behind
 
 ## Local data and privacy
 
-The production viewer makes no requests beyond its own `127.0.0.1` static origin. Opening a `.bpmn` file uses the browser File API; the file is not uploaded or persisted. The project contains no telemetry, remote fonts, CDN assets, authentication, backend, or AI API.
+The production viewer makes no requests beyond its own `127.0.0.1` static origin. Opening a `.bpmn` file uses the browser File API; the file is not uploaded or persisted. Generic BPMN notation help remains available for local files without inventing product-specific meaning. The project contains no telemetry, remote fonts, CDN assets, authentication, backend, or AI API.
 
 ## Content provenance
 

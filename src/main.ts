@@ -2,6 +2,7 @@ import NavigatedViewer from "bpmn-js/lib/NavigatedViewer";
 import "bpmn-js/dist/assets/diagram-js.css";
 import "./styles.css";
 import { loadBundledDiagram, loadCatalog } from "./content";
+import { notationFor } from "./notation";
 import type { Catalog, CatalogItem, DiagramExplanation, ElementExplanation } from "./types";
 
 const app = document.querySelector<HTMLDivElement>("#app");
@@ -44,6 +45,14 @@ app.innerHTML = `
         </div>
       </div>
       <div id="diagram-canvas" tabindex="0" aria-label="Interactive read-only BPMN diagram"></div>
+      <aside id="notation-overlay" class="notation-overlay" aria-live="polite" hidden>
+        <button id="close-notation" class="notation-close" type="button" aria-label="Close notation explanation">×</button>
+        <span class="eyebrow">BPMN notation</span>
+        <h3 id="notation-title"></h3>
+        <p id="notation-symbol" class="notation-symbol"></p>
+        <p id="notation-meaning" class="notation-meaning"></p>
+        <p id="notation-selection" class="notation-selection"></p>
+      </aside>
       <p id="status" class="status" role="status" aria-live="polite">Preparing the local viewer…</p>
     </main>
     <aside class="explanation-panel" aria-labelledby="explanation-title">
@@ -71,6 +80,7 @@ const explanationContent = get<HTMLDivElement>("#explanation-content");
 const status = get<HTMLParagraphElement>("#status");
 const filePicker = get<HTMLInputElement>("#file-picker");
 const dialog = get<HTMLDialogElement>("#about-dialog");
+const notationOverlay = get<HTMLElement>("#notation-overlay");
 const viewer = new NavigatedViewer({ container: "#diagram-canvas" });
 
 let catalog: Catalog;
@@ -92,6 +102,21 @@ function classLabel(value: string): string {
     "target-unimplemented": "Target · unimplemented"
   };
   return labels[value] || value;
+}
+
+function hideNotation(): void {
+  notationOverlay.hidden = true;
+}
+
+function showNotation(type: string, selectedLabel?: string): void {
+  const notation = notationFor(type);
+  get<HTMLHeadingElement>("#notation-title").textContent = notation.title;
+  get<HTMLParagraphElement>("#notation-symbol").textContent = notation.symbol;
+  get<HTMLParagraphElement>("#notation-meaning").textContent = notation.meaning;
+  const selection = get<HTMLParagraphElement>("#notation-selection");
+  selection.textContent = selectedLabel ? `Selected: ${selectedLabel}` : "";
+  selection.hidden = !selectedLabel;
+  notationOverlay.hidden = false;
 }
 
 function updateUrl(diagramId?: string, elementId?: string): void {
@@ -156,6 +181,7 @@ async function openBundled(id: string, requestedElement?: string): Promise<void>
     activeItem = item;
     activeExplanation = loaded.explanation;
     selectedElementId = undefined;
+    hideNotation();
     title.textContent = item.title;
     classification.textContent = classLabel(item.classification);
     classification.dataset.kind = item.classification;
@@ -177,11 +203,15 @@ function selectElement(id: string): void {
   selectedElementId = id;
   canvas.addMarker(id, "is-explained");
   renderElementExplanation(explanation);
+  showNotation(explanation.bpmnType, explanation.label);
   updateUrl(activeItem?.id, id);
 }
 
 viewer.get("eventBus").on("element.click", (event) => {
-  const id = event.element?.businessObject?.id || event.element?.id;
+  const element = event.element;
+  const businessObject = element?.businessObject;
+  if (element) showNotation(businessObject?.$type || element.type, businessObject?.name);
+  const id = businessObject?.id || element?.id;
   if (id) selectElement(id);
 });
 
@@ -193,6 +223,7 @@ filePicker.addEventListener("change", async () => {
     activeItem = undefined;
     activeExplanation = undefined;
     selectedElementId = undefined;
+    hideNotation();
     title.textContent = file.name;
     classification.textContent = "Local file · no sidecar";
     classification.dataset.kind = "local";
@@ -218,6 +249,7 @@ get<HTMLButtonElement>("#zoom-out").addEventListener("click", () => {
 get<HTMLButtonElement>("#zoom-fit").addEventListener("click", () => viewer.get("canvas").zoom("fit-viewport"));
 get<HTMLButtonElement>("#about-button").addEventListener("click", () => dialog.showModal());
 get<HTMLButtonElement>("#close-about").addEventListener("click", () => dialog.close());
+get<HTMLButtonElement>("#close-notation").addEventListener("click", hideNotation);
 dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
 
 async function start(): Promise<void> {

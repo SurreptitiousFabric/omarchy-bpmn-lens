@@ -8,6 +8,7 @@ interface Bounds extends Point { width: number; height: number }
 interface ModelElement {
   id: string;
   $type: string;
+  name?: string;
   sourceRef?: ModelElement;
   targetRef?: ModelElement;
 }
@@ -169,6 +170,51 @@ describe("BPMN Diagram Interchange routing", () => {
               crossesInterior(start, end, label.bounds),
               `${file} ${edge.bpmnElement.id} crosses ${label.id} label`
             ).toBe(false);
+          }
+        }
+      }
+    }
+  });
+
+  it("places every named sequence flow label clear of shapes, labels, and routes", async () => {
+    const files = (await readdir(diagramsDir)).filter((file) => file.endsWith(".bpmn")).sort();
+    for (const file of files) {
+      const parsed = await moddle.fromXML(await readFile(path.join(diagramsDir, file), "utf8"));
+      const definitions = parsed.rootElement as unknown as { diagrams?: Array<{ plane?: { planeElement?: PlaneElement[] } }> };
+      const planeElements = definitions.diagrams?.[0]?.plane?.planeElement || [];
+      const shapes = planeElements.filter(
+        (element) => element.$type === "bpmndi:BPMNShape" && element.bounds &&
+          !["bpmn:Lane", "bpmn:Participant"].includes(element.bpmnElement.$type)
+      );
+      const nodeLabels = planeElements
+        .filter((element) => element.$type === "bpmndi:BPMNShape")
+        .flatMap((shape) => shape.label?.bounds ? [shape.label.bounds] : []);
+      const namedEdges = planeElements.filter(
+        (element) => element.$type === "bpmndi:BPMNEdge" && element.bpmnElement.$type === "bpmn:SequenceFlow" && element.bpmnElement.name
+      );
+
+      for (const edge of namedEdges) {
+        const label = edge.label?.bounds;
+        expect(label, `${file} ${edge.bpmnElement.id} named flow label bounds`).toBeDefined();
+        if (!label) continue;
+        for (const shape of shapes) {
+          expect(overlaps(label, shape.bounds as Bounds), `${file} ${edge.bpmnElement.id} label overlaps ${shape.bpmnElement.id}`).toBe(false);
+        }
+        for (const nodeLabel of nodeLabels) {
+          expect(overlaps(label, nodeLabel), `${file} ${edge.bpmnElement.id} label overlaps a node label`).toBe(false);
+        }
+        for (const other of namedEdges) {
+          const otherLabel = other.label?.bounds;
+          if (other === edge || !otherLabel) continue;
+          expect(overlaps(label, otherLabel), `${file} ${edge.bpmnElement.id} label overlaps ${other.bpmnElement.id} label`).toBe(false);
+        }
+        for (const route of planeElements.filter((element) => element.$type === "bpmndi:BPMNEdge")) {
+          const waypoints = route.waypoint || [];
+          for (let index = 1; index < waypoints.length; index += 1) {
+            const start = waypoints[index - 1];
+            const end = waypoints[index];
+            if (!start || !end) continue;
+            expect(crossesInterior(start, end, label), `${file} ${route.bpmnElement.id} crosses ${edge.bpmnElement.id} label`).toBe(false);
           }
         }
       }

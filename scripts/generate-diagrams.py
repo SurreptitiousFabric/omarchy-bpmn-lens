@@ -540,6 +540,53 @@ def route_points(source_id, target_id, centers, bounds, label_bounds):
     return compressed
 
 
+def rectangles_overlap(first, second, padding=0):
+    first_x, first_y, first_width, first_height = first
+    second_x, second_y, second_width, second_height = second
+    return (first_x - padding < second_x + second_width and
+            first_x + first_width + padding > second_x and
+            first_y - padding < second_y + second_height and
+            first_y + first_height + padding > second_y)
+
+
+def place_flow_label(text, points, occupied, all_routes):
+    """Place a named-flow label beside a long segment, clear of shapes and lines."""
+    width = min(180, max(48, len(text) * 7 + 14))
+    height = 24
+    segments = []
+    for start, end in zip(points, points[1:]):
+        length = abs(end[0] - start[0]) + abs(end[1] - start[1])
+        segments.append((start[1] == end[1], length, start, end))
+    segments.sort(key=lambda item: (item[0], item[1]), reverse=True)
+
+    for _, _, start, end in segments:
+        for fraction in (0.5, 0.33, 0.67):
+            center_x = start[0] + (end[0] - start[0]) * fraction
+            center_y = start[1] + (end[1] - start[1]) * fraction
+            for offset in (8, 36, 64):
+                if start[1] == end[1]:
+                    candidates = (
+                        (center_x - width / 2, center_y - height - offset, width, height),
+                        (center_x - width / 2, center_y + offset, width, height),
+                    )
+                else:
+                    candidates = (
+                        (center_x + offset, center_y - height / 2, width, height),
+                        (center_x - width - offset, center_y - height / 2, width, height),
+                    )
+                for candidate in candidates:
+                    if candidate[0] < 20 or candidate[1] < 20:
+                        continue
+                    if any(rectangles_overlap(candidate, rectangle, 4) for rectangle in occupied):
+                        continue
+                    obstacle = (candidate[0], candidate[1], candidate[0] + width, candidate[1] + height)
+                    if any(not segment_is_clear(route_start, route_end, [obstacle])
+                           for route in all_routes for route_start, route_end in zip(route, route[1:])):
+                        continue
+                    return tuple(round(value, 1) for value in candidate)
+    raise AssertionError((text, "no clear label position"))
+
+
 def build_model(model):
     definitions = ET.Element(q("bpmn", "definitions"), {
         "id": f"Definitions_{model['file'].replace('.', '_').replace('-', '_')}",
@@ -609,11 +656,29 @@ def build_model(model):
             })
         centers[node["id"]] = (x + width / 2, y + height / 2)
 
+    routes = []
     for i, seq in enumerate(model["flows"], 1):
+        routes.append((i, seq, route_points(seq["source"], seq["target"], centers, bounds, label_bounds)))
+
+    occupied = list(bounds.values()) + list(label_bounds.values())
+    flow_labels = {}
+    all_route_points = [points for _, _, points in routes]
+    for i, seq, points in routes:
+        if not seq["label"]:
+            continue
+        flow_labels[i] = place_flow_label(seq["label"], points, occupied, all_route_points)
+        occupied.append(flow_labels[i])
+
+    for i, seq, points in routes:
         edge = ET.SubElement(plane, q("bpmndi", "BPMNEdge"), {"id": f"Edge_Flow_{i:02d}", "bpmnElement": f"Flow_{i:02d}"})
-        points = route_points(seq["source"], seq["target"], centers, bounds, label_bounds)
         for point_x, point_y in points:
             ET.SubElement(edge, q("di", "waypoint"), {"x": str(round(point_x, 1)), "y": str(round(point_y, 1))})
+        if i in flow_labels:
+            label_x, label_y, label_width, label_height = flow_labels[i]
+            label = ET.SubElement(edge, q("bpmndi", "BPMNLabel"))
+            ET.SubElement(label, q("dc", "Bounds"), {
+                "x": str(label_x), "y": str(label_y), "width": str(label_width), "height": str(label_height)
+            })
 
     ET.indent(definitions, space="  ")
     ET.ElementTree(definitions).write(OUT / model["file"], encoding="utf-8", xml_declaration=True)
