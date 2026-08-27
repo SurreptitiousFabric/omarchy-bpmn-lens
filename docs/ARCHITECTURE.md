@@ -65,6 +65,8 @@ Catalog schema v2 requires reviewed `group`, `channels`, and `implementationStat
 
 Responsive drawer state is intentionally separate from persisted desktop panel state. A media-query boundary switches the existing panels into one-at-a-time fixed drawers; a pure transition owns mutual exclusion and focus wrapping. The DOM layer manages backdrop, inert canvas state, visible Close controls, Escape, focus entry/containment/return, and post-selection focus. Drawers have no motion, so reduced-motion users receive the same immediate state changes without a parallel animation path.
 
+Local import diagnostics combine native browser XML source counts with the rendered bpmn-js registry and normalized import warnings. The pure model retains warning messages, accepts an element ID only from structured warning fields, excludes labels/containers from rendered-element counts, and discloses types without specific notation guidance. The DOM layer verifies IDs against the active registry before offering navigation. Rejected imports show source counts and an explicit error but claim no imported elements; local state is neither persisted nor encoded into unreproducible URLs.
+
 The classification vocabulary protects product reasoning:
 
 - `observed-current`: supported by direct observation or executable evidence;

@@ -6,6 +6,8 @@ import { activeFilterLabels, filterCatalog, groupCatalog } from "./catalog";
 import type { CatalogFilters } from "./catalog";
 import { nextDrawer, wrappedFocusIndex } from "./drawers";
 import type { Drawer } from "./drawers";
+import { buildImportDiagnostics, inspectBpmnSource } from "./diagnostics";
+import type { ImportDiagnostics, SourceCounts } from "./diagnostics";
 import { adjacentElement, elementBounds, focusViewbox, navigableElements } from "./focus";
 import { notationFor, notationPlacement } from "./notation";
 import { buildOutline, filterOutline } from "./outline";
@@ -446,12 +448,17 @@ function showNotation(type: string, selectedLabel?: string): void {
 
 function updateUrl(diagramId?: string, elementId?: string): void {
   const url = new URL(window.location.href);
-  if (diagramId) url.searchParams.set("diagram", diagramId);
-  else url.searchParams.delete("diagram");
-  if (elementId) url.searchParams.set("element", elementId);
-  else url.searchParams.delete("element");
-  if (activeViewMode === "selection" && elementId) url.searchParams.set("view", "focus");
-  else url.searchParams.delete("view");
+  if (diagramId) {
+    url.searchParams.set("diagram", diagramId);
+    if (elementId) url.searchParams.set("element", elementId);
+    else url.searchParams.delete("element");
+    if (activeViewMode === "selection" && elementId) url.searchParams.set("view", "focus");
+    else url.searchParams.delete("view");
+  } else {
+    url.searchParams.delete("diagram");
+    url.searchParams.delete("element");
+    url.searchParams.delete("view");
+  }
   window.history.replaceState(null, "", url);
 }
 
@@ -563,6 +570,43 @@ function renderElementExplanation(explanation: ElementExplanation): void {
   `;
 }
 
+function renderLocalDiagnostics(fileName: string, diagnostics: ImportDiagnostics, importError?: string): void {
+  const registry = viewer.get("elementRegistry");
+  const warningRows = diagnostics.warnings.map((warning) => {
+    const target = warning.elementId && registry.get(warning.elementId);
+    return `<li>${target
+      ? `<button type="button" data-diagnostic-id="${escapeHtml(target.id)}">${escapeHtml(warning.message)}<small>Go to ${escapeHtml(target.id)}</small></button>`
+      : `<span>${escapeHtml(warning.message)}</span>`}</li>`;
+  }).join("");
+  const disclosureRows = diagnostics.disclosures.map((disclosure) => `
+    <li><button type="button" data-diagnostic-id="${escapeHtml(disclosure.elementId)}">
+      ${escapeHtml(disclosure.label)}<small>${escapeHtml(disclosure.type)} · Generic BPMN guidance only</small>
+    </button></li>
+  `).join("");
+  explanationContent.innerHTML = `
+    <span class="eyebrow">Local file diagnostics</span>
+    <h2 id="explanation-title">${escapeHtml(fileName)}</h2>
+    <p class="lead">This report and file remain in this browser session. Nothing is uploaded or persisted.</p>
+    ${importError ? `<section class="diagnostic-error"><h3>Import failed visibly</h3><p>${escapeHtml(importError)}</p><p>Source counts remain available below; BPMN Lens does not claim that unimported elements are viewable.</p></section>` : ""}
+    <dl class="diagnostic-counts">
+      <div><dt>Processes</dt><dd>${diagnostics.counts.processes}</dd></div>
+      <div><dt>Participants</dt><dd>${diagnostics.counts.participants}</dd></div>
+      <div><dt>Lanes</dt><dd>${diagnostics.counts.lanes}</dd></div>
+      <div><dt>Elements</dt><dd>${diagnostics.counts.elements}</dd></div>
+      <div><dt>Warnings</dt><dd>${diagnostics.counts.warnings}</dd></div>
+    </dl>
+    <section class="diagnostic-group"><h3>Import warnings</h3>
+      ${warningRows ? `<ul>${warningRows}</ul>` : "<p>No import warnings.</p>"}
+    </section>
+    <section class="diagnostic-group"><h3>Generic notation disclosures</h3>
+      ${disclosureRows ? `<p>BPMN Lens renders these through bpmn-js but has no specific notation guide for their types.</p><ul>${disclosureRows}</ul>` : "<p>Specific notation guidance is available for every rendered element type.</p>"}
+    </section>
+  `;
+  for (const button of explanationContent.querySelectorAll<HTMLButtonElement>("[data-diagnostic-id]")) {
+    button.addEventListener("click", () => selectElement(button.dataset.diagnosticId || "", true));
+  }
+}
+
 function renderList(): void {
   const filtered = filterCatalog(catalog.diagrams, catalogFilters);
   const groups = groupCatalog(filtered);
@@ -656,7 +700,7 @@ function setNavView(view: "processes" | "outline", focusTab = false): void {
   if (focusTab) (showProcesses ? processesTab : outlineTab).focus();
 }
 
-async function importXml(xml: string): Promise<void> {
+async function importXml(xml: string): Promise<unknown[]> {
   clearTrace(false);
   const result = await viewer.importXML(xml);
   focusOrder = navigableElements(viewer.get("elementRegistry").getAll());
@@ -669,6 +713,7 @@ async function importXml(xml: string): Promise<void> {
   updateTraceControls();
   applyActiveView(false);
   status.textContent = result.warnings.length ? `Opened with ${result.warnings.length} BPMN warning(s).` : "Diagram ready. Select an element to explain it.";
+  return result.warnings;
 }
 
 async function openBundled(id: string, requestedElement?: string, requestedFocus = false): Promise<void> {
@@ -736,8 +781,10 @@ viewer.get("eventBus").on("canvas.viewbox.changed", () => {
 filePicker.addEventListener("change", async () => {
   const file = filePicker.files?.[0];
   if (!file) return;
+  let source: SourceCounts = { processes: 0, participants: 0, lanes: 0 };
   try {
     const xml = await file.text();
+    source = inspectBpmnSource(xml);
     activeItem = undefined;
     activeExplanation = undefined;
     selectedElementId = undefined;
@@ -748,11 +795,15 @@ filePicker.addEventListener("change", async () => {
     classification.textContent = "Local file · no sidecar";
     classification.dataset.kind = "local";
     renderList();
-    explanationContent.innerHTML = `<span class="eyebrow">Local file</span><h2 id="explanation-title">No explanation sidecar</h2><p class="lead">The diagram is rendered only in this browser session. BPMN Lens does not invent product meaning for an arbitrary file.</p>`;
-    await importXml(xml);
+    explanationContent.innerHTML = `<span class="eyebrow">Local file</span><h2 id="explanation-title">Inspecting ${escapeHtml(file.name)}</h2><p class="lead">Preparing browser-local diagnostics. No explanation sidecar is assumed.</p>`;
+    const warnings = await importXml(xml);
+    const diagnostics = buildImportDiagnostics(source, viewer.get("elementRegistry").getAll(), warnings);
+    renderLocalDiagnostics(file.name, diagnostics);
     updateUrl();
   } catch (error) {
-    status.textContent = error instanceof Error ? error.message : "The local file could not be opened.";
+    const message = error instanceof Error ? error.message : "The local file could not be opened.";
+    status.textContent = `Import failed: ${message}`;
+    renderLocalDiagnostics(file.name, buildImportDiagnostics(source, [], []), message);
   } finally {
     filePicker.value = "";
   }

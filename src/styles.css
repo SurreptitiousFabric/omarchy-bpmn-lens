@@ -227,6 +227,16 @@ body.is-resizing { cursor: col-resize; user-select: none; }
 .facts div { min-width: 0; padding: 0.55rem; border: 1px solid var(--border); border-radius: var(--radius); }
 .facts dt { color: var(--muted-text); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; }
 .facts dd { margin: 0.15rem 0 0; overflow-wrap: anywhere; }
+.diagnostic-counts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin: 1rem 0; }
+.diagnostic-counts div { padding: 0.55rem 0.35rem; border: 1px solid var(--border); border-radius: var(--radius); text-align: center; }
+.diagnostic-counts dt { color: var(--muted-text); font-size: 0.52rem; letter-spacing: 0.05em; text-transform: uppercase; }
+.diagnostic-counts dd { margin: 0.2rem 0 0; font-size: 1rem; }
+.diagnostic-group ul { display: grid; gap: 0.3rem; padding: 0; list-style: none; }
+.diagnostic-group li > span, .diagnostic-group button { display: block; width: 100%; padding: 0.55rem; border: 1px solid var(--border); border-radius: var(--radius); background: transparent; color: var(--omarchy-foreground); text-align: left; overflow-wrap: anywhere; }
+.diagnostic-group button { cursor: pointer; }
+.diagnostic-group button:hover, .diagnostic-group button:focus-visible { border-color: var(--omarchy-accent); outline: none; background: color-mix(in srgb, var(--omarchy-accent) 8%, transparent); }
+.diagnostic-group button small { display: block; margin-top: 0.25rem; color: var(--muted-text); }
+.diagnostic-error { border-left: 3px solid var(--omarchy-urgent); padding-left: 0.75rem; }
 
 .djs-container .djs-element.is-explained .djs-visual > :first-child {
   stroke: var(--omarchy-urgent) !important;

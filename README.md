@@ -16,6 +16,7 @@ The first bundled suite covers Nicelydrapped’s observed TUI behavior and targe
 - On desktop, drag the separators beside Processes and Details to resize them. Focus a separator and use Left/Right (Shift for a larger step), Home, or double-click to reset. Clamped widths and collapse state are stored only in versioned local browser preferences.
 - Processes are grouped by reviewed catalog metadata into observed current, shared target, TUI target, and web target. Filter by title, classification, implementation state, or channel; result counts, active filters, and no-result states remain explicit.
 - Below 60rem, Processes and Details become mutually exclusive temporary drawers over the full canvas. Each has a visible Close action, backdrop and Escape dismissal, contained keyboard focus, and return focus; selecting a process or outline result closes the drawer and focuses the diagram.
+- Opening a local BPMN file produces browser-local diagnostics in Details: process, participant, lane, rendered-element, and warning counts; retained import warnings; and navigable disclosures for element types that have only generic notation guidance. Failed imports remain visibly failed and local files never create unreproducible URL state.
 - Plain TypeScript, HTML, and CSS keep the frontend small and inspectable.
 - JSON sidecars keep explanation claims reviewable and separate from BPMN semantics.
 - A tiny QML panel integrates with Omarchy without running the web application inside `omarchy-shell`.
