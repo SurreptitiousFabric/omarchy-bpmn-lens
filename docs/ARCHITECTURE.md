@@ -51,6 +51,8 @@ Workspace layout state is deliberately local and dependency-free. Native control
 
 Diagram focus is transient viewer state, separate from source BPMN and explanation sidecars. Pure geometry and navigation functions calculate a stable spatial order and camera viewbox; the integration layer applies bpmn-js markers and updates the shareable `view=focus` URL. Focus never rewrites, exports, or adds meaning to an element. Elements without a sidecar remain selectable and receive only generic BPMN notation help.
 
+The camera has one explicit mode: overview, width, selection, actual size, or manual. Pure functions calculate diagram unions and viewboxes. Named modes are recomputed after a viewport or panel-size change; direct pan and zoom intentionally enter manual mode. “100%” is defined narrowly as one BPMN diagram unit per CSS pixel, not a physical or print scale. These controls use only the existing bpmn-js Canvas API.
+
 The classification vocabulary protects product reasoning:
 
 - `observed-current`: supported by direct observation or executable evidence;

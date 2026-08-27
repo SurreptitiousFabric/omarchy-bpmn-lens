@@ -5,6 +5,8 @@ import { loadBundledDiagram, loadCatalog } from "./content";
 import { adjacentElement, elementBounds, focusViewbox, navigableElements } from "./focus";
 import { notationFor } from "./notation";
 import type { Catalog, CatalogItem, DiagramExplanation, ElementExplanation } from "./types";
+import { actualSizeViewbox, diagramBounds, widthViewbox } from "./view";
+import type { ViewMode } from "./view";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 if (!app) throw new Error("Application root is missing.");
@@ -50,14 +52,15 @@ app.innerHTML = `
         <div class="diagram-controls">
           <div id="focus-controls" class="focus-controls" aria-label="Selection focus" hidden>
             <button id="focus-previous" type="button" title="Previous element (P)">← <span>Previous</span></button>
-            <button id="focus-selected" type="button" title="Focus selected element (F)">Focus</button>
             <button id="focus-next" type="button" title="Next element (N)"><span>Next</span> →</button>
-            <button id="focus-overview" type="button" title="Return to overview (O)">Overview</button>
           </div>
-          <div class="zoom-controls" aria-label="Diagram zoom">
-            <button id="zoom-out" type="button" aria-label="Zoom out">−</button>
-            <button id="zoom-fit" type="button">Fit</button>
-            <button id="zoom-in" type="button" aria-label="Zoom in">+</button>
+          <div class="zoom-controls" aria-label="Diagram view">
+            <button id="view-overview" type="button" title="Fit complete diagram (0)" aria-pressed="true">Overview</button>
+            <button id="view-width" type="button" title="Fit diagram width (W)" aria-pressed="false">Width</button>
+            <button id="view-selection" type="button" title="Fit selected element (F)" aria-pressed="false" disabled>Selection</button>
+            <button id="view-actual" type="button" title="One diagram unit per CSS pixel (1)" aria-pressed="false">100%</button>
+            <button id="zoom-out" type="button" aria-label="Zoom out" title="Zoom out (−)">−</button>
+            <button id="zoom-in" type="button" aria-label="Zoom in" title="Zoom in (+)">+</button>
           </div>
         </div>
       </div>
@@ -81,7 +84,7 @@ app.innerHTML = `
     <p>This is a read-only design companion. It renders BPMN locally and keeps explanatory claims in reviewable JSON sidecars.</p>
     <p><strong>Current</strong> means observed or executable evidence supports the behavior. <strong>Target</strong> means a product or data contract says the behavior should exist; it is not an implementation claim.</p>
     <p>No BPMN file is uploaded. Files opened from your computer remain in this browser session.</p>
-    <p><strong>Keyboard:</strong> <kbd>[</kbd> processes, <kbd>]</kbd> details, <kbd>F</kbd> focus, <kbd>P</kbd>/<kbd>N</kbd> previous/next, <kbd>O</kbd> overview, <kbd>0</kbd> fit, <kbd>Esc</kbd> close notation.</p>
+    <p><strong>Keyboard:</strong> <kbd>[</kbd>/<kbd>]</kbd> panels, <kbd>0</kbd> overview, <kbd>W</kbd> width, <kbd>F</kbd> selection, <kbd>1</kbd> 100%, <kbd>P</kbd>/<kbd>N</kbd> previous/next, <kbd>Esc</kbd> close notation.</p>
   </dialog>
 `;
 
@@ -112,8 +115,10 @@ let catalog: Catalog;
 let activeItem: CatalogItem | undefined;
 let activeExplanation: DiagramExplanation | undefined;
 let selectedElementId: string | undefined;
-let focusActive = false;
+let activeViewMode: ViewMode = "overview";
 let focusOrder: ReturnType<typeof navigableElements> = [];
+let applyingNamedView = false;
+let resizeFrame: number | undefined;
 const panelStorageKey = "bpmn-lens.panels.v1";
 let processesOpen = true;
 let detailsOpen = true;
@@ -155,13 +160,37 @@ function savePanelPreferences(): void {
   }
 }
 
-function fitDiagram(): void {
-  viewer.get("canvas").zoom("fit-viewport");
+function setFocusVisual(active: boolean): void {
+  if (selectedElementId) {
+    const canvas = viewer.get("canvas");
+    if (active) canvas.addMarker(selectedElementId, "is-focused");
+    else canvas.removeMarker(selectedElementId, "is-focused");
+  }
+  diagramCanvas.classList.toggle("focus-mode", active);
 }
 
-function applyActiveView(): void {
-  if (focusActive && selectedElementId) focusElement(selectedElementId, false);
-  else fitDiagram();
+function applyActiveView(announce = false): void {
+  const canvas = viewer.get("canvas");
+  const bounds = diagramBounds(viewer.get("elementRegistry").getAll());
+  setFocusVisual(activeViewMode === "selection");
+  applyingNamedView = true;
+  try {
+    if (activeViewMode === "overview") canvas.zoom("fit-viewport");
+    else if (activeViewMode === "width" && bounds) {
+      canvas.viewbox(widthViewbox(bounds, diagramCanvas.clientWidth / diagramCanvas.clientHeight));
+    } else if (activeViewMode === "selection" && selectedElementId) {
+      const element = viewer.get("elementRegistry").get(selectedElementId);
+      const selectedBounds = element && elementBounds(element);
+      if (selectedBounds) canvas.viewbox(focusViewbox(selectedBounds));
+    } else if (activeViewMode === "actual" && bounds) {
+      canvas.viewbox(actualSizeViewbox(bounds, diagramCanvas.clientWidth, diagramCanvas.clientHeight));
+    }
+  } finally {
+    applyingNamedView = false;
+  }
+  updateViewControls();
+  updateUrl(activeItem?.id, selectedElementId);
+  if (announce) status.textContent = viewStatus(activeViewMode);
 }
 
 function applyPanelLayout(refit = true): void {
@@ -177,7 +206,7 @@ function applyPanelLayout(refit = true): void {
   detailsToggle.setAttribute("aria-label", `${detailsOpen ? "Hide" : "Show"} details panel`);
   processesToggle.classList.toggle("is-collapsed", !processesOpen);
   detailsToggle.classList.toggle("is-collapsed", !detailsOpen);
-  if (refit) window.requestAnimationFrame(applyActiveView);
+  if (refit && activeViewMode !== "manual") window.requestAnimationFrame(() => applyActiveView(false));
 }
 
 function toggleProcesses(): void {
@@ -207,48 +236,42 @@ function showNotation(type: string, selectedLabel?: string): void {
   notationOverlay.hidden = false;
 }
 
-function updateUrl(diagramId?: string, elementId?: string, focused = focusActive): void {
+function updateUrl(diagramId?: string, elementId?: string): void {
   const url = new URL(window.location.href);
   if (diagramId) url.searchParams.set("diagram", diagramId);
   else url.searchParams.delete("diagram");
   if (elementId) url.searchParams.set("element", elementId);
   else url.searchParams.delete("element");
-  if (focused && elementId) url.searchParams.set("view", "focus");
+  if (activeViewMode === "selection" && elementId) url.searchParams.set("view", "focus");
   else url.searchParams.delete("view");
   window.history.replaceState(null, "", url);
 }
 
-function updateFocusControls(): void {
+function updateViewControls(): void {
   focusControls.hidden = !selectedElementId;
-  get<HTMLButtonElement>("#focus-selected").hidden = focusActive;
-  get<HTMLButtonElement>("#focus-overview").hidden = !focusActive;
   get<HTMLButtonElement>("#focus-previous").disabled = focusOrder.length < 2;
   get<HTMLButtonElement>("#focus-next").disabled = focusOrder.length < 2;
-}
-
-function clearFocus(refit = false): void {
-  if (selectedElementId) viewer.get("canvas").removeMarker(selectedElementId, "is-focused");
-  focusActive = false;
-  diagramCanvas.classList.remove("focus-mode");
-  updateFocusControls();
-  updateUrl(activeItem?.id, selectedElementId, false);
-  if (refit) fitDiagram();
-}
-
-function focusElement(id: string, announce = true): void {
-  const element = viewer.get("elementRegistry").get(id);
-  const bounds = element && elementBounds(element);
-  if (!element || !bounds) return;
-  if (selectedElementId && selectedElementId !== id) {
-    viewer.get("canvas").removeMarker(selectedElementId, "is-focused");
+  get<HTMLButtonElement>("#view-selection").disabled = !selectedElementId;
+  for (const mode of ["overview", "width", "selection", "actual"] as const) {
+    get<HTMLButtonElement>(`#view-${mode}`).setAttribute("aria-pressed", String(activeViewMode === mode));
   }
-  focusActive = true;
-  diagramCanvas.classList.add("focus-mode");
-  viewer.get("canvas").addMarker(id, "is-focused");
-  viewer.get("canvas").viewbox(focusViewbox(bounds));
-  updateFocusControls();
-  updateUrl(activeItem?.id, id, true);
-  if (announce) status.textContent = "Focused selection. Use Previous, Next, or Overview to continue.";
+}
+
+function viewStatus(mode: ViewMode): string {
+  const labels: Record<ViewMode, string> = {
+    overview: "Overview fitted to the complete diagram.",
+    width: "Diagram width fitted to the canvas.",
+    selection: "Selection fitted. Use Previous, Next, or Overview to continue.",
+    actual: "100% view: one diagram unit per CSS pixel.",
+    manual: "Manual zoom view."
+  };
+  return labels[mode];
+}
+
+function setViewMode(mode: Exclude<ViewMode, "manual">, announce = true): void {
+  if (mode === "selection" && !selectedElementId) return;
+  activeViewMode = mode;
+  applyActiveView(announce);
 }
 
 function moveFocus(direction: -1 | 1): void {
@@ -298,10 +321,10 @@ function renderList(): void {
 async function importXml(xml: string): Promise<void> {
   const result = await viewer.importXML(xml);
   focusOrder = navigableElements(viewer.get("elementRegistry").getAll());
-  focusActive = false;
+  activeViewMode = "overview";
   diagramCanvas.classList.remove("focus-mode");
-  updateFocusControls();
-  fitDiagram();
+  updateViewControls();
+  applyActiveView(false);
   status.textContent = result.warnings.length ? `Opened with ${result.warnings.length} BPMN warning(s).` : "Diagram ready. Select an element to explain it.";
 }
 
@@ -314,7 +337,7 @@ async function openBundled(id: string, requestedElement?: string, requestedFocus
     activeItem = item;
     activeExplanation = loaded.explanation;
     selectedElementId = undefined;
-    focusActive = false;
+    activeViewMode = "overview";
     hideNotation();
     title.textContent = item.title;
     classification.textContent = classLabel(item.classification);
@@ -344,9 +367,9 @@ function selectElement(id: string, shouldFocus = false): void {
   const label = explanation?.label || element.businessObject?.name;
   if (explanation) renderElementExplanation(explanation);
   showNotation(type, label);
-  updateFocusControls();
-  if (shouldFocus || focusActive) focusElement(id);
-  else updateUrl(activeItem?.id, id, false);
+  updateViewControls();
+  if (shouldFocus || activeViewMode === "selection") setViewMode("selection");
+  else updateUrl(activeItem?.id, id);
 }
 
 viewer.get("eventBus").on("element.click", (event) => {
@@ -354,6 +377,14 @@ viewer.get("eventBus").on("element.click", (event) => {
   const businessObject = element?.businessObject;
   const id = businessObject?.id || element?.id;
   if (id) selectElement(id);
+});
+
+viewer.get("eventBus").on("canvas.viewbox.changed", () => {
+  if (applyingNamedView) return;
+  activeViewMode = "manual";
+  setFocusVisual(false);
+  updateViewControls();
+  updateUrl(activeItem?.id, selectedElementId);
 });
 
 filePicker.addEventListener("change", async () => {
@@ -364,7 +395,7 @@ filePicker.addEventListener("change", async () => {
     activeItem = undefined;
     activeExplanation = undefined;
     selectedElementId = undefined;
-    focusActive = false;
+    activeViewMode = "overview";
     focusOrder = [];
     hideNotation();
     title.textContent = file.name;
@@ -383,17 +414,24 @@ filePicker.addEventListener("change", async () => {
 
 get<HTMLButtonElement>("#zoom-in").addEventListener("click", () => {
   const canvas = viewer.get("canvas");
+  activeViewMode = "manual";
+  setFocusVisual(false);
   canvas.zoom(Math.min(4, canvas.zoom() * 1.2));
+  updateViewControls();
+  updateUrl(activeItem?.id, selectedElementId);
 });
 get<HTMLButtonElement>("#zoom-out").addEventListener("click", () => {
   const canvas = viewer.get("canvas");
+  activeViewMode = "manual";
+  setFocusVisual(false);
   canvas.zoom(Math.max(0.2, canvas.zoom() / 1.2));
+  updateViewControls();
+  updateUrl(activeItem?.id, selectedElementId);
 });
-get<HTMLButtonElement>("#zoom-fit").addEventListener("click", () => clearFocus(true));
-get<HTMLButtonElement>("#focus-selected").addEventListener("click", () => {
-  if (selectedElementId) focusElement(selectedElementId);
-});
-get<HTMLButtonElement>("#focus-overview").addEventListener("click", () => clearFocus(true));
+get<HTMLButtonElement>("#view-overview").addEventListener("click", () => setViewMode("overview"));
+get<HTMLButtonElement>("#view-width").addEventListener("click", () => setViewMode("width"));
+get<HTMLButtonElement>("#view-selection").addEventListener("click", () => setViewMode("selection"));
+get<HTMLButtonElement>("#view-actual").addEventListener("click", () => setViewMode("actual"));
 get<HTMLButtonElement>("#focus-previous").addEventListener("click", () => moveFocus(-1));
 get<HTMLButtonElement>("#focus-next").addEventListener("click", () => moveFocus(1));
 processesToggle.addEventListener("click", toggleProcesses);
@@ -414,19 +452,22 @@ window.addEventListener("keydown", (event) => {
     toggleDetails();
   } else if (event.key === "0") {
     event.preventDefault();
-    clearFocus(true);
+    setViewMode("overview");
+  } else if (event.key.toLowerCase() === "w") {
+    event.preventDefault();
+    setViewMode("width");
   } else if (event.key.toLowerCase() === "f" && selectedElementId) {
     event.preventDefault();
-    focusElement(selectedElementId);
+    setViewMode("selection");
+  } else if (event.key === "1") {
+    event.preventDefault();
+    setViewMode("actual");
   } else if (event.key.toLowerCase() === "p" && selectedElementId) {
     event.preventDefault();
     moveFocus(-1);
   } else if (event.key.toLowerCase() === "n" && selectedElementId) {
     event.preventDefault();
     moveFocus(1);
-  } else if (event.key.toLowerCase() === "o" && focusActive) {
-    event.preventDefault();
-    clearFocus(true);
   } else if (event.key === "Escape" && !notationOverlay.hidden) {
     hideNotation();
   }
@@ -449,4 +490,12 @@ async function start(): Promise<void> {
 
 loadPanelPreferences();
 applyPanelLayout(false);
+window.addEventListener("resize", () => {
+  if (activeViewMode === "manual") return;
+  if (resizeFrame) window.cancelAnimationFrame(resizeFrame);
+  resizeFrame = window.requestAnimationFrame(() => {
+    resizeFrame = undefined;
+    applyActiveView(false);
+  });
+});
 void start();
