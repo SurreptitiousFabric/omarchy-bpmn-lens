@@ -59,6 +59,8 @@ Path tracing is a cycle-safe traversal over the existing incoming/outgoing conne
 
 Notation has one DOM content node and a pure placement decision. With Details open, the node is docked above the product explanation; with Details collapsed, it moves into the canvas fallback card. Canvas dismissal is explicitly scoped to that fallback, so reopening Details restores the selected notation. This avoids duplicated content, competing live regions, and synchronization state.
 
+Panel sizing is a small DOM boundary over CSS grid custom properties. A pure policy owns defaults, clamps, keyboard direction, and step sizes. Native separators expose orientation and numeric values, pointer capture confines drag state, and the camera recomputes once when resizing ends. Versioned local preferences migrate the earlier collapse-only record; no layout or gesture dependency is used.
+
 The classification vocabulary protects product reasoning:
 
 - `observed-current`: supported by direct observation or executable evidence;

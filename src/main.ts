@@ -6,6 +6,8 @@ import { adjacentElement, elementBounds, focusViewbox, navigableElements } from 
 import { notationFor, notationPlacement } from "./notation";
 import { buildOutline, filterOutline } from "./outline";
 import type { OutlineItem } from "./outline";
+import { adjustPanelWidth, clampPanelWidth, defaultPanelWidth, panelWidthBounds } from "./panels";
+import type { PanelKind } from "./panels";
 import { tracePath } from "./trace";
 import type { TraceDirection } from "./trace";
 import type { Catalog, CatalogItem, DiagramExplanation, ElementExplanation } from "./types";
@@ -59,6 +61,7 @@ app.innerHTML = `
         <ul id="outline-list" class="outline-list" aria-label="Diagram elements"></ul>
       </div>
     </nav>
+    <div id="processes-resizer" class="panel-resizer" role="separator" aria-label="Resize processes panel" aria-controls="diagram-nav" aria-orientation="vertical" tabindex="0" title="Drag or use arrow keys; Home or double-click resets"></div>
     <main class="diagram-region">
       <div class="diagram-toolbar">
         <div class="diagram-title-block">
@@ -99,6 +102,7 @@ app.innerHTML = `
       </aside>
       <p id="status" class="status" role="status" aria-live="polite">Preparing the local viewer…</p>
     </main>
+    <div id="details-resizer" class="panel-resizer" role="separator" aria-label="Resize details panel" aria-controls="explanation-panel" aria-orientation="vertical" tabindex="0" title="Drag or use arrow keys; Home or double-click resets"></div>
     <aside id="explanation-panel" class="explanation-panel" aria-labelledby="explanation-title">
       <section id="notation-dock" class="notation-dock" aria-live="polite" hidden></section>
       <div id="explanation-content"></div>
@@ -134,6 +138,8 @@ const diagramNav = get<HTMLElement>("#diagram-nav");
 const explanationPanel = get<HTMLElement>("#explanation-panel");
 const processesToggle = get<HTMLButtonElement>("#toggle-processes");
 const detailsToggle = get<HTMLButtonElement>("#toggle-details");
+const processesResizer = get<HTMLDivElement>("#processes-resizer");
+const detailsResizer = get<HTMLDivElement>("#details-resizer");
 const diagramCanvas = get<HTMLDivElement>("#diagram-canvas");
 const focusControls = get<HTMLDivElement>("#focus-controls");
 const traceControls = get<HTMLDivElement>("#trace-controls");
@@ -157,9 +163,12 @@ let activeNavView: "processes" | "outline" = "processes";
 let traceDirection: TraceDirection | undefined;
 let traceMarkerIds = new Set<string>();
 let notationDismissed = false;
+let processesWidth = defaultPanelWidth("processes");
+let detailsWidth = defaultPanelWidth("details");
 let applyingNamedView = false;
 let resizeFrame: number | undefined;
-const panelStorageKey = "bpmn-lens.panels.v1";
+const panelStorageKey = "bpmn-lens.panels.v2";
+const legacyPanelStorageKey = "bpmn-lens.panels.v1";
 let processesOpen = true;
 let detailsOpen = true;
 
@@ -181,12 +190,16 @@ function classLabel(value: string): string {
 
 function loadPanelPreferences(): void {
   try {
-    const stored = JSON.parse(window.localStorage.getItem(panelStorageKey) || "{}") as {
+    const stored = JSON.parse(window.localStorage.getItem(panelStorageKey) || window.localStorage.getItem(legacyPanelStorageKey) || "{}") as {
       processesOpen?: boolean;
       detailsOpen?: boolean;
+      processesWidth?: number;
+      detailsWidth?: number;
     };
     if (typeof stored.processesOpen === "boolean") processesOpen = stored.processesOpen;
     if (typeof stored.detailsOpen === "boolean") detailsOpen = stored.detailsOpen;
+    if (typeof stored.processesWidth === "number") processesWidth = clampPanelWidth("processes", stored.processesWidth);
+    if (typeof stored.detailsWidth === "number") detailsWidth = clampPanelWidth("details", stored.detailsWidth);
   } catch {
     // Invalid or unavailable local storage falls back to the fully open workspace.
   }
@@ -194,10 +207,25 @@ function loadPanelPreferences(): void {
 
 function savePanelPreferences(): void {
   try {
-    window.localStorage.setItem(panelStorageKey, JSON.stringify({ processesOpen, detailsOpen }));
+    window.localStorage.setItem(panelStorageKey, JSON.stringify({ processesOpen, detailsOpen, processesWidth, detailsWidth }));
   } catch {
     // Panel controls remain functional when storage is unavailable.
   }
+}
+
+function updateResizer(handle: HTMLElement, kind: PanelKind, width: number): void {
+  const bounds = panelWidthBounds(kind);
+  handle.setAttribute("aria-valuemin", String(bounds.min));
+  handle.setAttribute("aria-valuemax", String(bounds.max));
+  handle.setAttribute("aria-valuenow", String(width));
+  handle.setAttribute("aria-valuetext", `${width} pixels`);
+}
+
+function applyPanelWidths(): void {
+  workspace.style.setProperty("--processes-column", `${processesWidth}px`);
+  workspace.style.setProperty("--details-column", `${detailsWidth}px`);
+  updateResizer(processesResizer, "processes", processesWidth);
+  updateResizer(detailsResizer, "details", detailsWidth);
 }
 
 function setFocusVisual(active: boolean): void {
@@ -238,6 +266,8 @@ function applyPanelLayout(refit = true): void {
   workspace.classList.toggle("details-collapsed", !detailsOpen);
   diagramNav.hidden = !processesOpen;
   explanationPanel.hidden = !detailsOpen;
+  processesResizer.hidden = !processesOpen;
+  detailsResizer.hidden = !detailsOpen;
   processesToggle.setAttribute("aria-expanded", String(processesOpen));
   detailsToggle.setAttribute("aria-expanded", String(detailsOpen));
   processesToggle.title = `${processesOpen ? "Hide" : "Show"} processes panel ([)`;
@@ -247,6 +277,7 @@ function applyPanelLayout(refit = true): void {
   processesToggle.classList.toggle("is-collapsed", !processesOpen);
   detailsToggle.classList.toggle("is-collapsed", !detailsOpen);
   placeNotation();
+  applyPanelWidths();
   if (refit && activeViewMode !== "manual") window.requestAnimationFrame(() => applyActiveView(false));
 }
 
@@ -260,6 +291,55 @@ function toggleDetails(): void {
   detailsOpen = !detailsOpen;
   savePanelPreferences();
   applyPanelLayout();
+}
+
+function setupResizer(handle: HTMLElement, kind: PanelKind): void {
+  const getWidth = (): number => kind === "processes" ? processesWidth : detailsWidth;
+  const setWidth = (width: number): void => {
+    if (kind === "processes") processesWidth = clampPanelWidth(kind, width);
+    else detailsWidth = clampPanelWidth(kind, width);
+    applyPanelWidths();
+  };
+  const finish = (): void => {
+    document.body.classList.remove("is-resizing");
+    handle.classList.remove("is-resizing");
+    savePanelPreferences();
+    if (activeViewMode !== "manual") window.requestAnimationFrame(() => applyActiveView(false));
+  };
+  handle.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
+    event.preventDefault();
+    const startX = event.clientX;
+    const startWidth = getWidth();
+    handle.setPointerCapture(event.pointerId);
+    handle.classList.add("is-resizing");
+    document.body.classList.add("is-resizing");
+    const move = (moveEvent: PointerEvent): void => {
+      const delta = moveEvent.clientX - startX;
+      setWidth(startWidth + (kind === "processes" ? delta : -delta));
+    };
+    const stop = (): void => {
+      handle.removeEventListener("pointermove", move);
+      handle.removeEventListener("pointerup", stop);
+      handle.removeEventListener("pointercancel", stop);
+      finish();
+    };
+    handle.addEventListener("pointermove", move);
+    handle.addEventListener("pointerup", stop);
+    handle.addEventListener("pointercancel", stop);
+  });
+  handle.addEventListener("keydown", (event) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight" && event.key !== "Home") return;
+    event.preventDefault();
+    setWidth(adjustPanelWidth(kind, getWidth(), event.key, event.shiftKey));
+    finish();
+    status.textContent = `${kind === "processes" ? "Processes" : "Details"} panel width ${getWidth()} pixels.`;
+  });
+  handle.addEventListener("dblclick", () => {
+    setWidth(defaultPanelWidth(kind));
+    finish();
+    status.textContent = `${kind === "processes" ? "Processes" : "Details"} panel width reset.`;
+  });
 }
 
 function placeNotation(): void {
@@ -589,6 +669,8 @@ get<HTMLButtonElement>("#trace-both").addEventListener("click", () => applyTrace
 get<HTMLButtonElement>("#trace-clear").addEventListener("click", () => clearTrace());
 processesToggle.addEventListener("click", toggleProcesses);
 detailsToggle.addEventListener("click", toggleDetails);
+setupResizer(processesResizer, "processes");
+setupResizer(detailsResizer, "details");
 processesTab.addEventListener("click", () => setNavView("processes"));
 outlineTab.addEventListener("click", () => setNavView("outline"));
 for (const tab of [processesTab, outlineTab]) {
