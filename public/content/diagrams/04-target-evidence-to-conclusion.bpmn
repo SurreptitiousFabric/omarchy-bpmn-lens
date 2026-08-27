@@ -1,0 +1,235 @@
+<?xml version='1.0' encoding='utf-8'?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_04_target_evidence_to_conclusion_bpmn" targetNamespace="https://nicelydrapped.local/bpmn/capabilities" exporter="nicelydrapped capability audit generator" exporterVersion="1.0">
+  <bpmn:process id="Process_04_target_evidence_to_conclusion" name="TARGET — Evidence-first research from source material to conclusions" isExecutable="false">
+    <bpmn:documentation>Status: TARGET_STEMMA_CORE. Source basis: FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9; current Source/Citation/Resource/Matrix editing contracts; byhand event-participant provenance target.</bpmn:documentation>
+    <bpmn:laneSet id="LaneSet_Process_04_target_evidence_to_conclusion">
+      <bpmn:lane id="Lane_Process_04_target_evidence_to_conclusion_User" name="User">
+        <bpmn:flowNodeRef>start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>describe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>frame</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>transcribe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>correlate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>infer</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>reason</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>end</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_04_target_evidence_to_conclusion_Frontend" name="Frontend">
+        <bpmn:flowNodeRef>source</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>profiles</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>conclude</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>repair</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_04_target_evidence_to_conclusion_Application" name="Application">
+        <bpmn:flowNodeRef>evidence</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>trail</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ok</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_04_target_evidence_to_conclusion_STEMMA___persistence" name="STEMMA / persistence">
+        <bpmn:flowNodeRef>validate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>save</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="start" name="Encounter source material" />
+    <bpmn:task id="describe" name="Describe Citation and Resource" />
+    <bpmn:task id="source" name="Create or open Source / SourceLet" />
+    <bpmn:task id="frame" name="Record frame: where, when, material links, quality" />
+    <bpmn:task id="transcribe" name="Transcribe or extract source content" />
+    <bpmn:task id="profiles" name="Model proto-subjects, dates, commentary, and properties" />
+    <bpmn:task id="evidence" name="Attach documentary evidence to subject/event context" />
+    <bpmn:task id="correlate" name="Compare and correlate evidence" />
+    <bpmn:exclusiveGateway id="infer" name="Inference required?" />
+    <bpmn:task id="reason" name="Record reasoning, inference, and surety in genealogical data" />
+    <bpmn:task id="conclude" name="Create or revise conclusional entities and typed links" />
+    <bpmn:task id="trail" name="Link conclusions back through reasoning and evidence" />
+    <bpmn:task id="validate" name="Validate identity, reference, and provenance semantics" />
+    <bpmn:exclusiveGateway id="ok" name="Valid?" />
+    <bpmn:task id="repair" name="Return exact finding for correction" />
+    <bpmn:task id="save" name="Persist evidence and conclusions without collapsing them" />
+    <bpmn:endEvent id="end" name="Research trail available for review" />
+    <bpmn:sequenceFlow id="Flow_01" sourceRef="start" targetRef="describe" />
+    <bpmn:sequenceFlow id="Flow_02" sourceRef="describe" targetRef="source" />
+    <bpmn:sequenceFlow id="Flow_03" sourceRef="source" targetRef="frame" />
+    <bpmn:sequenceFlow id="Flow_04" sourceRef="frame" targetRef="transcribe" />
+    <bpmn:sequenceFlow id="Flow_05" sourceRef="transcribe" targetRef="profiles" />
+    <bpmn:sequenceFlow id="Flow_06" sourceRef="profiles" targetRef="evidence" />
+    <bpmn:sequenceFlow id="Flow_07" sourceRef="evidence" targetRef="correlate" />
+    <bpmn:sequenceFlow id="Flow_08" sourceRef="correlate" targetRef="infer" />
+    <bpmn:sequenceFlow id="Flow_09" sourceRef="infer" targetRef="reason" name="Yes" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="infer" targetRef="conclude" name="No" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="reason" targetRef="conclude" />
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="conclude" targetRef="trail" />
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="trail" targetRef="validate" />
+    <bpmn:sequenceFlow id="Flow_14" sourceRef="validate" targetRef="ok" />
+    <bpmn:sequenceFlow id="Flow_15" sourceRef="ok" targetRef="repair" name="No" />
+    <bpmn:sequenceFlow id="Flow_16" sourceRef="repair" targetRef="frame" name="Correct at source/model layer" />
+    <bpmn:sequenceFlow id="Flow_17" sourceRef="ok" targetRef="save" name="Yes" />
+    <bpmn:sequenceFlow id="Flow_18" sourceRef="save" targetRef="end" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_Process_04_target_evidence_to_conclusion">
+    <bpmndi:BPMNPlane id="Plane_Process_04_target_evidence_to_conclusion" bpmnElement="Process_04_target_evidence_to_conclusion">
+      <bpmndi:BPMNShape id="Shape_Lane_Process_04_target_evidence_to_conclusion_User" bpmnElement="Lane_Process_04_target_evidence_to_conclusion_User" isHorizontal="true">
+        <dc:Bounds x="20" y="80" width="3056" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Process_04_target_evidence_to_conclusion_Frontend" bpmnElement="Lane_Process_04_target_evidence_to_conclusion_Frontend" isHorizontal="true">
+        <dc:Bounds x="20" y="220" width="3056" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Process_04_target_evidence_to_conclusion_Application" bpmnElement="Lane_Process_04_target_evidence_to_conclusion_Application" isHorizontal="true">
+        <dc:Bounds x="20" y="360" width="3056" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Process_04_target_evidence_to_conclusion_STEMMA___persistence" bpmnElement="Lane_Process_04_target_evidence_to_conclusion_STEMMA___persistence" isHorizontal="true">
+        <dc:Bounds x="20" y="500" width="3056" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_start" bpmnElement="start">
+        <dc:Bounds x="80" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_describe" bpmnElement="describe">
+        <dc:Bounds x="260" y="114" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_source" bpmnElement="source">
+        <dc:Bounds x="450" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_frame" bpmnElement="frame">
+        <dc:Bounds x="640" y="114" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_transcribe" bpmnElement="transcribe">
+        <dc:Bounds x="830" y="114" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_profiles" bpmnElement="profiles">
+        <dc:Bounds x="1020" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_evidence" bpmnElement="evidence">
+        <dc:Bounds x="1210" y="394" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_correlate" bpmnElement="correlate">
+        <dc:Bounds x="1400" y="114" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_infer" bpmnElement="infer">
+        <dc:Bounds x="1590" y="124" width="52" height="52" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_reason" bpmnElement="reason">
+        <dc:Bounds x="1780" y="114" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_conclude" bpmnElement="conclude">
+        <dc:Bounds x="1970" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_trail" bpmnElement="trail">
+        <dc:Bounds x="2160" y="394" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_validate" bpmnElement="validate">
+        <dc:Bounds x="2350" y="534" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_ok" bpmnElement="ok">
+        <dc:Bounds x="2540" y="404" width="52" height="52" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_repair" bpmnElement="repair">
+        <dc:Bounds x="2730" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_save" bpmnElement="save">
+        <dc:Bounds x="2730" y="534" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_end" bpmnElement="end">
+        <dc:Bounds x="2940" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_Flow_01" bpmnElement="Flow_01">
+        <di:waypoint x="98.0" y="150.0" />
+        <di:waypoint x="340.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_02" bpmnElement="Flow_02">
+        <di:waypoint x="340.0" y="150.0" />
+        <di:waypoint x="435.0" y="150.0" />
+        <di:waypoint x="435.0" y="290.0" />
+        <di:waypoint x="530.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_03" bpmnElement="Flow_03">
+        <di:waypoint x="530.0" y="290.0" />
+        <di:waypoint x="625.0" y="290.0" />
+        <di:waypoint x="625.0" y="150.0" />
+        <di:waypoint x="720.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_04" bpmnElement="Flow_04">
+        <di:waypoint x="720.0" y="150.0" />
+        <di:waypoint x="910.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_05" bpmnElement="Flow_05">
+        <di:waypoint x="910.0" y="150.0" />
+        <di:waypoint x="1005.0" y="150.0" />
+        <di:waypoint x="1005.0" y="290.0" />
+        <di:waypoint x="1100.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_06" bpmnElement="Flow_06">
+        <di:waypoint x="1100.0" y="290.0" />
+        <di:waypoint x="1195.0" y="290.0" />
+        <di:waypoint x="1195.0" y="430.0" />
+        <di:waypoint x="1290.0" y="430.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_07" bpmnElement="Flow_07">
+        <di:waypoint x="1290.0" y="430.0" />
+        <di:waypoint x="1385.0" y="430.0" />
+        <di:waypoint x="1385.0" y="150.0" />
+        <di:waypoint x="1480.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_08" bpmnElement="Flow_08">
+        <di:waypoint x="1480.0" y="150.0" />
+        <di:waypoint x="1616.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_09" bpmnElement="Flow_09">
+        <di:waypoint x="1616.0" y="150.0" />
+        <di:waypoint x="1860.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_10" bpmnElement="Flow_10">
+        <di:waypoint x="1616.0" y="150.0" />
+        <di:waypoint x="1833.0" y="150.0" />
+        <di:waypoint x="1833.0" y="290.0" />
+        <di:waypoint x="2050.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_11" bpmnElement="Flow_11">
+        <di:waypoint x="1860.0" y="150.0" />
+        <di:waypoint x="1955.0" y="150.0" />
+        <di:waypoint x="1955.0" y="290.0" />
+        <di:waypoint x="2050.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_12" bpmnElement="Flow_12">
+        <di:waypoint x="2050.0" y="290.0" />
+        <di:waypoint x="2145.0" y="290.0" />
+        <di:waypoint x="2145.0" y="430.0" />
+        <di:waypoint x="2240.0" y="430.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_13" bpmnElement="Flow_13">
+        <di:waypoint x="2240.0" y="430.0" />
+        <di:waypoint x="2335.0" y="430.0" />
+        <di:waypoint x="2335.0" y="570.0" />
+        <di:waypoint x="2430.0" y="570.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_14" bpmnElement="Flow_14">
+        <di:waypoint x="2430.0" y="570.0" />
+        <di:waypoint x="2498.0" y="570.0" />
+        <di:waypoint x="2498.0" y="430.0" />
+        <di:waypoint x="2566.0" y="430.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_15" bpmnElement="Flow_15">
+        <di:waypoint x="2566.0" y="430.0" />
+        <di:waypoint x="2688.0" y="430.0" />
+        <di:waypoint x="2688.0" y="290.0" />
+        <di:waypoint x="2810.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_16" bpmnElement="Flow_16">
+        <di:waypoint x="2810.0" y="290.0" />
+        <di:waypoint x="2845.0" y="41" />
+        <di:waypoint x="685.0" y="41" />
+        <di:waypoint x="720.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_17" bpmnElement="Flow_17">
+        <di:waypoint x="2566.0" y="430.0" />
+        <di:waypoint x="2688.0" y="430.0" />
+        <di:waypoint x="2688.0" y="570.0" />
+        <di:waypoint x="2810.0" y="570.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_18" bpmnElement="Flow_18">
+        <di:waypoint x="2810.0" y="570.0" />
+        <di:waypoint x="2884.0" y="570.0" />
+        <di:waypoint x="2884.0" y="150.0" />
+        <di:waypoint x="2958.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

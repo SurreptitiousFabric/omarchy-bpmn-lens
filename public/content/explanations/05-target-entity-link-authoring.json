@@ -1,0 +1,800 @@
+{
+  "schemaVersion": 1,
+  "id": "05-target-entity-link-authoring",
+  "file": "05-target-entity-link-authoring.bpmn",
+  "title": "Entity and link authoring",
+  "classification": "target-partial",
+  "summary": "Strict authoring across entities, support roots, containers, collections, keys, and typed links.",
+  "implementationStatus": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial.",
+  "tuiDesign": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation.",
+  "webDesign": "Use accessible forms and searchable pickers backed by the same typed operations.",
+  "sources": [
+    "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+    "docs/design-docs/stemma-full-editing-contract.md"
+  ],
+  "warnings": [],
+  "elements": {
+    "start": {
+      "id": "start",
+      "label": "Choose Dataset and construct",
+      "bpmnType": "bpmn:StartEvent",
+      "actor": "User",
+      "meaning": "Choose Dataset and construct is a start event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "kind": {
+      "id": "kind",
+      "label": "Person, Event, Place, Group, Animal, Source, Citation, Resource, Matrix, Narrative, Contact, Text, or container?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "User",
+      "meaning": "Person, Event, Place, Group, Animal, Source, Citation, Resource, Matrix, Narrative, Contact, Text, or container? is a exclusive gateway in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "root": {
+      "id": "root",
+      "label": "Create/open strict entity or support root",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Create/open strict entity or support root is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "container": {
+      "id": "container",
+      "label": "Open Document/Dataset-owned container",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Open Document/Dataset-owned container is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "edit": {
+      "id": "edit",
+      "label": "Edit scalar, controlled value, date, or metadata",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Edit scalar, controlled value, date, or metadata is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "collection": {
+      "id": "collection",
+      "label": "Add, edit, reorder, or delete collection item",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Add, edit, reorder, or delete collection item is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "link": {
+      "id": "link",
+      "label": "Choose typed link target in correct Dataset scope",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Choose typed link target in correct Dataset scope is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "stage": {
+      "id": "stage",
+      "label": "Stage candidate change set",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Stage candidate change set is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "validate": {
+      "id": "validate",
+      "label": "Validate shape, key, scope, references, and dates",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Validate shape, key, scope, references, and dates is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "valid": {
+      "id": "valid",
+      "label": "Candidate valid?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "Application",
+      "meaning": "Candidate valid? is a exclusive gateway in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "correct": {
+      "id": "correct",
+      "label": "Show exact field/path and preserve prior state",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Show exact field/path and preserve prior state is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "commit": {
+      "id": "commit",
+      "label": "Commit in-memory transaction and mark dirty",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Commit in-memory transaction and mark dirty is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "delete": {
+      "id": "delete",
+      "label": "Delete or rename affects references?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "Application",
+      "meaning": "Delete or rename affects references? is a exclusive gateway in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "impact": {
+      "id": "impact",
+      "label": "Show impact; retarget or reject safely",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Show impact; retarget or reject safely is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "save": {
+      "id": "save",
+      "label": "Save through shared persistence lifecycle",
+      "bpmnType": "bpmn:Task",
+      "actor": "STEMMA / persistence",
+      "meaning": "Save through shared persistence lifecycle is a task in this workflow. The STEMMA model, validation, store, or persistence adapter owns this work.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "end": {
+      "id": "end",
+      "label": "Updated construct remains navigable",
+      "bpmnType": "bpmn:EndEvent",
+      "actor": "User",
+      "meaning": "Updated construct remains navigable is a end event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_01": {
+      "id": "Flow_01",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_02": {
+      "id": "Flow_02",
+      "label": "Entity/support root",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Entity/support root” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_03": {
+      "id": "Flow_03",
+      "label": "Document/Dataset container",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Document/Dataset container” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_04": {
+      "id": "Flow_04",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_05": {
+      "id": "Flow_05",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_06": {
+      "id": "Flow_06",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_07": {
+      "id": "Flow_07",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_08": {
+      "id": "Flow_08",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_09": {
+      "id": "Flow_09",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_10": {
+      "id": "Flow_10",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_11": {
+      "id": "Flow_11",
+      "label": "No",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “No” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_12": {
+      "id": "Flow_12",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_13": {
+      "id": "Flow_13",
+      "label": "Yes",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Yes” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_14": {
+      "id": "Flow_14",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_15": {
+      "id": "Flow_15",
+      "label": "Yes",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Yes” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_16": {
+      "id": "Flow_16",
+      "label": "Approved safe change",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Approved safe change” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_17": {
+      "id": "Flow_17",
+      "label": "No",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “No” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_18": {
+      "id": "Flow_18",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible forms and searchable pickers backed by the same typed operations."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.2 and 6.4–6.12",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    }
+  }
+}

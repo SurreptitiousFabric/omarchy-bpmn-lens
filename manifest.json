@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "surreptitiousfabric.bpmn-lens",
+  "name": "BPMN Lens",
+  "version": "0.1.0",
+  "author": "Surreptitious Fabric",
+  "description": "Open a completely local, read-only BPMN viewer with structured explanations.",
+  "kinds": ["panel"],
+  "entryPoints": {
+    "panel": "omarchy/Panel.qml"
+  }
+}

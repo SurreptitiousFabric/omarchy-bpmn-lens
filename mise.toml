@@ -1,0 +1,56 @@
+[tools]
+node = "26.7.0"
+
+[env]
+_.path = ["./node_modules/.bin"]
+
+[tasks.install]
+description = "Install the exact locked dependency graph"
+run = "npm ci --ignore-scripts"
+
+[tasks.generate]
+description = "Regenerate explanation sidecars from BPMN and reviewed blueprints"
+run = "npm run generate"
+
+[tasks.dev]
+description = "Run the local development server"
+depends = ["install"]
+run = "npm run dev"
+
+[tasks.test]
+description = "Run focused unit tests"
+run = "npm test"
+
+[tasks.validate]
+description = "Validate BPMN, sidecars, manifest, and architecture constraints"
+run = "npm run validate"
+
+[tasks.build]
+description = "Type-check and create the static production build"
+run = "npm run build"
+
+[tasks.check]
+description = "Run the complete local quality gate"
+depends = ["test", "validate", "build"]
+
+[tasks.serve]
+description = "Serve the static build locally with the active Omarchy theme"
+run = "npm run serve"
+
+[tasks.open]
+description = "Open BPMN Lens locally, starting its static server if needed"
+run = "npm run open"
+
+[tasks.setup]
+description = "Prepare a fresh plugin checkout and verify it"
+run = [
+  "npm ci --ignore-scripts",
+  "npm run generate",
+  "npm test",
+  "npm run validate",
+  "npm run build",
+]
+
+[tasks.default]
+description = "List project tasks"
+run = "mise tasks"

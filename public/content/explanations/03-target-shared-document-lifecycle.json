@@ -1,0 +1,763 @@
+{
+  "schemaVersion": 1,
+  "id": "03-target-shared-document-lifecycle",
+  "file": "03-target-shared-document-lifecycle.bpmn",
+  "title": "Shared document lifecycle",
+  "classification": "target-partial",
+  "summary": "The channel-neutral lifecycle both TUI and web should use to prepare, expose, degrade, recover, and release a document context.",
+  "implementationStatus": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete.",
+  "tuiDesign": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O.",
+  "webDesign": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services.",
+  "sources": [
+    "Plan 4 GF-01",
+    "DocumentLifecycleService",
+    "docs/design-docs/tui-v1-master-spec.md"
+  ],
+  "warnings": [],
+  "elements": {
+    "start": {
+      "id": "start",
+      "label": "Open Document intent",
+      "bpmnType": "bpmn:StartEvent",
+      "actor": "User",
+      "meaning": "Open Document intent is a start event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "request": {
+      "id": "request",
+      "label": "Send channel-neutral request",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Send channel-neutral request is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "parse": {
+      "id": "parse",
+      "label": "Parse source-preserving Document",
+      "bpmnType": "bpmn:Task",
+      "actor": "STEMMA / persistence",
+      "meaning": "Parse source-preserving Document is a task in this workflow. The STEMMA model, validation, store, or persistence adapter owns this work.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "select": {
+      "id": "select",
+      "label": "Select Dataset by qualified identity",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Select Dataset by qualified identity is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "index": {
+      "id": "index",
+      "label": "Build qualified indexes",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Build qualified indexes is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "resolve": {
+      "id": "resolve",
+      "label": "Resolve imports/dependencies",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Resolve imports/dependencies is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "validate": {
+      "id": "validate",
+      "label": "Run selected validation layers",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Run selected validation layers is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "state": {
+      "id": "state",
+      "label": "Ready, degraded, incomplete, or recoverable failure?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "Application",
+      "meaning": "Ready, degraded, incomplete, or recoverable failure? is a exclusive gateway in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "ready": {
+      "id": "ready",
+      "label": "Expose editable reader context",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Expose editable reader context is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "degraded": {
+      "id": "degraded",
+      "label": "Explain limitations; apply explicit view/edit policy",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Explain limitations; apply explicit view/edit policy is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "failure": {
+      "id": "failure",
+      "label": "Preserve prior context; offer retry/recovery",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Preserve prior context; offer retry/recovery is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "work": {
+      "id": "work",
+      "label": "Browse, search, navigate, or author",
+      "bpmnType": "bpmn:Task",
+      "actor": "User",
+      "meaning": "Browse, search, navigate, or author is a task in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "close": {
+      "id": "close",
+      "label": "Close/release context",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Close/release context is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "release": {
+      "id": "release",
+      "label": "Release caches and dependencies",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Release caches and dependencies is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "end": {
+      "id": "end",
+      "label": "Context closed",
+      "bpmnType": "bpmn:EndEvent",
+      "actor": "User",
+      "meaning": "Context closed is a end event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "Flow_01": {
+      "id": "Flow_01",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "Flow_02": {
+      "id": "Flow_02",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "Flow_03": {
+      "id": "Flow_03",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "Flow_04": {
+      "id": "Flow_04",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "Flow_05": {
+      "id": "Flow_05",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "Flow_06": {
+      "id": "Flow_06",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "Flow_07": {
+      "id": "Flow_07",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "Flow_08": {
+      "id": "Flow_08",
+      "label": "READY",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “READY” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "Flow_09": {
+      "id": "Flow_09",
+      "label": "DEGRADED / INCOMPLETE",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “DEGRADED / INCOMPLETE” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "Flow_10": {
+      "id": "Flow_10",
+      "label": "FAILURE / CANCEL",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “FAILURE / CANCEL” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "Flow_11": {
+      "id": "Flow_11",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "Flow_12": {
+      "id": "Flow_12",
+      "label": "If policy allows",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “If policy allows” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "Flow_13": {
+      "id": "Flow_13",
+      "label": "Retry",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Retry” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "Flow_14": {
+      "id": "Flow_14",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "Flow_15": {
+      "id": "Flow_15",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    },
+    "Flow_16": {
+      "id": "Flow_16",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Represent lifecycle outcomes as accessible route states while keeping parsing, identity, validation, and policy in shared application services."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "DocumentLifecycleService",
+        "docs/design-docs/tui-v1-master-spec.md"
+      ]
+    }
+  }
+}

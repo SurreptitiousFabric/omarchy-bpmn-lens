@@ -1,0 +1,8 @@
+node_modules/
+.vite/
+*.log
+.DS_Store
+
+# dist is intentionally versioned: Omarchy's plugin installer only clones and
+# never executes install hooks, so the reviewed static runtime ships in-repo.
+dist/content/

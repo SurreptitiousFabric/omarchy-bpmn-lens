@@ -1,0 +1,240 @@
+<?xml version='1.0' encoding='utf-8'?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_01_current_tui_startup_navigation_bpmn" targetNamespace="https://nicelydrapped.local/bpmn/capabilities" exporter="nicelydrapped capability audit generator" exporterVersion="1.0">
+  <bpmn:process id="Process_01_current_tui_startup_navigation" name="CURRENT — TUI startup, discovery, navigation, filter, and search" isExecutable="false">
+    <bpmn:documentation>Status: OBSERVED_CURRENT. Source basis: Direct PTY observation on 2026-08-27 using the mise-built cmd/tui binary; docs/demos tapes; tui-v1 master spec; Plan 4 reality audit.</bpmn:documentation>
+    <bpmn:laneSet id="LaneSet_Process_01_current_tui_startup_navigation">
+      <bpmn:lane id="Lane_Process_01_current_tui_startup_navigation_User" name="User">
+        <bpmn:flowNodeRef>start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>choose</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>pick</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>select</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>back</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>end</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_01_current_tui_startup_navigation_Frontend" name="Frontend">
+        <bpmn:flowNodeRef>scan</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>show_error</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>create</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>browse</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>discover</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>inspect</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_01_current_tui_startup_navigation_Application" name="Application">
+        <bpmn:flowNodeRef>validate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>valid</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>load</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_01_current_tui_startup_navigation_STEMMA___persistence" name="STEMMA / persistence">
+        <bpmn:flowNodeRef>create_ws</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>open</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="start" name="Start TUI" />
+    <bpmn:exclusiveGateway id="choose" name="Choose Open or Create" />
+    <bpmn:task id="scan" name="Scan runtime root" />
+    <bpmn:task id="pick" name="Pick candidate file" />
+    <bpmn:task id="validate" name="Validate candidate" />
+    <bpmn:exclusiveGateway id="valid" name="Candidate valid?" />
+    <bpmn:task id="show_error" name="Show failure and recovery guidance" />
+    <bpmn:task id="create" name="Enter new-file details" />
+    <bpmn:task id="create_ws" name="Create workspace" />
+    <bpmn:task id="open" name="Open selected workspace" />
+    <bpmn:task id="load" name="Load runtime surface" />
+    <bpmn:task id="browse" name="Browse Document, Dataset, and entities" />
+    <bpmn:task id="discover" name="Filter table or run plain/guided search" />
+    <bpmn:task id="select" name="Select qualified result" />
+    <bpmn:task id="inspect" name="Inspect detail and contextual actions" />
+    <bpmn:exclusiveGateway id="back" name="Return or continue browsing" />
+    <bpmn:endEvent id="end" name="Leave TUI" />
+    <bpmn:sequenceFlow id="Flow_01" sourceRef="start" targetRef="choose" />
+    <bpmn:sequenceFlow id="Flow_02" sourceRef="choose" targetRef="scan" name="Open" />
+    <bpmn:sequenceFlow id="Flow_03" sourceRef="scan" targetRef="pick" />
+    <bpmn:sequenceFlow id="Flow_04" sourceRef="pick" targetRef="validate" />
+    <bpmn:sequenceFlow id="Flow_05" sourceRef="validate" targetRef="valid" />
+    <bpmn:sequenceFlow id="Flow_06" sourceRef="valid" targetRef="show_error" name="No" />
+    <bpmn:sequenceFlow id="Flow_07" sourceRef="show_error" targetRef="pick" name="Retry" />
+    <bpmn:sequenceFlow id="Flow_08" sourceRef="choose" targetRef="create" name="Create" />
+    <bpmn:sequenceFlow id="Flow_09" sourceRef="create" targetRef="create_ws" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="create_ws" targetRef="open" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="valid" targetRef="open" name="Yes" />
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="open" targetRef="load" />
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="load" targetRef="browse" />
+    <bpmn:sequenceFlow id="Flow_14" sourceRef="browse" targetRef="discover" />
+    <bpmn:sequenceFlow id="Flow_15" sourceRef="discover" targetRef="select" />
+    <bpmn:sequenceFlow id="Flow_16" sourceRef="select" targetRef="inspect" />
+    <bpmn:sequenceFlow id="Flow_17" sourceRef="inspect" targetRef="back" />
+    <bpmn:sequenceFlow id="Flow_18" sourceRef="back" targetRef="browse" name="Continue" />
+    <bpmn:sequenceFlow id="Flow_19" sourceRef="back" targetRef="end" name="Quit" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_Process_01_current_tui_startup_navigation">
+    <bpmndi:BPMNPlane id="Plane_Process_01_current_tui_startup_navigation" bpmnElement="Process_01_current_tui_startup_navigation">
+      <bpmndi:BPMNShape id="Shape_Lane_Process_01_current_tui_startup_navigation_User" bpmnElement="Lane_Process_01_current_tui_startup_navigation_User" isHorizontal="true">
+        <dc:Bounds x="20" y="80" width="2866" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Process_01_current_tui_startup_navigation_Frontend" bpmnElement="Lane_Process_01_current_tui_startup_navigation_Frontend" isHorizontal="true">
+        <dc:Bounds x="20" y="220" width="2866" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Process_01_current_tui_startup_navigation_Application" bpmnElement="Lane_Process_01_current_tui_startup_navigation_Application" isHorizontal="true">
+        <dc:Bounds x="20" y="360" width="2866" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Process_01_current_tui_startup_navigation_STEMMA___persistence" bpmnElement="Lane_Process_01_current_tui_startup_navigation_STEMMA___persistence" isHorizontal="true">
+        <dc:Bounds x="20" y="500" width="2866" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_start" bpmnElement="start">
+        <dc:Bounds x="80" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_choose" bpmnElement="choose">
+        <dc:Bounds x="260" y="124" width="52" height="52" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_scan" bpmnElement="scan">
+        <dc:Bounds x="470" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_pick" bpmnElement="pick">
+        <dc:Bounds x="660" y="114" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_validate" bpmnElement="validate">
+        <dc:Bounds x="850" y="394" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_valid" bpmnElement="valid">
+        <dc:Bounds x="1040" y="404" width="52" height="52" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_show_error" bpmnElement="show_error">
+        <dc:Bounds x="1230" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_create" bpmnElement="create">
+        <dc:Bounds x="470" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_create_ws" bpmnElement="create_ws">
+        <dc:Bounds x="660" y="534" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_open" bpmnElement="open">
+        <dc:Bounds x="1420" y="534" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_load" bpmnElement="load">
+        <dc:Bounds x="1610" y="394" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_browse" bpmnElement="browse">
+        <dc:Bounds x="1800" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_discover" bpmnElement="discover">
+        <dc:Bounds x="1990" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_select" bpmnElement="select">
+        <dc:Bounds x="2180" y="114" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_inspect" bpmnElement="inspect">
+        <dc:Bounds x="2370" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_back" bpmnElement="back">
+        <dc:Bounds x="2560" y="124" width="52" height="52" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_end" bpmnElement="end">
+        <dc:Bounds x="2750" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_Flow_01" bpmnElement="Flow_01">
+        <di:waypoint x="98.0" y="150.0" />
+        <di:waypoint x="286.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_02" bpmnElement="Flow_02">
+        <di:waypoint x="286.0" y="150.0" />
+        <di:waypoint x="418.0" y="150.0" />
+        <di:waypoint x="418.0" y="290.0" />
+        <di:waypoint x="550.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_03" bpmnElement="Flow_03">
+        <di:waypoint x="550.0" y="290.0" />
+        <di:waypoint x="645.0" y="290.0" />
+        <di:waypoint x="645.0" y="150.0" />
+        <di:waypoint x="740.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_04" bpmnElement="Flow_04">
+        <di:waypoint x="740.0" y="150.0" />
+        <di:waypoint x="835.0" y="150.0" />
+        <di:waypoint x="835.0" y="430.0" />
+        <di:waypoint x="930.0" y="430.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_05" bpmnElement="Flow_05">
+        <di:waypoint x="930.0" y="430.0" />
+        <di:waypoint x="1066.0" y="430.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_06" bpmnElement="Flow_06">
+        <di:waypoint x="1066.0" y="430.0" />
+        <di:waypoint x="1188.0" y="430.0" />
+        <di:waypoint x="1188.0" y="290.0" />
+        <di:waypoint x="1310.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_07" bpmnElement="Flow_07">
+        <di:waypoint x="1310.0" y="290.0" />
+        <di:waypoint x="1345.0" y="41" />
+        <di:waypoint x="705.0" y="41" />
+        <di:waypoint x="740.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_08" bpmnElement="Flow_08">
+        <di:waypoint x="286.0" y="150.0" />
+        <di:waypoint x="418.0" y="150.0" />
+        <di:waypoint x="418.0" y="290.0" />
+        <di:waypoint x="550.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_09" bpmnElement="Flow_09">
+        <di:waypoint x="550.0" y="290.0" />
+        <di:waypoint x="645.0" y="290.0" />
+        <di:waypoint x="645.0" y="570.0" />
+        <di:waypoint x="740.0" y="570.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_10" bpmnElement="Flow_10">
+        <di:waypoint x="740.0" y="570.0" />
+        <di:waypoint x="1500.0" y="570.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_11" bpmnElement="Flow_11">
+        <di:waypoint x="1066.0" y="430.0" />
+        <di:waypoint x="1283.0" y="430.0" />
+        <di:waypoint x="1283.0" y="570.0" />
+        <di:waypoint x="1500.0" y="570.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_12" bpmnElement="Flow_12">
+        <di:waypoint x="1500.0" y="570.0" />
+        <di:waypoint x="1595.0" y="570.0" />
+        <di:waypoint x="1595.0" y="430.0" />
+        <di:waypoint x="1690.0" y="430.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_13" bpmnElement="Flow_13">
+        <di:waypoint x="1690.0" y="430.0" />
+        <di:waypoint x="1785.0" y="430.0" />
+        <di:waypoint x="1785.0" y="290.0" />
+        <di:waypoint x="1880.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_14" bpmnElement="Flow_14">
+        <di:waypoint x="1880.0" y="290.0" />
+        <di:waypoint x="2070.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_15" bpmnElement="Flow_15">
+        <di:waypoint x="2070.0" y="290.0" />
+        <di:waypoint x="2165.0" y="290.0" />
+        <di:waypoint x="2165.0" y="150.0" />
+        <di:waypoint x="2260.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_16" bpmnElement="Flow_16">
+        <di:waypoint x="2260.0" y="150.0" />
+        <di:waypoint x="2355.0" y="150.0" />
+        <di:waypoint x="2355.0" y="290.0" />
+        <di:waypoint x="2450.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_17" bpmnElement="Flow_17">
+        <di:waypoint x="2450.0" y="290.0" />
+        <di:waypoint x="2518.0" y="290.0" />
+        <di:waypoint x="2518.0" y="150.0" />
+        <di:waypoint x="2586.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_18" bpmnElement="Flow_18">
+        <di:waypoint x="2586.0" y="150.0" />
+        <di:waypoint x="2621.0" y="55" />
+        <di:waypoint x="1845.0" y="55" />
+        <di:waypoint x="1880.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_19" bpmnElement="Flow_19">
+        <di:waypoint x="2586.0" y="150.0" />
+        <di:waypoint x="2768.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,883 @@
+{
+  "schemaVersion": 1,
+  "id": "02-current-tui-edit-save",
+  "file": "02-current-tui-edit-save.bpmn",
+  "title": "TUI editing and save safety",
+  "classification": "observed-current",
+  "summary": "The current typed editing loop, including cancel, validation, guarded deletion, dirty state, saving, export, and failure retention.",
+  "implementationStatus": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations.",
+  "tuiDesign": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save.",
+  "webDesign": "Use accessible typed controls and the same application-owned mutation and persistence result contracts.",
+  "sources": [
+    "docs/design-docs/stemma-full-editing-contract.md",
+    "docs/design-docs/tui-v1-master-spec.md",
+    "mutation-path audit and focused tests"
+  ],
+  "warnings": [],
+  "elements": {
+    "start": {
+      "id": "start",
+      "label": "Open an editable detail",
+      "bpmnType": "bpmn:StartEvent",
+      "actor": "User",
+      "meaning": "Open an editable detail is a start event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "action": {
+      "id": "action",
+      "label": "Choose scalar, choice, link, list, text, create, or delete action",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "User",
+      "meaning": "Choose scalar, choice, link, list, text, create, or delete action is a exclusive gateway in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "editor": {
+      "id": "editor",
+      "label": "Open contextual editor or picker",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Open contextual editor or picker is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "stage": {
+      "id": "stage",
+      "label": "Stage typed mutation",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Stage typed mutation is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "cancel": {
+      "id": "cancel",
+      "label": "Cancel without mutation",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Cancel without mutation is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "preflight": {
+      "id": "preflight",
+      "label": "Validate key, value, link, scope, and references",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Validate key, value, link, scope, and references is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "accepted": {
+      "id": "accepted",
+      "label": "Mutation valid?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "Application",
+      "meaning": "Mutation valid? is a exclusive gateway in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "reject": {
+      "id": "reject",
+      "label": "Show error; retain prior state",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Show error; retain prior state is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "dirty": {
+      "id": "dirty",
+      "label": "Apply in memory and mark dirty",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Apply in memory and mark dirty is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "more": {
+      "id": "more",
+      "label": "Make more changes?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "User",
+      "meaning": "Make more changes? is a exclusive gateway in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "save": {
+      "id": "save",
+      "label": "Request Save / Save As / Export XML",
+      "bpmnType": "bpmn:Task",
+      "actor": "User",
+      "meaning": "Request Save / Save As / Export XML is a task in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "persist": {
+      "id": "persist",
+      "label": "Snapshot, apply, validate, atomic write",
+      "bpmnType": "bpmn:Task",
+      "actor": "STEMMA / persistence",
+      "meaning": "Snapshot, apply, validate, atomic write is a task in this workflow. The STEMMA model, validation, store, or persistence adapter owns this work.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "saved": {
+      "id": "saved",
+      "label": "Persistence succeeded?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "Application",
+      "meaning": "Persistence succeeded? is a exclusive gateway in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "refresh": {
+      "id": "refresh",
+      "label": "Reload surface/index; clear pending and dirty",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Reload surface/index; clear pending and dirty is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "retain": {
+      "id": "retain",
+      "label": "Keep dirty state and pending edits; show recovery",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Keep dirty state and pending edits; show recovery is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "end": {
+      "id": "end",
+      "label": "Continue working",
+      "bpmnType": "bpmn:EndEvent",
+      "actor": "User",
+      "meaning": "Continue working is a end event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_01": {
+      "id": "Flow_01",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_02": {
+      "id": "Flow_02",
+      "label": "Edit/add/link/create",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Edit/add/link/create” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_03": {
+      "id": "Flow_03",
+      "label": "Commit candidate",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Commit candidate” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_04": {
+      "id": "Flow_04",
+      "label": "Cancel",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Cancel” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_05": {
+      "id": "Flow_05",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_06": {
+      "id": "Flow_06",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_07": {
+      "id": "Flow_07",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_08": {
+      "id": "Flow_08",
+      "label": "No",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “No” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_09": {
+      "id": "Flow_09",
+      "label": "Correct",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Correct” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_10": {
+      "id": "Flow_10",
+      "label": "Yes",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Yes” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_11": {
+      "id": "Flow_11",
+      "label": "Confirmed delete",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Confirmed delete” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_12": {
+      "id": "Flow_12",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_13": {
+      "id": "Flow_13",
+      "label": "Yes",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Yes” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_14": {
+      "id": "Flow_14",
+      "label": "No",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “No” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_15": {
+      "id": "Flow_15",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_16": {
+      "id": "Flow_16",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_17": {
+      "id": "Flow_17",
+      "label": "Yes",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Yes” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_18": {
+      "id": "Flow_18",
+      "label": "No",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “No” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_19": {
+      "id": "Flow_19",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    },
+    "Flow_20": {
+      "id": "Flow_20",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use accessible typed controls and the same application-owned mutation and persistence result contracts."
+      },
+      "sources": [
+        "docs/design-docs/stemma-full-editing-contract.md",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "mutation-path audit and focused tests"
+      ]
+    }
+  }
+}

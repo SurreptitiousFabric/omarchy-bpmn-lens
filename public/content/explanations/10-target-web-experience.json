@@ -1,0 +1,763 @@
+{
+  "schemaVersion": 1,
+  "id": "10-target-web-experience",
+  "file": "10-target-web-experience.bpmn",
+  "title": "Target web experience",
+  "classification": "target-unimplemented",
+  "summary": "A responsive and accessible web adapter over shared lifecycle, reader, mutation, validation, and persistence workflows.",
+  "implementationStatus": "Design contract only; no web adapter currently exists in Nicelydrapped.",
+  "tuiDesign": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions.",
+  "webDesign": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries.",
+  "sources": [
+    "Plan 4 GUI assessment",
+    "docs/design-docs/tui-v1-master-spec.md",
+    "architecture direction"
+  ],
+  "warnings": [],
+  "elements": {
+    "start": {
+      "id": "start",
+      "label": "Open web application",
+      "bpmnType": "bpmn:StartEvent",
+      "actor": "User",
+      "meaning": "Open web application is a start event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "session": {
+      "id": "session",
+      "label": "Establish authorized session and workspace scope",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Establish authorized session and workspace scope is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "open": {
+      "id": "open",
+      "label": "Invoke shared Document lifecycle",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Invoke shared Document lifecycle is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "state": {
+      "id": "state",
+      "label": "Render ready/degraded/validation/access state",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Render ready/degraded/validation/access state is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "browse": {
+      "id": "browse",
+      "label": "Browse responsive list/detail views",
+      "bpmnType": "bpmn:Task",
+      "actor": "User",
+      "meaning": "Browse responsive list/detail views is a task in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "search": {
+      "id": "search",
+      "label": "Filter, search, and follow semantic trails",
+      "bpmnType": "bpmn:Task",
+      "actor": "User",
+      "meaning": "Filter, search, and follow semantic trails is a task in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "action": {
+      "id": "action",
+      "label": "Inspect or author?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "User",
+      "meaning": "Inspect or author? is a exclusive gateway in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "inspect": {
+      "id": "inspect",
+      "label": "Render evidence, citation preview, Resource rights, and narrative",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Render evidence, citation preview, Resource rights, and narrative is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "author": {
+      "id": "author",
+      "label": "Use accessible forms, pickers, and structured editors",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Use accessible forms, pickers, and structured editors is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "shared": {
+      "id": "shared",
+      "label": "Call the same validation and mutation use cases as TUI",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Call the same validation and mutation use cases as TUI is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "conflict": {
+      "id": "conflict",
+      "label": "Baseline current and operation authorized?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "Application",
+      "meaning": "Baseline current and operation authorized? is a exclusive gateway in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "reject": {
+      "id": "reject",
+      "label": "Show conflict/authorization/validation outcome; preserve draft",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Show conflict/authorization/validation outcome; preserve draft is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "persist": {
+      "id": "persist",
+      "label": "Persist through shared safe lifecycle",
+      "bpmnType": "bpmn:Task",
+      "actor": "STEMMA / persistence",
+      "meaning": "Persist through shared safe lifecycle is a task in this workflow. The STEMMA model, validation, store, or persistence adapter owns this work.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "result": {
+      "id": "result",
+      "label": "Refresh qualified views and report exact outcome",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Refresh qualified views and report exact outcome is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "end": {
+      "id": "end",
+      "label": "End or continue session",
+      "bpmnType": "bpmn:EndEvent",
+      "actor": "User",
+      "meaning": "End or continue session is a end event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "Flow_01": {
+      "id": "Flow_01",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "Flow_02": {
+      "id": "Flow_02",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "Flow_03": {
+      "id": "Flow_03",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "Flow_04": {
+      "id": "Flow_04",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "Flow_05": {
+      "id": "Flow_05",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "Flow_06": {
+      "id": "Flow_06",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "Flow_07": {
+      "id": "Flow_07",
+      "label": "Inspect",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Inspect” applies.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "Flow_08": {
+      "id": "Flow_08",
+      "label": "Author",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Author” applies.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "Flow_09": {
+      "id": "Flow_09",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "Flow_10": {
+      "id": "Flow_10",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "Flow_11": {
+      "id": "Flow_11",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "Flow_12": {
+      "id": "Flow_12",
+      "label": "No",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “No” applies.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "Flow_13": {
+      "id": "Flow_13",
+      "label": "Correct/retry",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Correct/retry” applies.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "Flow_14": {
+      "id": "Flow_14",
+      "label": "Yes",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Yes” applies.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "Flow_15": {
+      "id": "Flow_15",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    },
+    "Flow_16": {
+      "id": "Flow_16",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-unimplemented",
+        "detail": "Design contract only; no web adapter currently exists in Nicelydrapped."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use semantic HTML, responsive list/detail layouts, stable deep links, keyboard support, and accessible validation summaries."
+      },
+      "sources": [
+        "Plan 4 GUI assessment",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "architecture direction"
+      ]
+    }
+  }
+}

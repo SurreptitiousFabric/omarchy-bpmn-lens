@@ -1,0 +1,883 @@
+{
+  "schemaVersion": 1,
+  "id": "01-current-tui-startup-navigation",
+  "file": "01-current-tui-startup-navigation.bpmn",
+  "title": "TUI startup and navigation",
+  "classification": "observed-current",
+  "summary": "What a user can currently do from launch through workspace discovery, browsing, filtering, search, inspection, and exit.",
+  "implementationStatus": "Observed directly and supported by executable demonstrations.",
+  "tuiDesign": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state.",
+  "webDesign": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser.",
+  "sources": [
+    "Direct TUI observation, 2026-08-27",
+    "docs/design-docs/tui-v1-master-spec.md",
+    "docs/demos/**/*.tape"
+  ],
+  "warnings": [],
+  "elements": {
+    "start": {
+      "id": "start",
+      "label": "Start TUI",
+      "bpmnType": "bpmn:StartEvent",
+      "actor": "User",
+      "meaning": "Start TUI is a start event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "choose": {
+      "id": "choose",
+      "label": "Choose Open or Create",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "User",
+      "meaning": "Choose Open or Create is a exclusive gateway in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "scan": {
+      "id": "scan",
+      "label": "Scan runtime root",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Scan runtime root is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "pick": {
+      "id": "pick",
+      "label": "Pick candidate file",
+      "bpmnType": "bpmn:Task",
+      "actor": "User",
+      "meaning": "Pick candidate file is a task in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "validate": {
+      "id": "validate",
+      "label": "Validate candidate",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Validate candidate is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "valid": {
+      "id": "valid",
+      "label": "Candidate valid?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "Application",
+      "meaning": "Candidate valid? is a exclusive gateway in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "show_error": {
+      "id": "show_error",
+      "label": "Show failure and recovery guidance",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Show failure and recovery guidance is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "create": {
+      "id": "create",
+      "label": "Enter new-file details",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Enter new-file details is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "create_ws": {
+      "id": "create_ws",
+      "label": "Create workspace",
+      "bpmnType": "bpmn:Task",
+      "actor": "STEMMA / persistence",
+      "meaning": "Create workspace is a task in this workflow. The STEMMA model, validation, store, or persistence adapter owns this work.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "open": {
+      "id": "open",
+      "label": "Open selected workspace",
+      "bpmnType": "bpmn:Task",
+      "actor": "STEMMA / persistence",
+      "meaning": "Open selected workspace is a task in this workflow. The STEMMA model, validation, store, or persistence adapter owns this work.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "load": {
+      "id": "load",
+      "label": "Load runtime surface",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Load runtime surface is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "browse": {
+      "id": "browse",
+      "label": "Browse Document, Dataset, and entities",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Browse Document, Dataset, and entities is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "discover": {
+      "id": "discover",
+      "label": "Filter table or run plain/guided search",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Filter table or run plain/guided search is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "select": {
+      "id": "select",
+      "label": "Select qualified result",
+      "bpmnType": "bpmn:Task",
+      "actor": "User",
+      "meaning": "Select qualified result is a task in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "inspect": {
+      "id": "inspect",
+      "label": "Inspect detail and contextual actions",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Inspect detail and contextual actions is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "back": {
+      "id": "back",
+      "label": "Return or continue browsing",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "User",
+      "meaning": "Return or continue browsing is a exclusive gateway in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "end": {
+      "id": "end",
+      "label": "Leave TUI",
+      "bpmnType": "bpmn:EndEvent",
+      "actor": "User",
+      "meaning": "Leave TUI is a end event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_01": {
+      "id": "Flow_01",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_02": {
+      "id": "Flow_02",
+      "label": "Open",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Open” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_03": {
+      "id": "Flow_03",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_04": {
+      "id": "Flow_04",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_05": {
+      "id": "Flow_05",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_06": {
+      "id": "Flow_06",
+      "label": "No",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “No” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_07": {
+      "id": "Flow_07",
+      "label": "Retry",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Retry” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_08": {
+      "id": "Flow_08",
+      "label": "Create",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Create” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_09": {
+      "id": "Flow_09",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_10": {
+      "id": "Flow_10",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_11": {
+      "id": "Flow_11",
+      "label": "Yes",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Yes” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_12": {
+      "id": "Flow_12",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_13": {
+      "id": "Flow_13",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_14": {
+      "id": "Flow_14",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_15": {
+      "id": "Flow_15",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_16": {
+      "id": "Flow_16",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_17": {
+      "id": "Flow_17",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_18": {
+      "id": "Flow_18",
+      "label": "Continue",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Continue” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    },
+    "Flow_19": {
+      "id": "Flow_19",
+      "label": "Quit",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Quit” applies.",
+      "implementation": {
+        "state": "current",
+        "detail": "Observed directly and supported by executable demonstrations."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Translate the same qualified navigation into accessible list/detail routes without copying domain decisions into the browser."
+      },
+      "sources": [
+        "Direct TUI observation, 2026-08-27",
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/demos/**/*.tape"
+      ]
+    }
+  }
+}

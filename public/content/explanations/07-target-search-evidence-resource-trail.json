@@ -1,0 +1,787 @@
+{
+  "schemaVersion": 1,
+  "id": "07-target-search-evidence-resource-trail",
+  "file": "07-target-search-evidence-resource-trail.bpmn",
+  "title": "Search and evidence trail",
+  "classification": "target-partial",
+  "summary": "Qualified search and semantic navigation that preserve origin, expose evidence trails, resolve resource access, and return exactly.",
+  "implementationStatus": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not.",
+  "tuiDesign": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration.",
+  "webDesign": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail.",
+  "sources": [
+    "Plan 4 GF-01",
+    "docs/design-docs/guided-intent-registry-spec.md",
+    "STEMMA narrative/detail and Source semantics"
+  ],
+  "warnings": [],
+  "elements": {
+    "start": {
+      "id": "start",
+      "label": "Need to find or verify something",
+      "bpmnType": "bpmn:StartEvent",
+      "actor": "User",
+      "meaning": "Need to find or verify something is a start event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "mode": {
+      "id": "mode",
+      "label": "Choose filter, plain search, guided query, or semantic link",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "Frontend",
+      "meaning": "Choose filter, plain search, guided query, or semantic link is a exclusive gateway in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "query": {
+      "id": "query",
+      "label": "Execute bounded query in qualified context",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Execute bounded query in qualified context is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "results": {
+      "id": "results",
+      "label": "Show typed, disambiguated results",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Show typed, disambiguated results is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "choose": {
+      "id": "choose",
+      "label": "Select result",
+      "bpmnType": "bpmn:Task",
+      "actor": "User",
+      "meaning": "Select result is a task in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "origin": {
+      "id": "origin",
+      "label": "Create origin token and derivation edge",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Create origin token and derivation edge is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "open": {
+      "id": "open",
+      "label": "Open exact entity, Text segment, finding, or evidence target",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Open exact entity, Text segment, finding, or evidence target is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "trail": {
+      "id": "trail",
+      "label": "Follow Source → Citation → Resource or reasoning trail",
+      "bpmnType": "bpmn:Task",
+      "actor": "User",
+      "meaning": "Follow Source → Citation → Resource or reasoning trail is a task in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "resource": {
+      "id": "resource",
+      "label": "Resource requested?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "Application",
+      "meaning": "Resource requested? is a exclusive gateway in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "rights": {
+      "id": "rights",
+      "label": "Resolve locator and rights/access outcome",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Resolve locator and rights/access outcome is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "available": {
+      "id": "available",
+      "label": "Available and permitted?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "Application",
+      "meaning": "Available and permitted? is a exclusive gateway in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "handoff": {
+      "id": "handoff",
+      "label": "Safely hand off media/URI",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Safely hand off media/URI is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "unavailable": {
+      "id": "unavailable",
+      "label": "Explain unavailable/restricted result",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Explain unavailable/restricted result is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "return": {
+      "id": "return",
+      "label": "Return using exact origin and preserved view state",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Return using exact origin and preserved view state is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "end": {
+      "id": "end",
+      "label": "Continue research",
+      "bpmnType": "bpmn:EndEvent",
+      "actor": "User",
+      "meaning": "Continue research is a end event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_01": {
+      "id": "Flow_01",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_02": {
+      "id": "Flow_02",
+      "label": "Filter/plain/guided",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Filter/plain/guided” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_03": {
+      "id": "Flow_03",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_04": {
+      "id": "Flow_04",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_05": {
+      "id": "Flow_05",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_06": {
+      "id": "Flow_06",
+      "label": "Semantic/detail link",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Semantic/detail link” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_07": {
+      "id": "Flow_07",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_08": {
+      "id": "Flow_08",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_09": {
+      "id": "Flow_09",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_10": {
+      "id": "Flow_10",
+      "label": "No",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “No” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_11": {
+      "id": "Flow_11",
+      "label": "Yes",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Yes” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_12": {
+      "id": "Flow_12",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_13": {
+      "id": "Flow_13",
+      "label": "Yes",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Yes” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_14": {
+      "id": "Flow_14",
+      "label": "No",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “No” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_15": {
+      "id": "Flow_15",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_16": {
+      "id": "Flow_16",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    },
+    "Flow_17": {
+      "id": "Flow_17",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use stable deep links and origin tokens rather than relying on browser history as the semantic trail."
+      },
+      "sources": [
+        "Plan 4 GF-01",
+        "docs/design-docs/guided-intent-registry-spec.md",
+        "STEMMA narrative/detail and Source semantics"
+      ]
+    }
+  }
+}

@@ -1,0 +1,220 @@
+<?xml version='1.0' encoding='utf-8'?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_05_target_entity_link_authoring_bpmn" targetNamespace="https://nicelydrapped.local/bpmn/capabilities" exporter="nicelydrapped capability audit generator" exporterVersion="1.0">
+  <bpmn:process id="Process_05_target_entity_link_authoring" name="TARGET — Strict entity, container, collection, and link authoring" isExecutable="false">
+    <bpmn:documentation>Status: TARGET_MOSTLY_IMPLEMENTED_TUI_SHARED_PARTIAL. Source basis: Full STEMMA editing contract; TUI demos/audits; FamilyHistoryData.pdf sections 6.4–6.12; shared mutation lifecycle.</bpmn:documentation>
+    <bpmn:laneSet id="LaneSet_Process_05_target_entity_link_authoring">
+      <bpmn:lane id="Lane_Process_05_target_entity_link_authoring_User" name="User">
+        <bpmn:flowNodeRef>start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>kind</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>end</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_05_target_entity_link_authoring_Frontend" name="Frontend">
+        <bpmn:flowNodeRef>root</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>container</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>edit</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>collection</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>link</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>correct</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>impact</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_05_target_entity_link_authoring_Application" name="Application">
+        <bpmn:flowNodeRef>stage</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>validate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>valid</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>commit</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>delete</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_05_target_entity_link_authoring_STEMMA___persistence" name="STEMMA / persistence">
+        <bpmn:flowNodeRef>save</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="start" name="Choose Dataset and construct" />
+    <bpmn:exclusiveGateway id="kind" name="Person, Event, Place, Group, Animal, Source, Citation, Resource, Matrix, Narrative, Contact, Text, or container?" />
+    <bpmn:task id="root" name="Create/open strict entity or support root" />
+    <bpmn:task id="container" name="Open Document/Dataset-owned container" />
+    <bpmn:task id="edit" name="Edit scalar, controlled value, date, or metadata" />
+    <bpmn:task id="collection" name="Add, edit, reorder, or delete collection item" />
+    <bpmn:task id="link" name="Choose typed link target in correct Dataset scope" />
+    <bpmn:task id="stage" name="Stage candidate change set" />
+    <bpmn:task id="validate" name="Validate shape, key, scope, references, and dates" />
+    <bpmn:exclusiveGateway id="valid" name="Candidate valid?" />
+    <bpmn:task id="correct" name="Show exact field/path and preserve prior state" />
+    <bpmn:task id="commit" name="Commit in-memory transaction and mark dirty" />
+    <bpmn:exclusiveGateway id="delete" name="Delete or rename affects references?" />
+    <bpmn:task id="impact" name="Show impact; retarget or reject safely" />
+    <bpmn:task id="save" name="Save through shared persistence lifecycle" />
+    <bpmn:endEvent id="end" name="Updated construct remains navigable" />
+    <bpmn:sequenceFlow id="Flow_01" sourceRef="start" targetRef="kind" />
+    <bpmn:sequenceFlow id="Flow_02" sourceRef="kind" targetRef="root" name="Entity/support root" />
+    <bpmn:sequenceFlow id="Flow_03" sourceRef="kind" targetRef="container" name="Document/Dataset container" />
+    <bpmn:sequenceFlow id="Flow_04" sourceRef="root" targetRef="edit" />
+    <bpmn:sequenceFlow id="Flow_05" sourceRef="container" targetRef="edit" />
+    <bpmn:sequenceFlow id="Flow_06" sourceRef="edit" targetRef="collection" />
+    <bpmn:sequenceFlow id="Flow_07" sourceRef="collection" targetRef="link" />
+    <bpmn:sequenceFlow id="Flow_08" sourceRef="link" targetRef="stage" />
+    <bpmn:sequenceFlow id="Flow_09" sourceRef="stage" targetRef="validate" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="validate" targetRef="valid" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="valid" targetRef="correct" name="No" />
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="correct" targetRef="edit" />
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="valid" targetRef="commit" name="Yes" />
+    <bpmn:sequenceFlow id="Flow_14" sourceRef="commit" targetRef="delete" />
+    <bpmn:sequenceFlow id="Flow_15" sourceRef="delete" targetRef="impact" name="Yes" />
+    <bpmn:sequenceFlow id="Flow_16" sourceRef="impact" targetRef="stage" name="Approved safe change" />
+    <bpmn:sequenceFlow id="Flow_17" sourceRef="delete" targetRef="save" name="No" />
+    <bpmn:sequenceFlow id="Flow_18" sourceRef="save" targetRef="end" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_Process_05_target_entity_link_authoring">
+    <bpmndi:BPMNPlane id="Plane_Process_05_target_entity_link_authoring" bpmnElement="Process_05_target_entity_link_authoring">
+      <bpmndi:BPMNShape id="Shape_Lane_Process_05_target_entity_link_authoring_User" bpmnElement="Lane_Process_05_target_entity_link_authoring_User" isHorizontal="true">
+        <dc:Bounds x="20" y="80" width="2676" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Process_05_target_entity_link_authoring_Frontend" bpmnElement="Lane_Process_05_target_entity_link_authoring_Frontend" isHorizontal="true">
+        <dc:Bounds x="20" y="220" width="2676" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Process_05_target_entity_link_authoring_Application" bpmnElement="Lane_Process_05_target_entity_link_authoring_Application" isHorizontal="true">
+        <dc:Bounds x="20" y="360" width="2676" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Process_05_target_entity_link_authoring_STEMMA___persistence" bpmnElement="Lane_Process_05_target_entity_link_authoring_STEMMA___persistence" isHorizontal="true">
+        <dc:Bounds x="20" y="500" width="2676" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_start" bpmnElement="start">
+        <dc:Bounds x="80" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_kind" bpmnElement="kind">
+        <dc:Bounds x="260" y="124" width="52" height="52" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_root" bpmnElement="root">
+        <dc:Bounds x="470" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_container" bpmnElement="container">
+        <dc:Bounds x="470" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_edit" bpmnElement="edit">
+        <dc:Bounds x="660" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_collection" bpmnElement="collection">
+        <dc:Bounds x="850" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_link" bpmnElement="link">
+        <dc:Bounds x="1040" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_stage" bpmnElement="stage">
+        <dc:Bounds x="1230" y="394" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_validate" bpmnElement="validate">
+        <dc:Bounds x="1420" y="394" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_valid" bpmnElement="valid">
+        <dc:Bounds x="1610" y="404" width="52" height="52" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_correct" bpmnElement="correct">
+        <dc:Bounds x="1800" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_commit" bpmnElement="commit">
+        <dc:Bounds x="1800" y="394" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_delete" bpmnElement="delete">
+        <dc:Bounds x="1990" y="404" width="52" height="52" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_impact" bpmnElement="impact">
+        <dc:Bounds x="2180" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_save" bpmnElement="save">
+        <dc:Bounds x="2370" y="534" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_end" bpmnElement="end">
+        <dc:Bounds x="2560" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_Flow_01" bpmnElement="Flow_01">
+        <di:waypoint x="98.0" y="150.0" />
+        <di:waypoint x="286.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_02" bpmnElement="Flow_02">
+        <di:waypoint x="286.0" y="150.0" />
+        <di:waypoint x="418.0" y="150.0" />
+        <di:waypoint x="418.0" y="290.0" />
+        <di:waypoint x="550.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_03" bpmnElement="Flow_03">
+        <di:waypoint x="286.0" y="150.0" />
+        <di:waypoint x="418.0" y="150.0" />
+        <di:waypoint x="418.0" y="290.0" />
+        <di:waypoint x="550.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_04" bpmnElement="Flow_04">
+        <di:waypoint x="550.0" y="290.0" />
+        <di:waypoint x="740.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_05" bpmnElement="Flow_05">
+        <di:waypoint x="550.0" y="290.0" />
+        <di:waypoint x="740.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_06" bpmnElement="Flow_06">
+        <di:waypoint x="740.0" y="290.0" />
+        <di:waypoint x="930.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_07" bpmnElement="Flow_07">
+        <di:waypoint x="930.0" y="290.0" />
+        <di:waypoint x="1120.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_08" bpmnElement="Flow_08">
+        <di:waypoint x="1120.0" y="290.0" />
+        <di:waypoint x="1215.0" y="290.0" />
+        <di:waypoint x="1215.0" y="430.0" />
+        <di:waypoint x="1310.0" y="430.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_09" bpmnElement="Flow_09">
+        <di:waypoint x="1310.0" y="430.0" />
+        <di:waypoint x="1500.0" y="430.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_10" bpmnElement="Flow_10">
+        <di:waypoint x="1500.0" y="430.0" />
+        <di:waypoint x="1636.0" y="430.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_11" bpmnElement="Flow_11">
+        <di:waypoint x="1636.0" y="430.0" />
+        <di:waypoint x="1758.0" y="430.0" />
+        <di:waypoint x="1758.0" y="290.0" />
+        <di:waypoint x="1880.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_12" bpmnElement="Flow_12">
+        <di:waypoint x="1880.0" y="290.0" />
+        <di:waypoint x="1915.0" y="55" />
+        <di:waypoint x="705.0" y="55" />
+        <di:waypoint x="740.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_13" bpmnElement="Flow_13">
+        <di:waypoint x="1636.0" y="430.0" />
+        <di:waypoint x="1880.0" y="430.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_14" bpmnElement="Flow_14">
+        <di:waypoint x="1880.0" y="430.0" />
+        <di:waypoint x="2016.0" y="430.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_15" bpmnElement="Flow_15">
+        <di:waypoint x="2016.0" y="430.0" />
+        <di:waypoint x="2138.0" y="430.0" />
+        <di:waypoint x="2138.0" y="290.0" />
+        <di:waypoint x="2260.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_16" bpmnElement="Flow_16">
+        <di:waypoint x="2260.0" y="290.0" />
+        <di:waypoint x="2295.0" y="41" />
+        <di:waypoint x="1275.0" y="41" />
+        <di:waypoint x="1310.0" y="430.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_17" bpmnElement="Flow_17">
+        <di:waypoint x="2016.0" y="430.0" />
+        <di:waypoint x="2233.0" y="430.0" />
+        <di:waypoint x="2233.0" y="570.0" />
+        <di:waypoint x="2450.0" y="570.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_18" bpmnElement="Flow_18">
+        <di:waypoint x="2450.0" y="570.0" />
+        <di:waypoint x="2514.0" y="570.0" />
+        <di:waypoint x="2514.0" y="150.0" />
+        <di:waypoint x="2578.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

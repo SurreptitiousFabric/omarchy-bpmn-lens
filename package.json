@@ -1,0 +1,29 @@
+{
+  "name": "omarchy-bpmn-lens",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A local, read-only BPMN viewer with source-grounded explanations and a thin Omarchy panel.",
+  "scripts": {
+    "build": "tsc --noEmit && vite build",
+    "dev": "vite --host 127.0.0.1",
+    "test": "vitest run",
+    "validate": "node scripts/validate-content.mjs",
+    "generate": "node scripts/generate-explanations.mjs",
+    "serve": "node scripts/server.mjs",
+    "open": "node scripts/open.mjs"
+  },
+  "dependencies": {
+    "bpmn-js": "18.25.1",
+    "bpmn-moddle": "10.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "26.4.0",
+    "typescript": "7.0.2",
+    "vite": "8.2.2",
+    "vitest": "4.1.11"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

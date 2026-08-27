@@ -1,0 +1,800 @@
+{
+  "schemaVersion": 1,
+  "id": "06-target-narrative-transcription",
+  "file": "06-target-narrative-transcription.bpmn",
+  "title": "Narrative and transcription",
+  "classification": "target-partial",
+  "summary": "Rich transcription and authored narrative with reusable Text, semantic markup, references, preview, and safe cancellation.",
+  "implementationStatus": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete.",
+  "tuiDesign": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views.",
+  "webDesign": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes.",
+  "sources": [
+    "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+    "advanced narrative target PAR-650–656"
+  ],
+  "warnings": [],
+  "elements": {
+    "start": {
+      "id": "start",
+      "label": "Open Narrative or hosted Text",
+      "bpmnType": "bpmn:StartEvent",
+      "actor": "User",
+      "meaning": "Open Narrative or hosted Text is a start event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "purpose": {
+      "id": "purpose",
+      "label": "Transcription or authored narrative?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "User",
+      "meaning": "Transcription or authored narrative? is a exclusive gateway in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "transcribe": {
+      "id": "transcribe",
+      "label": "Enter faithful text and transcription anomalies",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Enter faithful text and transcription anomalies is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "author": {
+      "id": "author",
+      "label": "Compose structured narrative sections",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Compose structured narrative sections is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "segment": {
+      "id": "segment",
+      "label": "Create/reorder Text segments and metadata",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Create/reorder Text segments and metadata is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "markup": {
+      "id": "markup",
+      "label": "Insert semantic entity/date references and descriptive markup",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Insert semantic entity/date references and descriptive markup is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "reuse": {
+      "id": "reuse",
+      "label": "Reuse named Text with FromText where appropriate",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Reuse named Text with FromText where appropriate is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "cite": {
+      "id": "cite",
+      "label": "Insert CitationRef, ResourceRef, links, and notes",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Insert CitationRef, ResourceRef, links, and notes is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "review": {
+      "id": "review",
+      "label": "Preview rendered meaning and source XML diff",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Preview rendered meaning and source XML diff is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "accept": {
+      "id": "accept",
+      "label": "Accept changes?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "User",
+      "meaning": "Accept changes? is a exclusive gateway in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "cancel": {
+      "id": "cancel",
+      "label": "Cancel and restore prior content",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Cancel and restore prior content is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "validate": {
+      "id": "validate",
+      "label": "Validate mixed content, references, language, and metadata",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Validate mixed content, references, language, and metadata is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "valid": {
+      "id": "valid",
+      "label": "Valid?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "Application",
+      "meaning": "Valid? is a exclusive gateway in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "fix": {
+      "id": "fix",
+      "label": "Focus exact segment/markup error",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Focus exact segment/markup error is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "save": {
+      "id": "save",
+      "label": "Commit and preserve unrelated/raw content",
+      "bpmnType": "bpmn:Task",
+      "actor": "STEMMA / persistence",
+      "meaning": "Commit and preserve unrelated/raw content is a task in this workflow. The STEMMA model, validation, store, or persistence adapter owns this work.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "end": {
+      "id": "end",
+      "label": "Narrative remains searchable and navigable",
+      "bpmnType": "bpmn:EndEvent",
+      "actor": "User",
+      "meaning": "Narrative remains searchable and navigable is a end event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_01": {
+      "id": "Flow_01",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_02": {
+      "id": "Flow_02",
+      "label": "Transcription",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Transcription” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_03": {
+      "id": "Flow_03",
+      "label": "Narrative work",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Narrative work” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_04": {
+      "id": "Flow_04",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_05": {
+      "id": "Flow_05",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_06": {
+      "id": "Flow_06",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_07": {
+      "id": "Flow_07",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_08": {
+      "id": "Flow_08",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_09": {
+      "id": "Flow_09",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_10": {
+      "id": "Flow_10",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_11": {
+      "id": "Flow_11",
+      "label": "No",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “No” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_12": {
+      "id": "Flow_12",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_13": {
+      "id": "Flow_13",
+      "label": "Yes",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Yes” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_14": {
+      "id": "Flow_14",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_15": {
+      "id": "Flow_15",
+      "label": "No",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “No” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_16": {
+      "id": "Flow_16",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_17": {
+      "id": "Flow_17",
+      "label": "Yes",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Yes” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    },
+    "Flow_18": {
+      "id": "Flow_18",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide a structured, accessible editor without flattening STEMMA mixed content into plain notes."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 6.3–6.3.4",
+        "advanced narrative target PAR-650–656"
+      ]
+    }
+  }
+}

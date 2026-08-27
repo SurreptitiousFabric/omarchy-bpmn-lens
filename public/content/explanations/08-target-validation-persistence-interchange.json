@@ -1,0 +1,763 @@
+{
+  "schemaVersion": 1,
+  "id": "08-target-validation-persistence-interchange",
+  "file": "08-target-validation-persistence-interchange.bpmn",
+  "title": "Validation, persistence, and interchange",
+  "classification": "target-partial",
+  "summary": "A failure-safe path from validation through save, Save As, XML export, verified reopen, recovery, and packaging.",
+  "implementationStatus": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete.",
+  "tuiDesign": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful.",
+  "webDesign": "Expose draft, conflict, export, and recovery states through the same application result envelope.",
+  "sources": [
+    "docs/design-docs/tui-v1-master-spec.md",
+    "Plan 4 operation matrix",
+    "docs/FamilyHistoryData.pdf section 7"
+  ],
+  "warnings": [],
+  "elements": {
+    "start": {
+      "id": "start",
+      "label": "User requests save, save-as, export, import, or package",
+      "bpmnType": "bpmn:StartEvent",
+      "actor": "User",
+      "meaning": "User requests save, save-as, export, import, or package is a start event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "operation": {
+      "id": "operation",
+      "label": "Select operation",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "Frontend",
+      "meaning": "Select operation is a exclusive gateway in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "validate": {
+      "id": "validate",
+      "label": "Run syntax, schema, semantic, and reference validation",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Run syntax, schema, semantic, and reference validation is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "valid": {
+      "id": "valid",
+      "label": "Acceptable?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "Application",
+      "meaning": "Acceptable? is a exclusive gateway in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "findings": {
+      "id": "findings",
+      "label": "Show stable findings; navigate and recheck",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Show stable findings; navigate and recheck is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "snapshot": {
+      "id": "snapshot",
+      "label": "Snapshot baseline and stage output",
+      "bpmnType": "bpmn:Task",
+      "actor": "STEMMA / persistence",
+      "meaning": "Snapshot baseline and stage output is a task in this workflow. The STEMMA model, validation, store, or persistence adapter owns this work.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "format": {
+      "id": "format",
+      "label": "Preserve current format, Save As protobuf, or Export XML",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Preserve current format, Save As protobuf, or Export XML is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "write": {
+      "id": "write",
+      "label": "Write temp, fsync, atomic replace, fsync directory",
+      "bpmnType": "bpmn:Task",
+      "actor": "STEMMA / persistence",
+      "meaning": "Write temp, fsync, atomic replace, fsync directory is a task in this workflow. The STEMMA model, validation, store, or persistence adapter owns this work.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "verify": {
+      "id": "verify",
+      "label": "Reopen and verify persisted result",
+      "bpmnType": "bpmn:Task",
+      "actor": "STEMMA / persistence",
+      "meaning": "Reopen and verify persisted result is a task in this workflow. The STEMMA model, validation, store, or persistence adapter owns this work.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "success": {
+      "id": "success",
+      "label": "Verified?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "Application",
+      "meaning": "Verified? is a exclusive gateway in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "recover": {
+      "id": "recover",
+      "label": "Restore/offer backup; retain dirty state",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Restore/offer backup; retain dirty state is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "refresh": {
+      "id": "refresh",
+      "label": "Refresh indexes and clear accepted change set",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Refresh indexes and clear accepted change set is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "package": {
+      "id": "package",
+      "label": "Include required Resources and manifest",
+      "bpmnType": "bpmn:Task",
+      "actor": "STEMMA / persistence",
+      "meaning": "Include required Resources and manifest is a task in this workflow. The STEMMA model, validation, store, or persistence adapter owns this work.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "end": {
+      "id": "end",
+      "label": "Report exact outcome and path",
+      "bpmnType": "bpmn:EndEvent",
+      "actor": "User",
+      "meaning": "Report exact outcome and path is a end event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_01": {
+      "id": "Flow_01",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_02": {
+      "id": "Flow_02",
+      "label": "Save/Save As/Export",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Save/Save As/Export” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_03": {
+      "id": "Flow_03",
+      "label": "Import preview/package",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Import preview/package” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_04": {
+      "id": "Flow_04",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_05": {
+      "id": "Flow_05",
+      "label": "No",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “No” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_06": {
+      "id": "Flow_06",
+      "label": "After repair",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “After repair” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_07": {
+      "id": "Flow_07",
+      "label": "Yes",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Yes” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_08": {
+      "id": "Flow_08",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_09": {
+      "id": "Flow_09",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_10": {
+      "id": "Flow_10",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_11": {
+      "id": "Flow_11",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_12": {
+      "id": "Flow_12",
+      "label": "No",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “No” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_13": {
+      "id": "Flow_13",
+      "label": "Yes",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Yes” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_14": {
+      "id": "Flow_14",
+      "label": "If packaging",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “If packaging” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_15": {
+      "id": "Flow_15",
+      "label": "Otherwise",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Otherwise” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_16": {
+      "id": "Flow_16",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    },
+    "Flow_17": {
+      "id": "Flow_17",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Expose draft, conflict, export, and recovery states through the same application result envelope."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "Plan 4 operation matrix",
+        "docs/FamilyHistoryData.pdf section 7"
+      ]
+    }
+  }
+}

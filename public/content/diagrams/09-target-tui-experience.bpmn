@@ -1,0 +1,198 @@
+<?xml version='1.0' encoding='utf-8'?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_09_target_tui_experience_bpmn" targetNamespace="https://nicelydrapped.local/bpmn/capabilities" exporter="nicelydrapped capability audit generator" exporterVersion="1.0">
+  <bpmn:process id="Process_09_target_tui_experience" name="TARGET — TUI experience orchestration" isExecutable="false">
+    <bpmn:documentation>Status: TARGET_TUI_MIXED. Source basis: TUI master spec; expanded byhand WHAT-parity PAR-410–763; demo use-case map; Bubble Tea architecture contracts.</bpmn:documentation>
+    <bpmn:laneSet id="LaneSet_Process_09_target_tui_experience">
+      <bpmn:lane id="Lane_Process_09_target_tui_experience_User" name="User">
+        <bpmn:flowNodeRef>start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>navigate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>discover</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>intent</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>persist</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>more</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>end</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_09_target_tui_experience_Frontend" name="Frontend">
+        <bpmn:flowNodeRef>workspace</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>runtime</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>inspect</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>author</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>dirty</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>outcome</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_09_target_tui_experience_Application" name="Application">
+        <bpmn:flowNodeRef>commit</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_09_target_tui_experience_STEMMA___persistence" name="STEMMA / persistence" />
+    </bpmn:laneSet>
+    <bpmn:startEvent id="start" name="Launch with keyboard" />
+    <bpmn:task id="workspace" name="Use startup chooser or workspace file workbench" />
+    <bpmn:task id="runtime" name="Enter responsive two-pane shell" />
+    <bpmn:task id="navigate" name="Navigate, resize, focus, promote, and return" />
+    <bpmn:task id="discover" name="Filter or search" />
+    <bpmn:exclusiveGateway id="intent" name="Inspect or author?" />
+    <bpmn:task id="inspect" name="Inspect detail, evidence, preview, and contextual help" />
+    <bpmn:task id="author" name="Use scalar, choice, tri-state, vocabulary, relationship, list, or narrative editor" />
+    <bpmn:task id="commit" name="Commit/cancel through deterministic message transition" />
+    <bpmn:task id="dirty" name="Show dirty, validation, and failure state honestly" />
+    <bpmn:task id="persist" name="Save, Save As, or Export XML" />
+    <bpmn:task id="outcome" name="Show success or actionable recovery without losing edits" />
+    <bpmn:exclusiveGateway id="more" name="Continue?" />
+    <bpmn:endEvent id="end" name="Quit safely" />
+    <bpmn:sequenceFlow id="Flow_01" sourceRef="start" targetRef="workspace" />
+    <bpmn:sequenceFlow id="Flow_02" sourceRef="workspace" targetRef="runtime" />
+    <bpmn:sequenceFlow id="Flow_03" sourceRef="runtime" targetRef="navigate" />
+    <bpmn:sequenceFlow id="Flow_04" sourceRef="navigate" targetRef="discover" />
+    <bpmn:sequenceFlow id="Flow_05" sourceRef="discover" targetRef="intent" />
+    <bpmn:sequenceFlow id="Flow_06" sourceRef="intent" targetRef="inspect" name="Inspect" />
+    <bpmn:sequenceFlow id="Flow_07" sourceRef="intent" targetRef="author" name="Author" />
+    <bpmn:sequenceFlow id="Flow_08" sourceRef="inspect" targetRef="more" />
+    <bpmn:sequenceFlow id="Flow_09" sourceRef="author" targetRef="commit" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="commit" targetRef="dirty" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="dirty" targetRef="persist" />
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="persist" targetRef="outcome" />
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="outcome" targetRef="more" />
+    <bpmn:sequenceFlow id="Flow_14" sourceRef="more" targetRef="navigate" name="Yes" />
+    <bpmn:sequenceFlow id="Flow_15" sourceRef="more" targetRef="end" name="No" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_Process_09_target_tui_experience">
+    <bpmndi:BPMNPlane id="Plane_Process_09_target_tui_experience" bpmnElement="Process_09_target_tui_experience">
+      <bpmndi:BPMNShape id="Shape_Lane_Process_09_target_tui_experience_User" bpmnElement="Lane_Process_09_target_tui_experience_User" isHorizontal="true">
+        <dc:Bounds x="20" y="80" width="2466" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Process_09_target_tui_experience_Frontend" bpmnElement="Lane_Process_09_target_tui_experience_Frontend" isHorizontal="true">
+        <dc:Bounds x="20" y="220" width="2466" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Process_09_target_tui_experience_Application" bpmnElement="Lane_Process_09_target_tui_experience_Application" isHorizontal="true">
+        <dc:Bounds x="20" y="360" width="2466" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Process_09_target_tui_experience_STEMMA___persistence" bpmnElement="Lane_Process_09_target_tui_experience_STEMMA___persistence" isHorizontal="true">
+        <dc:Bounds x="20" y="500" width="2466" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_start" bpmnElement="start">
+        <dc:Bounds x="80" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_workspace" bpmnElement="workspace">
+        <dc:Bounds x="260" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_runtime" bpmnElement="runtime">
+        <dc:Bounds x="450" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_navigate" bpmnElement="navigate">
+        <dc:Bounds x="640" y="114" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_discover" bpmnElement="discover">
+        <dc:Bounds x="830" y="114" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_intent" bpmnElement="intent">
+        <dc:Bounds x="1020" y="124" width="52" height="52" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_inspect" bpmnElement="inspect">
+        <dc:Bounds x="1210" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_author" bpmnElement="author">
+        <dc:Bounds x="1210" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_commit" bpmnElement="commit">
+        <dc:Bounds x="1400" y="394" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_dirty" bpmnElement="dirty">
+        <dc:Bounds x="1590" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_persist" bpmnElement="persist">
+        <dc:Bounds x="1780" y="114" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_outcome" bpmnElement="outcome">
+        <dc:Bounds x="1970" y="254" width="160" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_more" bpmnElement="more">
+        <dc:Bounds x="2160" y="124" width="52" height="52" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_end" bpmnElement="end">
+        <dc:Bounds x="2350" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_Flow_01" bpmnElement="Flow_01">
+        <di:waypoint x="98.0" y="150.0" />
+        <di:waypoint x="219.0" y="150.0" />
+        <di:waypoint x="219.0" y="290.0" />
+        <di:waypoint x="340.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_02" bpmnElement="Flow_02">
+        <di:waypoint x="340.0" y="290.0" />
+        <di:waypoint x="530.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_03" bpmnElement="Flow_03">
+        <di:waypoint x="530.0" y="290.0" />
+        <di:waypoint x="625.0" y="290.0" />
+        <di:waypoint x="625.0" y="150.0" />
+        <di:waypoint x="720.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_04" bpmnElement="Flow_04">
+        <di:waypoint x="720.0" y="150.0" />
+        <di:waypoint x="910.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_05" bpmnElement="Flow_05">
+        <di:waypoint x="910.0" y="150.0" />
+        <di:waypoint x="1046.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_06" bpmnElement="Flow_06">
+        <di:waypoint x="1046.0" y="150.0" />
+        <di:waypoint x="1168.0" y="150.0" />
+        <di:waypoint x="1168.0" y="290.0" />
+        <di:waypoint x="1290.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_07" bpmnElement="Flow_07">
+        <di:waypoint x="1046.0" y="150.0" />
+        <di:waypoint x="1168.0" y="150.0" />
+        <di:waypoint x="1168.0" y="290.0" />
+        <di:waypoint x="1290.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_08" bpmnElement="Flow_08">
+        <di:waypoint x="1290.0" y="290.0" />
+        <di:waypoint x="1738.0" y="290.0" />
+        <di:waypoint x="1738.0" y="150.0" />
+        <di:waypoint x="2186.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_09" bpmnElement="Flow_09">
+        <di:waypoint x="1290.0" y="290.0" />
+        <di:waypoint x="1385.0" y="290.0" />
+        <di:waypoint x="1385.0" y="430.0" />
+        <di:waypoint x="1480.0" y="430.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_10" bpmnElement="Flow_10">
+        <di:waypoint x="1480.0" y="430.0" />
+        <di:waypoint x="1575.0" y="430.0" />
+        <di:waypoint x="1575.0" y="290.0" />
+        <di:waypoint x="1670.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_11" bpmnElement="Flow_11">
+        <di:waypoint x="1670.0" y="290.0" />
+        <di:waypoint x="1765.0" y="290.0" />
+        <di:waypoint x="1765.0" y="150.0" />
+        <di:waypoint x="1860.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_12" bpmnElement="Flow_12">
+        <di:waypoint x="1860.0" y="150.0" />
+        <di:waypoint x="1955.0" y="150.0" />
+        <di:waypoint x="1955.0" y="290.0" />
+        <di:waypoint x="2050.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_13" bpmnElement="Flow_13">
+        <di:waypoint x="2050.0" y="290.0" />
+        <di:waypoint x="2118.0" y="290.0" />
+        <di:waypoint x="2118.0" y="150.0" />
+        <di:waypoint x="2186.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_14" bpmnElement="Flow_14">
+        <di:waypoint x="2186.0" y="150.0" />
+        <di:waypoint x="2221.0" y="27" />
+        <di:waypoint x="685.0" y="27" />
+        <di:waypoint x="720.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_15" bpmnElement="Flow_15">
+        <di:waypoint x="2186.0" y="150.0" />
+        <di:waypoint x="2368.0" y="150.0" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

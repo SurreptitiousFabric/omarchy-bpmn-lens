@@ -1,0 +1,823 @@
+{
+  "schemaVersion": 1,
+  "id": "04-target-evidence-to-conclusion",
+  "file": "04-target-evidence-to-conclusion.bpmn",
+  "title": "Evidence to conclusion",
+  "classification": "target",
+  "summary": "An evidence-first research flow that keeps source material, extraction, reasoning, and conclusions distinct and reviewable.",
+  "implementationStatus": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial.",
+  "tuiDesign": "Provide dedicated source/evidence actions and an explicit trail back from conclusions.",
+  "webDesign": "Use a reviewable evidence workspace powered by shared use cases and scoped identity.",
+  "sources": [
+    "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+    "docs/design-docs/stemma-full-editing-contract.md"
+  ],
+  "warnings": [],
+  "elements": {
+    "start": {
+      "id": "start",
+      "label": "Encounter source material",
+      "bpmnType": "bpmn:StartEvent",
+      "actor": "User",
+      "meaning": "Encounter source material is a start event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "describe": {
+      "id": "describe",
+      "label": "Describe Citation and Resource",
+      "bpmnType": "bpmn:Task",
+      "actor": "User",
+      "meaning": "Describe Citation and Resource is a task in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "source": {
+      "id": "source",
+      "label": "Create or open Source / SourceLet",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Create or open Source / SourceLet is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "frame": {
+      "id": "frame",
+      "label": "Record frame: where, when, material links, quality",
+      "bpmnType": "bpmn:Task",
+      "actor": "User",
+      "meaning": "Record frame: where, when, material links, quality is a task in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "transcribe": {
+      "id": "transcribe",
+      "label": "Transcribe or extract source content",
+      "bpmnType": "bpmn:Task",
+      "actor": "User",
+      "meaning": "Transcribe or extract source content is a task in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "profiles": {
+      "id": "profiles",
+      "label": "Model proto-subjects, dates, commentary, and properties",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Model proto-subjects, dates, commentary, and properties is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "evidence": {
+      "id": "evidence",
+      "label": "Attach documentary evidence to subject/event context",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Attach documentary evidence to subject/event context is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "correlate": {
+      "id": "correlate",
+      "label": "Compare and correlate evidence",
+      "bpmnType": "bpmn:Task",
+      "actor": "User",
+      "meaning": "Compare and correlate evidence is a task in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "infer": {
+      "id": "infer",
+      "label": "Inference required?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "User",
+      "meaning": "Inference required? is a exclusive gateway in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "reason": {
+      "id": "reason",
+      "label": "Record reasoning, inference, and surety in genealogical data",
+      "bpmnType": "bpmn:Task",
+      "actor": "User",
+      "meaning": "Record reasoning, inference, and surety in genealogical data is a task in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "conclude": {
+      "id": "conclude",
+      "label": "Create or revise conclusional entities and typed links",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Create or revise conclusional entities and typed links is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "trail": {
+      "id": "trail",
+      "label": "Link conclusions back through reasoning and evidence",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Link conclusions back through reasoning and evidence is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "validate": {
+      "id": "validate",
+      "label": "Validate identity, reference, and provenance semantics",
+      "bpmnType": "bpmn:Task",
+      "actor": "STEMMA / persistence",
+      "meaning": "Validate identity, reference, and provenance semantics is a task in this workflow. The STEMMA model, validation, store, or persistence adapter owns this work.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "ok": {
+      "id": "ok",
+      "label": "Valid?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "Application",
+      "meaning": "Valid? is a exclusive gateway in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "repair": {
+      "id": "repair",
+      "label": "Return exact finding for correction",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Return exact finding for correction is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "save": {
+      "id": "save",
+      "label": "Persist evidence and conclusions without collapsing them",
+      "bpmnType": "bpmn:Task",
+      "actor": "STEMMA / persistence",
+      "meaning": "Persist evidence and conclusions without collapsing them is a task in this workflow. The STEMMA model, validation, store, or persistence adapter owns this work.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "end": {
+      "id": "end",
+      "label": "Research trail available for review",
+      "bpmnType": "bpmn:EndEvent",
+      "actor": "User",
+      "meaning": "Research trail available for review is a end event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_01": {
+      "id": "Flow_01",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_02": {
+      "id": "Flow_02",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_03": {
+      "id": "Flow_03",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_04": {
+      "id": "Flow_04",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_05": {
+      "id": "Flow_05",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_06": {
+      "id": "Flow_06",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_07": {
+      "id": "Flow_07",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_08": {
+      "id": "Flow_08",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_09": {
+      "id": "Flow_09",
+      "label": "Yes",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Yes” applies.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_10": {
+      "id": "Flow_10",
+      "label": "No",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “No” applies.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_11": {
+      "id": "Flow_11",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_12": {
+      "id": "Flow_12",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_13": {
+      "id": "Flow_13",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_14": {
+      "id": "Flow_14",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_15": {
+      "id": "Flow_15",
+      "label": "No",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “No” applies.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_16": {
+      "id": "Flow_16",
+      "label": "Correct at source/model layer",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Correct at source/model layer” applies.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_17": {
+      "id": "Flow_17",
+      "label": "Yes",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Yes” applies.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    },
+    "Flow_18": {
+      "id": "Flow_18",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target",
+        "detail": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Provide dedicated source/evidence actions and an explicit trail back from conclusions."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Use a reviewable evidence workspace powered by shared use cases and scoped identity."
+      },
+      "sources": [
+        "docs/FamilyHistoryData.pdf sections 2, 3, 6.3.1, and 6.9",
+        "docs/design-docs/stemma-full-editing-contract.md"
+      ]
+    }
+  }
+}

@@ -1,0 +1,715 @@
+{
+  "schemaVersion": 1,
+  "id": "09-target-tui-experience",
+  "file": "09-target-tui-experience.bpmn",
+  "title": "Target TUI experience",
+  "classification": "target-partial",
+  "summary": "How the terminal experience should orchestrate shared workflows through deterministic Bubble Tea states and contextual keyboard actions.",
+  "implementationStatus": "Mixed completion across the current two-pane shell and planned shared application seams.",
+  "tuiDesign": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic.",
+  "webDesign": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics.",
+  "sources": [
+    "docs/design-docs/tui-v1-master-spec.md",
+    "docs/design-docs/shared-primitives-catalog.md",
+    "Bubble Tea architecture contracts"
+  ],
+  "warnings": [],
+  "elements": {
+    "start": {
+      "id": "start",
+      "label": "Launch with keyboard",
+      "bpmnType": "bpmn:StartEvent",
+      "actor": "User",
+      "meaning": "Launch with keyboard is a start event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "workspace": {
+      "id": "workspace",
+      "label": "Use startup chooser or workspace file workbench",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Use startup chooser or workspace file workbench is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "runtime": {
+      "id": "runtime",
+      "label": "Enter responsive two-pane shell",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Enter responsive two-pane shell is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "navigate": {
+      "id": "navigate",
+      "label": "Navigate, resize, focus, promote, and return",
+      "bpmnType": "bpmn:Task",
+      "actor": "User",
+      "meaning": "Navigate, resize, focus, promote, and return is a task in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "discover": {
+      "id": "discover",
+      "label": "Filter or search",
+      "bpmnType": "bpmn:Task",
+      "actor": "User",
+      "meaning": "Filter or search is a task in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "intent": {
+      "id": "intent",
+      "label": "Inspect or author?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "User",
+      "meaning": "Inspect or author? is a exclusive gateway in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "inspect": {
+      "id": "inspect",
+      "label": "Inspect detail, evidence, preview, and contextual help",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Inspect detail, evidence, preview, and contextual help is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "author": {
+      "id": "author",
+      "label": "Use scalar, choice, tri-state, vocabulary, relationship, list, or narrative editor",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Use scalar, choice, tri-state, vocabulary, relationship, list, or narrative editor is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "commit": {
+      "id": "commit",
+      "label": "Commit/cancel through deterministic message transition",
+      "bpmnType": "bpmn:Task",
+      "actor": "Application",
+      "meaning": "Commit/cancel through deterministic message transition is a task in this workflow. A channel-neutral application workflow owns this decision or transformation.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "dirty": {
+      "id": "dirty",
+      "label": "Show dirty, validation, and failure state honestly",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Show dirty, validation, and failure state honestly is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "persist": {
+      "id": "persist",
+      "label": "Save, Save As, or Export XML",
+      "bpmnType": "bpmn:Task",
+      "actor": "User",
+      "meaning": "Save, Save As, or Export XML is a task in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "outcome": {
+      "id": "outcome",
+      "label": "Show success or actionable recovery without losing edits",
+      "bpmnType": "bpmn:Task",
+      "actor": "Frontend",
+      "meaning": "Show success or actionable recovery without losing edits is a task in this workflow. The active presentation adapter owns this interaction, not the domain model.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "more": {
+      "id": "more",
+      "label": "Continue?",
+      "bpmnType": "bpmn:ExclusiveGateway",
+      "actor": "User",
+      "meaning": "Continue? is a exclusive gateway in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "end": {
+      "id": "end",
+      "label": "Quit safely",
+      "bpmnType": "bpmn:EndEvent",
+      "actor": "User",
+      "meaning": "Quit safely is a end event in this workflow. A person makes an explicit choice or reviews an outcome.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "direct",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "direct",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "Flow_01": {
+      "id": "Flow_01",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "Flow_02": {
+      "id": "Flow_02",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "Flow_03": {
+      "id": "Flow_03",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "Flow_04": {
+      "id": "Flow_04",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "Flow_05": {
+      "id": "Flow_05",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "Flow_06": {
+      "id": "Flow_06",
+      "label": "Inspect",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Inspect” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "Flow_07": {
+      "id": "Flow_07",
+      "label": "Author",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Author” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "Flow_08": {
+      "id": "Flow_08",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "Flow_09": {
+      "id": "Flow_09",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "Flow_10": {
+      "id": "Flow_10",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "Flow_11": {
+      "id": "Flow_11",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "Flow_12": {
+      "id": "Flow_12",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "Flow_13": {
+      "id": "Flow_13",
+      "label": "sequence flow",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues along this path.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "Flow_14": {
+      "id": "Flow_14",
+      "label": "Yes",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “Yes” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    },
+    "Flow_15": {
+      "id": "Flow_15",
+      "label": "No",
+      "bpmnType": "bpmn:SequenceFlow",
+      "actor": "Process",
+      "meaning": "The process continues when “No” applies.",
+      "implementation": {
+        "state": "target-partial",
+        "detail": "Mixed completion across the current two-pane shell and planned shared application seams."
+      },
+      "tui": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic."
+      },
+      "web": {
+        "relevance": "through-shared-workflow",
+        "guidance": "Not a web interaction blueprint; use it to identify shared workflow boundaries, not to copy terminal mechanics."
+      },
+      "sources": [
+        "docs/design-docs/tui-v1-master-spec.md",
+        "docs/design-docs/shared-primitives-catalog.md",
+        "Bubble Tea architecture contracts"
+      ]
+    }
+  }
+}
