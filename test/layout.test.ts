@@ -117,6 +117,35 @@ describe("BPMN Diagram Interchange routing", () => {
     }
   });
 
+  it("routes forward gateway branches out of the diamond's right side", async () => {
+    const files = (await readdir(diagramsDir)).filter((file) => file.endsWith(".bpmn")).sort();
+    for (const file of files) {
+      const parsed = await moddle.fromXML(await readFile(path.join(diagramsDir, file), "utf8"));
+      const definitions = parsed.rootElement as unknown as { diagrams?: Array<{ plane?: { planeElement?: PlaneElement[] } }> };
+      const planeElements = definitions.diagrams?.[0]?.plane?.planeElement || [];
+      const boundsByElement = new Map(
+        planeElements
+          .filter((element) => element.$type === "bpmndi:BPMNShape" && element.bounds)
+          .map((element) => [element.bpmnElement.id, element.bounds as Bounds])
+      );
+
+      for (const edge of planeElements.filter((element) => element.$type === "bpmndi:BPMNEdge")) {
+        const flow = edge.bpmnElement;
+        if (flow.$type !== "bpmn:SequenceFlow" || flow.sourceRef?.$type !== "bpmn:ExclusiveGateway") continue;
+        const source = boundsByElement.get(flow.sourceRef.id);
+        const target = boundsByElement.get(flow.targetRef?.id || "");
+        const first = edge.waypoint?.[0];
+        if (!source || !target || !first) continue;
+        const targetCenterX = target.x + target.width / 2;
+        const sourceCenterX = source.x + source.width / 2;
+        if (targetCenterX > sourceCenterX) {
+          expect(first.x, `${file} ${flow.id} forward gateway exit`).toBe(source.x + source.width);
+          expect(first.y, `${file} ${flow.id} gateway exit midpoint`).toBe(source.y + source.height / 2);
+        }
+      }
+    }
+  });
+
   it("keeps sequence flows out of unrelated text-bearing nodes", async () => {
     const files = (await readdir(diagramsDir)).filter((file) => file.endsWith(".bpmn")).sort();
     for (const file of files) {

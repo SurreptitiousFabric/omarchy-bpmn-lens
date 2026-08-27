@@ -460,14 +460,38 @@ def segment_is_clear(start, end, obstacles):
     return False
 
 
-def route_points(source_id, target_id, centers, bounds, label_bounds):
+def gateway_port(bounds, other_center, outbound, clearance):
+    """Give gateway traffic a directional port and a short external stub."""
+    x, y, width, height = bounds
+    center_x = x + width / 2
+    center_y = y + height / 2
+    delta_x = other_center[0] - center_x
+
+    if outbound:
+        if delta_x > 0:
+            return (x + width, center_y), (x + width + clearance, center_y)
+        return None, None
+    if delta_x < 0:
+        return (x, center_y), (x - clearance, center_y)
+    return None, None
+
+
+def route_points(source_id, target_id, centers, bounds, label_bounds, kinds):
     """Find a deterministic, low-bend Manhattan route around other nodes."""
     clearance = 12
     source = centers[source_id]
     target = centers[target_id]
+    source_port = source_stub = None
+    target_port = target_stub = None
+    if kinds[source_id] == "gateway":
+        source_port, source_stub = gateway_port(bounds[source_id], target, True, clearance)
+    if kinds[target_id] == "gateway":
+        target_port, target_stub = gateway_port(bounds[target_id], source, False, clearance)
+    route_start = source_stub or source
+    route_target = target_stub or target
     obstacles = []
-    x_values = {source[0], target[0]}
-    y_values = {source[1], target[1]}
+    x_values = {route_start[0], route_target[0]}
+    y_values = {route_start[1], route_target[1]}
     for node_id, (x, y, width, height) in bounds.items():
         left, right = x - clearance, x + width + clearance
         top, bottom = y - clearance, y + height + clearance
@@ -484,8 +508,8 @@ def route_points(source_id, target_id, centers, bounds, label_bounds):
 
     xs = sorted(x_values)
     ys = sorted(y_values)
-    start = (xs.index(source[0]), ys.index(source[1]), "")
-    goal_xy = (xs.index(target[0]), ys.index(target[1]))
+    start = (xs.index(route_start[0]), ys.index(route_start[1]), "")
+    goal_xy = (xs.index(route_target[0]), ys.index(route_target[1]))
     queue = [(0, start)]
     costs = {start: 0}
     previous = {}
@@ -535,8 +559,14 @@ def route_points(source_id, target_id, centers, bounds, label_bounds):
             continue
         compressed.append(current)
     compressed.append(path[-1])
-    compressed[0] = boundary_point(bounds[source_id], compressed[1])
-    compressed[-1] = boundary_point(bounds[target_id], compressed[-2])
+    if source_port:
+        compressed.insert(0, source_port)
+    else:
+        compressed[0] = boundary_point(bounds[source_id], compressed[1])
+    if target_port:
+        compressed.append(target_port)
+    else:
+        compressed[-1] = boundary_point(bounds[target_id], compressed[-2])
     return compressed
 
 
@@ -656,9 +686,10 @@ def build_model(model):
             })
         centers[node["id"]] = (x + width / 2, y + height / 2)
 
+    kinds = {node["id"]: node["kind"] for node in model["nodes"]}
     routes = []
     for i, seq in enumerate(model["flows"], 1):
-        routes.append((i, seq, route_points(seq["source"], seq["target"], centers, bounds, label_bounds)))
+        routes.append((i, seq, route_points(seq["source"], seq["target"], centers, bounds, label_bounds, kinds)))
 
     occupied = list(bounds.values()) + list(label_bounds.values())
     flow_labels = {}
