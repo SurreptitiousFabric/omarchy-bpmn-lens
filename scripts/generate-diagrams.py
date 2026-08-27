@@ -446,6 +446,45 @@ def boundary_point(bounds, toward):
     return round(center_x + delta_x * scale, 1), round(center_y + delta_y * scale, 1)
 
 
+def point_in_rectangle_interior(point, bounds):
+    x, y, width, height = bounds
+    return x < point[0] < x + width and y < point[1] < y + height
+
+
+def rectangle_exit_point(inside, outside, bounds):
+    """Intersect an inside-to-outside segment with a rectangular boundary."""
+    x, y, width, height = bounds
+    delta_x = outside[0] - inside[0]
+    delta_y = outside[1] - inside[1]
+    candidates = []
+    if delta_x > 0:
+        candidates.append((x + width - inside[0]) / delta_x)
+    elif delta_x < 0:
+        candidates.append((x - inside[0]) / delta_x)
+    if delta_y > 0:
+        candidates.append((y + height - inside[1]) / delta_y)
+    elif delta_y < 0:
+        candidates.append((y - inside[1]) / delta_y)
+    for ratio in sorted(value for value in candidates if 0 <= value <= 1):
+        point = (inside[0] + delta_x * ratio, inside[1] + delta_y * ratio)
+        if x <= point[0] <= x + width and y <= point[1] <= y + height:
+            return round(point[0], 1), round(point[1], 1)
+    raise AssertionError((inside, outside, bounds, "no rectangle exit"))
+
+
+def clip_rectangle_path(points, bounds):
+    """Drop waypoints inside a rectangular endpoint shape and begin at its exit."""
+    for index in range(1, len(points)):
+        if point_in_rectangle_interior(points[index], bounds):
+            continue
+        boundary = rectangle_exit_point(points[index - 1], points[index], bounds)
+        remainder = points[index:]
+        if remainder and remainder[0] == boundary:
+            remainder = remainder[1:]
+        return [boundary, *remainder]
+    raise AssertionError((points, bounds, "route never exits rectangle"))
+
+
 def segment_is_clear(start, end, obstacles):
     """Check an orthogonal segment against open rectangle interiors."""
     if start[0] == end[0]:
@@ -621,10 +660,14 @@ def route_points(source_id, target_id, centers, bounds, label_bounds, kinds, tar
     compressed.append(path[-1])
     if source_port:
         compressed.insert(0, source_port)
+    elif kinds[source_id] == "task":
+        compressed = clip_rectangle_path(compressed, bounds[source_id])
     else:
         compressed[0] = boundary_point(bounds[source_id], compressed[1])
     if target_port:
         compressed.append(target_port)
+    elif kinds[target_id] == "task":
+        compressed = list(reversed(clip_rectangle_path(list(reversed(compressed)), bounds[target_id])))
     else:
         compressed[-1] = boundary_point(bounds[target_id], compressed[-2])
     return compressed

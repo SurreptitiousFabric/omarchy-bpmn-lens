@@ -156,8 +156,7 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_04" bpmnElement="Flow_04">
-        <di:waypoint x="550.0" y="412.0" />
-        <di:waypoint x="550.0" y="430.0" />
+        <di:waypoint x="630.0" y="430.0" />
         <di:waypoint x="648" y="430.0" />
         <di:waypoint x="660" y="430.0" />
       </bpmndi:BPMNEdge>

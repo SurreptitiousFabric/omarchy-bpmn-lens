@@ -232,6 +232,40 @@ describe("BPMN Diagram Interchange routing", () => {
     }
   });
 
+  it("keeps sequence flows out of their source and target task interiors", async () => {
+    const files = (await readdir(diagramsDir)).filter((file) => file.endsWith(".bpmn")).sort();
+    for (const file of files) {
+      const parsed = await moddle.fromXML(await readFile(path.join(diagramsDir, file), "utf8"));
+      const definitions = parsed.rootElement as unknown as { diagrams?: Array<{ plane?: { planeElement?: PlaneElement[] } }> };
+      const planeElements = definitions.diagrams?.[0]?.plane?.planeElement || [];
+      const taskBounds = new Map(
+        planeElements
+          .filter((element) => element.$type === "bpmndi:BPMNShape" && element.bounds && element.bpmnElement.$type.endsWith("Task"))
+          .map((element) => [element.bpmnElement.id, element.bounds as Bounds])
+      );
+
+      for (const edge of planeElements.filter((element) => element.$type === "bpmndi:BPMNEdge")) {
+        const flow = edge.bpmnElement;
+        if (flow.$type !== "bpmn:SequenceFlow") continue;
+        const endpointTasks = [flow.sourceRef?.id, flow.targetRef?.id]
+          .map((id) => id ? taskBounds.get(id) : undefined)
+          .filter(Boolean) as Bounds[];
+        const waypoints = edge.waypoint || [];
+        for (const bounds of endpointTasks) {
+          for (let index = 1; index < waypoints.length; index += 1) {
+            const start = waypoints[index - 1];
+            const end = waypoints[index];
+            if (!start || !end) continue;
+            expect(
+              crossesInterior(start, end, bounds),
+              `${file} ${flow.id} crosses its endpoint task`
+            ).toBe(false);
+          }
+        }
+      }
+    }
+  });
+
   it("keeps sequence flows out of explicit gateway and event labels", async () => {
     const files = (await readdir(diagramsDir)).filter((file) => file.endsWith(".bpmn")).sort();
     for (const file of files) {
