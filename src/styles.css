@@ -122,6 +122,25 @@ button { color: inherit; }
 .dot.current { background: var(--current); }
 .dot.target { background: var(--target); }
 
+.nav-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem; margin: 0 0.75rem 0.6rem; padding: 0.2rem; border: 1px solid var(--border); border-radius: var(--radius); }
+.nav-tabs button { padding: 0.45rem; border: 0; border-radius: calc(var(--radius) - 2px); background: transparent; color: var(--muted-text); cursor: pointer; font: inherit; font-size: 0.68rem; }
+.nav-tabs button[aria-selected="true"] { background: color-mix(in srgb, var(--omarchy-foreground) 9%, transparent); color: var(--omarchy-foreground); box-shadow: inset 0 -2px 0 var(--omarchy-accent); }
+.nav-tabs button:focus-visible { outline: 2px solid var(--omarchy-accent); outline-offset: 1px; }
+.outline-view { padding: 0 0.75rem 1rem; }
+.outline-search-label { display: block; margin-bottom: 0.35rem; color: var(--muted-text); font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase; }
+#outline-search { width: 100%; padding: 0.55rem 0.65rem; border: 1px solid var(--border-strong); border-radius: var(--radius); background: var(--surface); color: var(--omarchy-foreground); font: inherit; font-size: 0.72rem; }
+#outline-search:focus-visible { outline: 2px solid var(--omarchy-accent); outline-offset: 1px; }
+.outline-status { margin: 0.55rem 0; color: var(--muted-text); font-size: 0.62rem; }
+.outline-list { display: grid; gap: 0.25rem; margin: 0; padding: 0; list-style: none; }
+.outline-list button { width: 100%; padding: 0.55rem 0.65rem; border: 1px solid transparent; border-radius: var(--radius); background: transparent; color: var(--omarchy-foreground); cursor: pointer; text-align: left; }
+.outline-list button:hover { background: color-mix(in srgb, var(--omarchy-foreground) 6%, transparent); }
+.outline-list button.active { border-color: var(--omarchy-accent); background: color-mix(in srgb, var(--omarchy-accent) 10%, transparent); }
+.outline-list button:focus-visible { outline: 2px solid var(--omarchy-accent); outline-offset: -2px; }
+.outline-list button span, .outline-list button small { display: block; }
+.outline-list button span { font-size: 0.72rem; line-height: 1.3; }
+.outline-list button small { margin-top: 0.2rem; color: var(--muted-text); font-size: 0.6rem; }
+.outline-empty { padding: 0.75rem; border: 1px dashed var(--border-strong); border-radius: var(--radius); color: var(--muted-text); font-size: 0.68rem; line-height: 1.45; }
+
 .diagram-region { position: relative; min-width: 0; min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; background: color-mix(in srgb, var(--omarchy-background) 96%, white); }
 .diagram-toolbar { min-height: 4.2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
 .diagram-title-block { min-width: 0; }

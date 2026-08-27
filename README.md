@@ -10,6 +10,7 @@ The first bundled suite covers Nicelydrapped’s observed TUI behavior and targe
 - Selecting an element opens a compact notation card explaining what its BPMN shape means; bundled diagrams also show the source-grounded product explanation in the side panel.
 - The process navigator and explanation panel collapse independently, remember their state locally, and automatically preserve the active view. Use <kbd>[</kbd> and <kbd>]</kbd> to toggle them.
 - Select any BPMN element, then use Selection or <kbd>F</kbd> for a readable close view. <kbd>P</kbd>/<kbd>N</kbd> move through elements; <kbd>0</kbd> fits the complete diagram, <kbd>W</kbd> fits its width, and <kbd>1</kbd> shows one diagram unit per CSS pixel. A focused deep link uses `?diagram=…&element=…&view=focus`.
+- The Outline tab provides a searchable HTML list of lanes, tasks, events, gateways, and named paths. Selecting a result synchronizes the SVG, URL, notation, explanation, and selection view. It is an accessible navigation companion, not a claim that the SVG itself is a complete screen-reader representation; the broader audit remains tracked in issue #4.
 - Plain TypeScript, HTML, and CSS keep the frontend small and inspectable.
 - JSON sidecars keep explanation claims reviewable and separate from BPMN semantics.
 - A tiny QML panel integrates with Omarchy without running the web application inside `omarchy-shell`.

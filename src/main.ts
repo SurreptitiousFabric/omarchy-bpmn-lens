@@ -4,6 +4,8 @@ import "./styles.css";
 import { loadBundledDiagram, loadCatalog } from "./content";
 import { adjacentElement, elementBounds, focusViewbox, navigableElements } from "./focus";
 import { notationFor } from "./notation";
+import { buildOutline, filterOutline } from "./outline";
+import type { OutlineItem } from "./outline";
 import type { Catalog, CatalogItem, DiagramExplanation, ElementExplanation } from "./types";
 import { actualSizeViewbox, diagramBounds, widthViewbox } from "./view";
 import type { ViewMode } from "./view";
@@ -32,15 +34,27 @@ app.innerHTML = `
     </div>
   </header>
   <div id="workspace" class="workspace">
-    <nav id="diagram-nav" class="diagram-nav" aria-label="BPMN diagrams">
+    <nav id="diagram-nav" class="diagram-nav" aria-label="BPMN explorer">
       <div class="panel-heading">
-        <div><span class="eyebrow">Capability suite</span><h1>Processes</h1></div>
+        <div><span class="eyebrow">Capability suite</span><h1>Explore</h1></div>
         <span id="diagram-count" class="count"></span>
       </div>
-      <div id="diagram-list" class="diagram-list"></div>
-      <div class="legend">
-        <span><i class="dot current"></i>Observed current</span>
-        <span><i class="dot target"></i>Target or partial</span>
+      <div class="nav-tabs" role="tablist" aria-label="Explorer view">
+        <button id="processes-tab" role="tab" type="button" aria-selected="true" aria-controls="processes-view">Processes</button>
+        <button id="outline-tab" role="tab" type="button" aria-selected="false" aria-controls="outline-view" tabindex="-1">Outline</button>
+      </div>
+      <div id="processes-view" role="tabpanel" aria-labelledby="processes-tab">
+        <div id="diagram-list" class="diagram-list"></div>
+        <div class="legend">
+          <span><i class="dot current"></i>Observed current</span>
+          <span><i class="dot target"></i>Target or partial</span>
+        </div>
+      </div>
+      <div id="outline-view" class="outline-view" role="tabpanel" aria-labelledby="outline-tab" hidden>
+        <label class="outline-search-label" for="outline-search">Find an element</label>
+        <input id="outline-search" type="search" autocomplete="off" placeholder="Label or BPMN type" />
+        <p id="outline-status" class="outline-status" role="status"></p>
+        <ul id="outline-list" class="outline-list" aria-label="Diagram elements"></ul>
       </div>
     </nav>
     <main class="diagram-region">
@@ -109,6 +123,13 @@ const processesToggle = get<HTMLButtonElement>("#toggle-processes");
 const detailsToggle = get<HTMLButtonElement>("#toggle-details");
 const diagramCanvas = get<HTMLDivElement>("#diagram-canvas");
 const focusControls = get<HTMLDivElement>("#focus-controls");
+const processesView = get<HTMLDivElement>("#processes-view");
+const outlineView = get<HTMLDivElement>("#outline-view");
+const processesTab = get<HTMLButtonElement>("#processes-tab");
+const outlineTab = get<HTMLButtonElement>("#outline-tab");
+const outlineSearch = get<HTMLInputElement>("#outline-search");
+const outlineList = get<HTMLUListElement>("#outline-list");
+const outlineStatus = get<HTMLParagraphElement>("#outline-status");
 const viewer = new NavigatedViewer({ container: "#diagram-canvas" });
 
 let catalog: Catalog;
@@ -117,6 +138,8 @@ let activeExplanation: DiagramExplanation | undefined;
 let selectedElementId: string | undefined;
 let activeViewMode: ViewMode = "overview";
 let focusOrder: ReturnType<typeof navigableElements> = [];
+let outlineItems: OutlineItem[] = [];
+let activeNavView: "processes" | "outline" = "processes";
 let applyingNamedView = false;
 let resizeFrame: number | undefined;
 const panelStorageKey = "bpmn-lens.panels.v1";
@@ -318,9 +341,53 @@ function renderList(): void {
   }
 }
 
+function syncOutlineSelection(): void {
+  for (const button of outlineList.querySelectorAll<HTMLButtonElement>("[data-outline-id]")) {
+    const selected = button.dataset.outlineId === selectedElementId;
+    button.classList.toggle("active", selected);
+    if (selected) button.setAttribute("aria-current", "true");
+    else button.removeAttribute("aria-current");
+  }
+}
+
+function renderOutline(): void {
+  const filtered = filterOutline(outlineItems, outlineSearch.value);
+  outlineStatus.textContent = outlineItems.length
+    ? `${filtered.length} of ${outlineItems.length} elements`
+    : "No tasks, events, gateways, lanes, or named paths in this diagram.";
+  if (!filtered.length) {
+    outlineList.innerHTML = outlineItems.length ? '<li class="outline-empty">No elements match this search.</li>' : "";
+    return;
+  }
+  outlineList.innerHTML = filtered.map((item) => `
+    <li><button type="button" data-outline-id="${escapeHtml(item.id)}">
+      <span>${escapeHtml(item.label)}</span><small>${escapeHtml(item.typeLabel)}</small>
+    </button></li>
+  `).join("");
+  for (const button of outlineList.querySelectorAll<HTMLButtonElement>("[data-outline-id]")) {
+    button.addEventListener("click", () => selectElement(button.dataset.outlineId || "", true));
+  }
+  syncOutlineSelection();
+}
+
+function setNavView(view: "processes" | "outline", focusTab = false): void {
+  activeNavView = view;
+  const showProcesses = view === "processes";
+  processesView.hidden = !showProcesses;
+  outlineView.hidden = showProcesses;
+  processesTab.setAttribute("aria-selected", String(showProcesses));
+  outlineTab.setAttribute("aria-selected", String(!showProcesses));
+  processesTab.tabIndex = showProcesses ? 0 : -1;
+  outlineTab.tabIndex = showProcesses ? -1 : 0;
+  if (focusTab) (showProcesses ? processesTab : outlineTab).focus();
+}
+
 async function importXml(xml: string): Promise<void> {
   const result = await viewer.importXML(xml);
   focusOrder = navigableElements(viewer.get("elementRegistry").getAll());
+  outlineItems = buildOutline(viewer.get("elementRegistry").getAll());
+  outlineSearch.value = "";
+  renderOutline();
   activeViewMode = "overview";
   diagramCanvas.classList.remove("focus-mode");
   updateViewControls();
@@ -367,6 +434,7 @@ function selectElement(id: string, shouldFocus = false): void {
   const label = explanation?.label || element.businessObject?.name;
   if (explanation) renderElementExplanation(explanation);
   showNotation(type, label);
+  syncOutlineSelection();
   updateViewControls();
   if (shouldFocus || activeViewMode === "selection") setViewMode("selection");
   else updateUrl(activeItem?.id, id);
@@ -436,6 +504,32 @@ get<HTMLButtonElement>("#focus-previous").addEventListener("click", () => moveFo
 get<HTMLButtonElement>("#focus-next").addEventListener("click", () => moveFocus(1));
 processesToggle.addEventListener("click", toggleProcesses);
 detailsToggle.addEventListener("click", toggleDetails);
+processesTab.addEventListener("click", () => setNavView("processes"));
+outlineTab.addEventListener("click", () => setNavView("outline"));
+for (const tab of [processesTab, outlineTab]) {
+  tab.addEventListener("keydown", (event) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    setNavView(activeNavView === "processes" ? "outline" : "processes", true);
+  });
+}
+outlineSearch.addEventListener("input", renderOutline);
+outlineSearch.addEventListener("keydown", (event) => {
+  if (event.key !== "ArrowDown") return;
+  const first = outlineList.querySelector<HTMLButtonElement>("[data-outline-id]");
+  if (first) {
+    event.preventDefault();
+    first.focus();
+  }
+});
+outlineList.addEventListener("keydown", (event) => {
+  if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+  const buttons = [...outlineList.querySelectorAll<HTMLButtonElement>("[data-outline-id]")];
+  const index = buttons.indexOf(event.target as HTMLButtonElement);
+  if (index < 0) return;
+  event.preventDefault();
+  buttons[(index + (event.key === "ArrowDown" ? 1 : -1) + buttons.length) % buttons.length]?.focus();
+});
 get<HTMLButtonElement>("#about-button").addEventListener("click", () => dialog.showModal());
 get<HTMLButtonElement>("#close-about").addEventListener("click", () => dialog.close());
 get<HTMLButtonElement>("#close-notation").addEventListener("click", hideNotation);
