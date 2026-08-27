@@ -1,16 +1,22 @@
 export type Classification = "observed-current" | "target" | "target-partial" | "target-unimplemented";
+export type CatalogGroup = "observed-current" | "shared-target" | "tui-target" | "web-target";
+export type Channel = "tui" | "web";
+export type ImplementationState = "current" | "partial" | "unimplemented";
 
 export interface CatalogItem {
   id: string;
   title: string;
   classification: Classification;
+  group: CatalogGroup;
+  channels: Channel[];
+  implementationState: ImplementationState;
   summary: string;
   diagram: string;
   explanation: string;
 }
 
 export interface Catalog {
-  schemaVersion: 1;
+  schemaVersion: 2;
   suite: {
     title: string;
     description: string;

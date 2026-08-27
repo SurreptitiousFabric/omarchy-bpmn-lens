@@ -15,12 +15,18 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 function assertCatalog(value: unknown): asserts value is Catalog {
-  if (!isRecord(value) || value.schemaVersion !== 1 || !Array.isArray(value.diagrams) || !isRecord(value.suite)) {
-    throw new Error("The diagram catalog does not match schema version 1.");
+  if (!isRecord(value) || value.schemaVersion !== 2 || !Array.isArray(value.diagrams) || !isRecord(value.suite)) {
+    throw new Error("The diagram catalog does not match schema version 2.");
   }
+  const groups = new Set(["observed-current", "shared-target", "tui-target", "web-target"]);
+  const channels = new Set(["tui", "web"]);
+  const implementationStates = new Set(["current", "partial", "unimplemented"]);
   for (const item of value.diagrams) {
     if (!isRecord(item) || typeof item.id !== "string" || typeof item.title !== "string" ||
-        typeof item.diagram !== "string" || typeof item.explanation !== "string") {
+        typeof item.diagram !== "string" || typeof item.explanation !== "string" ||
+        typeof item.group !== "string" || !groups.has(item.group) ||
+        typeof item.implementationState !== "string" || !implementationStates.has(item.implementationState) ||
+        !Array.isArray(item.channels) || !item.channels.length || !item.channels.every((channel) => channels.has(channel))) {
       throw new Error("The diagram catalog contains an invalid entry.");
     }
   }

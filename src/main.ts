@@ -2,6 +2,8 @@ import NavigatedViewer from "bpmn-js/lib/NavigatedViewer";
 import "bpmn-js/dist/assets/diagram-js.css";
 import "./styles.css";
 import { loadBundledDiagram, loadCatalog } from "./content";
+import { activeFilterLabels, filterCatalog, groupCatalog } from "./catalog";
+import type { CatalogFilters } from "./catalog";
 import { adjacentElement, elementBounds, focusViewbox, navigableElements } from "./focus";
 import { notationFor, notationPlacement } from "./notation";
 import { buildOutline, filterOutline } from "./outline";
@@ -48,6 +50,22 @@ app.innerHTML = `
         <button id="outline-tab" role="tab" type="button" aria-selected="false" aria-controls="outline-view" tabindex="-1">Outline</button>
       </div>
       <div id="processes-view" role="tabpanel" aria-labelledby="processes-tab">
+        <form id="catalog-filters" class="catalog-filters" aria-label="Filter processes">
+          <label class="catalog-title-filter"><span>Title</span><input id="catalog-search" type="search" autocomplete="off" placeholder="Find a process" /></label>
+          <div class="catalog-filter-grid">
+            <label><span>Classification</span><select id="catalog-classification">
+              <option value="all">All</option><option value="observed-current">Observed current</option><option value="target">Target</option><option value="target-partial">Target partial</option><option value="target-unimplemented">Target unimplemented</option>
+            </select></label>
+            <label><span>Implementation</span><select id="catalog-implementation">
+              <option value="all">All</option><option value="current">Current</option><option value="partial">Partial</option><option value="unimplemented">Unimplemented</option>
+            </select></label>
+            <label><span>Channel</span><select id="catalog-channel">
+              <option value="all">All</option><option value="tui">TUI</option><option value="web">Web</option>
+            </select></label>
+          </div>
+          <div class="catalog-filter-status"><span id="catalog-result-count" role="status"></span><button id="catalog-clear" type="button" hidden>Clear</button></div>
+          <p id="catalog-active-filters" class="catalog-active-filters"></p>
+        </form>
         <div id="diagram-list" class="diagram-list"></div>
         <div class="legend">
           <span><i class="dot current"></i>Observed current</span>
@@ -124,6 +142,13 @@ const get = <T extends HTMLElement>(selector: string): T => {
 };
 
 const list = get<HTMLDivElement>("#diagram-list");
+const catalogSearch = get<HTMLInputElement>("#catalog-search");
+const catalogClassification = get<HTMLSelectElement>("#catalog-classification");
+const catalogImplementation = get<HTMLSelectElement>("#catalog-implementation");
+const catalogChannel = get<HTMLSelectElement>("#catalog-channel");
+const catalogResultCount = get<HTMLSpanElement>("#catalog-result-count");
+const catalogActiveFilters = get<HTMLParagraphElement>("#catalog-active-filters");
+const catalogClear = get<HTMLButtonElement>("#catalog-clear");
 const title = get<HTMLHeadingElement>("#diagram-title");
 const classification = get<HTMLSpanElement>("#classification");
 const explanationContent = get<HTMLDivElement>("#explanation-content");
@@ -163,6 +188,7 @@ let activeNavView: "processes" | "outline" = "processes";
 let traceDirection: TraceDirection | undefined;
 let traceMarkerIds = new Set<string>();
 let notationDismissed = false;
+let catalogFilters: CatalogFilters = { query: "", classification: "all", implementation: "all", channel: "all" };
 let processesWidth = defaultPanelWidth("processes");
 let detailsWidth = defaultPanelWidth("details");
 let applyingNamedView = false;
@@ -487,15 +513,43 @@ function renderElementExplanation(explanation: ElementExplanation): void {
 }
 
 function renderList(): void {
-  list.innerHTML = catalog.diagrams.map((item, index) => `
-    <button class="diagram-item ${item.id === activeItem?.id ? "active" : ""}" type="button" data-diagram-id="${escapeHtml(item.id)}">
-      <span class="diagram-number">${String(index + 1).padStart(2, "0")}</span>
-      <span><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(classLabel(item.classification))}</small></span>
-    </button>
+  const filtered = filterCatalog(catalog.diagrams, catalogFilters);
+  const groups = groupCatalog(filtered);
+  const activeLabels = activeFilterLabels(catalogFilters);
+  catalogResultCount.textContent = `${filtered.length} of ${catalog.diagrams.length} processes`;
+  catalogActiveFilters.textContent = activeLabels.length ? `Active: ${activeLabels.join(" · ")}` : "No active filters";
+  catalogClear.hidden = activeLabels.length === 0;
+  if (!groups.length) {
+    list.innerHTML = '<div class="catalog-empty">No processes match these filters.</div>';
+    return;
+  }
+  list.innerHTML = groups.map((group) => `
+    <section class="catalog-group" aria-labelledby="catalog-group-${group.id}">
+      <h2 id="catalog-group-${group.id}"><span>${escapeHtml(group.label)}</span><small>${group.items.length}</small></h2>
+      <div class="catalog-group-items">
+        ${group.items.map((item) => {
+          const index = catalog.diagrams.findIndex((candidate) => candidate.id === item.id);
+          return `<button class="diagram-item ${item.id === activeItem?.id ? "active" : ""}" type="button" data-diagram-id="${escapeHtml(item.id)}">
+            <span class="diagram-number">${String(index + 1).padStart(2, "0")}</span>
+            <span><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(classLabel(item.classification))} · ${item.channels.map((channel) => channel.toUpperCase()).join("/")}</small></span>
+          </button>`;
+        }).join("")}
+      </div>
+    </section>
   `).join("");
   for (const button of list.querySelectorAll<HTMLButtonElement>("[data-diagram-id]")) {
     button.addEventListener("click", () => void openBundled(button.dataset.diagramId || ""));
   }
+}
+
+function updateCatalogFilters(): void {
+  catalogFilters = {
+    query: catalogSearch.value,
+    classification: catalogClassification.value as CatalogFilters["classification"],
+    implementation: catalogImplementation.value as CatalogFilters["implementation"],
+    channel: catalogChannel.value as CatalogFilters["channel"]
+  };
+  renderList();
 }
 
 function syncOutlineSelection(): void {
@@ -671,6 +725,19 @@ processesToggle.addEventListener("click", toggleProcesses);
 detailsToggle.addEventListener("click", toggleDetails);
 setupResizer(processesResizer, "processes");
 setupResizer(detailsResizer, "details");
+get<HTMLFormElement>("#catalog-filters").addEventListener("submit", (event) => event.preventDefault());
+catalogSearch.addEventListener("input", updateCatalogFilters);
+catalogClassification.addEventListener("change", updateCatalogFilters);
+catalogImplementation.addEventListener("change", updateCatalogFilters);
+catalogChannel.addEventListener("change", updateCatalogFilters);
+catalogClear.addEventListener("click", () => {
+  catalogSearch.value = "";
+  catalogClassification.value = "all";
+  catalogImplementation.value = "all";
+  catalogChannel.value = "all";
+  updateCatalogFilters();
+  catalogSearch.focus();
+});
 processesTab.addEventListener("click", () => setNavView("processes"));
 outlineTab.addEventListener("click", () => setNavView("outline"));
 for (const tab of [processesTab, outlineTab]) {

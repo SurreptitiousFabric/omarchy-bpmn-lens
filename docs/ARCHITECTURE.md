@@ -61,6 +61,8 @@ Notation has one DOM content node and a pure placement decision. With Details op
 
 Panel sizing is a small DOM boundary over CSS grid custom properties. A pure policy owns defaults, clamps, keyboard direction, and step sizes. Native separators expose orientation and numeric values, pointer capture confines drag state, and the camera recomputes once when resizing ends. Versioned local preferences migrate the earlier collapse-only record; no layout or gesture dependency is used.
 
+Catalog schema v2 requires reviewed `group`, `channels`, and `implementationState` fields on every item. Those fields originate in `content-blueprints.json`, are copied deterministically into the catalog, and are validated at generation, build, and runtime boundaries. A pure filter/group module drives the process navigator; filenames and prose are never parsed to infer product claims. Catalog-only metadata is not duplicated into explanation sidecars.
+
 The classification vocabulary protects product reasoning:
 
 - `observed-current`: supported by direct observation or executable evidence;

@@ -9,6 +9,9 @@
     "01-current-tui-startup-navigation.bpmn": {
       "title": "TUI startup and navigation",
       "classification": "observed-current",
+      "group": "observed-current",
+      "channels": ["tui"],
+      "implementationState": "current",
       "summary": "What a user can currently do from launch through workspace discovery, browsing, filtering, search, inspection, and exit.",
       "implementationStatus": "Observed directly and supported by executable demonstrations.",
       "tuiDesign": "Preserve asynchronous startup feedback, exact focus, contextual actions, and deterministic return state.",
@@ -18,6 +21,9 @@
     "02-current-tui-edit-save.bpmn": {
       "title": "TUI editing and save safety",
       "classification": "observed-current",
+      "group": "observed-current",
+      "channels": ["tui"],
+      "implementationState": "current",
       "summary": "The current typed editing loop, including cancel, validation, guarded deletion, dirty state, saving, export, and failure retention.",
       "implementationStatus": "Observed for controlled-choice editing and broadly covered by shipped tests and demonstrations.",
       "tuiDesign": "Keep edits contextual and keyboard-operable; never mutate on cancel or discard pending work after a failed save.",
@@ -27,6 +33,9 @@
     "03-target-shared-document-lifecycle.bpmn": {
       "title": "Shared document lifecycle",
       "classification": "target-partial",
+      "group": "shared-target",
+      "channels": ["tui", "web"],
+      "implementationState": "partial",
       "summary": "The channel-neutral lifecycle both TUI and web should use to prepare, expose, degrade, recover, and release a document context.",
       "implementationStatus": "Backend preparation exists; shared reader/release behavior and frontend adoption remain incomplete.",
       "tuiDesign": "Drive long-running work through commands and explicit result states rather than hidden constructor I/O.",
@@ -36,6 +45,9 @@
     "04-target-evidence-to-conclusion.bpmn": {
       "title": "Evidence to conclusion",
       "classification": "target",
+      "group": "shared-target",
+      "channels": ["tui", "web"],
+      "implementationState": "partial",
       "summary": "An evidence-first research flow that keeps source material, extraction, reasoning, and conclusions distinct and reviewable.",
       "implementationStatus": "Core STEMMA target; individual authoring surfaces exist but the end-to-end shared workflow is partial.",
       "tuiDesign": "Provide dedicated source/evidence actions and an explicit trail back from conclusions.",
@@ -45,6 +57,9 @@
     "05-target-entity-link-authoring.bpmn": {
       "title": "Entity and link authoring",
       "classification": "target-partial",
+      "group": "shared-target",
+      "channels": ["tui", "web"],
+      "implementationState": "partial",
       "summary": "Strict authoring across entities, support roots, containers, collections, keys, and typed links.",
       "implementationStatus": "Most TUI surfaces exist; shared channel-neutral mutation orchestration remains partial.",
       "tuiDesign": "Use contextual editors and pickers with explicit Dataset scope, validation paths, and impact confirmation.",
@@ -54,6 +69,9 @@
     "06-target-narrative-transcription.bpmn": {
       "title": "Narrative and transcription",
       "classification": "target-partial",
+      "group": "shared-target",
+      "channels": ["tui", "web"],
+      "implementationState": "partial",
       "summary": "Rich transcription and authored narrative with reusable Text, semantic markup, references, preview, and safe cancellation.",
       "implementationStatus": "Basic editing and strict Text support exist; advanced narrative interaction is incomplete.",
       "tuiDesign": "Treat this as the intentional major non-two-pane mode with explicit source, preview, and diff views.",
@@ -63,6 +81,9 @@
     "07-target-search-evidence-resource-trail.bpmn": {
       "title": "Search and evidence trail",
       "classification": "target-partial",
+      "group": "shared-target",
+      "channels": ["tui", "web"],
+      "implementationState": "partial",
       "summary": "Qualified search and semantic navigation that preserve origin, expose evidence trails, resolve resource access, and return exactly.",
       "implementationStatus": "Search and screen restoration exist; durable derivation edges and safe resource handoff do not.",
       "tuiDesign": "Keep filter, plain search, guided search, and semantic links distinct, with exact back-stack restoration.",
@@ -72,6 +93,9 @@
     "08-target-validation-persistence-interchange.bpmn": {
       "title": "Validation, persistence, and interchange",
       "classification": "target-partial",
+      "group": "shared-target",
+      "channels": ["tui", "web"],
+      "implementationState": "partial",
       "summary": "A failure-safe path from validation through save, Save As, XML export, verified reopen, recovery, and packaging.",
       "implementationStatus": "Layered validation and atomic writes exist; stale-baseline, durable backup, verified reopen, and packaging are incomplete.",
       "tuiDesign": "Navigate to exact findings and keep dirty/pending state whenever persistence cannot be proven successful.",
@@ -81,6 +105,9 @@
     "09-target-tui-experience.bpmn": {
       "title": "Target TUI experience",
       "classification": "target-partial",
+      "group": "tui-target",
+      "channels": ["tui"],
+      "implementationState": "partial",
       "summary": "How the terminal experience should orchestrate shared workflows through deterministic Bubble Tea states and contextual keyboard actions.",
       "implementationStatus": "Mixed completion across the current two-pane shell and planned shared application seams.",
       "tuiDesign": "Make focus, mode, available actions, long-running work, validation, and recovery visible and deterministic.",
@@ -90,6 +117,9 @@
     "10-target-web-experience.bpmn": {
       "title": "Target web experience",
       "classification": "target-unimplemented",
+      "group": "web-target",
+      "channels": ["web"],
+      "implementationState": "unimplemented",
       "summary": "A responsive and accessible web adapter over shared lifecycle, reader, mutation, validation, and persistence workflows.",
       "implementationStatus": "Design contract only; no web adapter currently exists in Nicelydrapped.",
       "tuiDesign": "Use this model to protect shared application ownership while allowing presentation-appropriate terminal interactions.",

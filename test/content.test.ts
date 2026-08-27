@@ -17,11 +17,14 @@ describe("capability content", () => {
       .filter((file) => file.endsWith(".bpmn"))
       .sort();
 
-    expect(catalog.schemaVersion).toBe(1);
+    expect(catalog.schemaVersion).toBe(2);
     expect(catalog.diagrams.map((item) => path.basename(item.diagram)).sort()).toEqual(diagrams);
     expect(new Set(catalog.diagrams.map((item) => item.id)).size).toBe(catalog.diagrams.length);
 
     for (const item of catalog.diagrams) {
+      expect(["observed-current", "shared-target", "tui-target", "web-target"]).toContain(item.group);
+      expect(item.channels.length).toBeGreaterThan(0);
+      expect(["current", "partial", "unimplemented"]).toContain(item.implementationState);
       const sidecar = await json<DiagramExplanation>(path.join(publicDir, item.explanation));
       expect(sidecar.id).toBe(item.id);
       expect(sidecar.file).toBe(path.basename(item.diagram));

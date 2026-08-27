@@ -15,12 +15,20 @@ if (!manifest.kinds?.includes("panel")) errors.push("manifest must declare panel
 if (manifest.entryPoints?.panel !== "omarchy/Panel.qml") errors.push("manifest panel entry point is invalid");
 await access(path.join(root, manifest.entryPoints.panel));
 
-if (catalog.schemaVersion !== 1 || !Array.isArray(catalog.diagrams) || catalog.diagrams.length === 0) {
-  errors.push("catalog must contain at least one schema v1 diagram");
+if (catalog.schemaVersion !== 2 || !Array.isArray(catalog.diagrams) || catalog.diagrams.length === 0) {
+  errors.push("catalog must contain at least one schema v2 diagram");
 }
 
 const listed = new Set();
+const allowedGroups = new Set(["observed-current", "shared-target", "tui-target", "web-target"]);
+const allowedChannels = new Set(["tui", "web"]);
+const allowedImplementationStates = new Set(["current", "partial", "unimplemented"]);
 for (const item of catalog.diagrams || []) {
+  if (!allowedGroups.has(item.group)) errors.push(`${item.id}: invalid or missing explicit catalog group`);
+  if (!Array.isArray(item.channels) || !item.channels.length || item.channels.some((channel) => !allowedChannels.has(channel))) {
+    errors.push(`${item.id}: invalid or missing explicit channels`);
+  }
+  if (!allowedImplementationStates.has(item.implementationState)) errors.push(`${item.id}: invalid or missing implementation state`);
   listed.add(path.basename(item.diagram));
   const diagramPath = path.join(publicDir, item.diagram);
   const explanationPath = path.join(publicDir, item.explanation);

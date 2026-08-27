@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "suite": {
     "title": "Nicelydrapped capability models",
     "description": "Observed TUI behavior and source-grounded target workflows for shared TUI and web product design.",
@@ -10,6 +10,11 @@
       "id": "01-current-tui-startup-navigation",
       "title": "TUI startup and navigation",
       "classification": "observed-current",
+      "group": "observed-current",
+      "channels": [
+        "tui"
+      ],
+      "implementationState": "current",
       "summary": "What a user can currently do from launch through workspace discovery, browsing, filtering, search, inspection, and exit.",
       "diagram": "content/diagrams/01-current-tui-startup-navigation.bpmn",
       "explanation": "content/explanations/01-current-tui-startup-navigation.json"
@@ -18,6 +23,11 @@
       "id": "02-current-tui-edit-save",
       "title": "TUI editing and save safety",
       "classification": "observed-current",
+      "group": "observed-current",
+      "channels": [
+        "tui"
+      ],
+      "implementationState": "current",
       "summary": "The current typed editing loop, including cancel, validation, guarded deletion, dirty state, saving, export, and failure retention.",
       "diagram": "content/diagrams/02-current-tui-edit-save.bpmn",
       "explanation": "content/explanations/02-current-tui-edit-save.json"
@@ -26,6 +36,12 @@
       "id": "03-target-shared-document-lifecycle",
       "title": "Shared document lifecycle",
       "classification": "target-partial",
+      "group": "shared-target",
+      "channels": [
+        "tui",
+        "web"
+      ],
+      "implementationState": "partial",
       "summary": "The channel-neutral lifecycle both TUI and web should use to prepare, expose, degrade, recover, and release a document context.",
       "diagram": "content/diagrams/03-target-shared-document-lifecycle.bpmn",
       "explanation": "content/explanations/03-target-shared-document-lifecycle.json"
@@ -34,6 +50,12 @@
       "id": "04-target-evidence-to-conclusion",
       "title": "Evidence to conclusion",
       "classification": "target",
+      "group": "shared-target",
+      "channels": [
+        "tui",
+        "web"
+      ],
+      "implementationState": "partial",
       "summary": "An evidence-first research flow that keeps source material, extraction, reasoning, and conclusions distinct and reviewable.",
       "diagram": "content/diagrams/04-target-evidence-to-conclusion.bpmn",
       "explanation": "content/explanations/04-target-evidence-to-conclusion.json"
@@ -42,6 +64,12 @@
       "id": "05-target-entity-link-authoring",
       "title": "Entity and link authoring",
       "classification": "target-partial",
+      "group": "shared-target",
+      "channels": [
+        "tui",
+        "web"
+      ],
+      "implementationState": "partial",
       "summary": "Strict authoring across entities, support roots, containers, collections, keys, and typed links.",
       "diagram": "content/diagrams/05-target-entity-link-authoring.bpmn",
       "explanation": "content/explanations/05-target-entity-link-authoring.json"
@@ -50,6 +78,12 @@
       "id": "06-target-narrative-transcription",
       "title": "Narrative and transcription",
       "classification": "target-partial",
+      "group": "shared-target",
+      "channels": [
+        "tui",
+        "web"
+      ],
+      "implementationState": "partial",
       "summary": "Rich transcription and authored narrative with reusable Text, semantic markup, references, preview, and safe cancellation.",
       "diagram": "content/diagrams/06-target-narrative-transcription.bpmn",
       "explanation": "content/explanations/06-target-narrative-transcription.json"
@@ -58,6 +92,12 @@
       "id": "07-target-search-evidence-resource-trail",
       "title": "Search and evidence trail",
       "classification": "target-partial",
+      "group": "shared-target",
+      "channels": [
+        "tui",
+        "web"
+      ],
+      "implementationState": "partial",
       "summary": "Qualified search and semantic navigation that preserve origin, expose evidence trails, resolve resource access, and return exactly.",
       "diagram": "content/diagrams/07-target-search-evidence-resource-trail.bpmn",
       "explanation": "content/explanations/07-target-search-evidence-resource-trail.json"
@@ -66,6 +106,12 @@
       "id": "08-target-validation-persistence-interchange",
       "title": "Validation, persistence, and interchange",
       "classification": "target-partial",
+      "group": "shared-target",
+      "channels": [
+        "tui",
+        "web"
+      ],
+      "implementationState": "partial",
       "summary": "A failure-safe path from validation through save, Save As, XML export, verified reopen, recovery, and packaging.",
       "diagram": "content/diagrams/08-target-validation-persistence-interchange.bpmn",
       "explanation": "content/explanations/08-target-validation-persistence-interchange.json"
@@ -74,6 +120,11 @@
       "id": "09-target-tui-experience",
       "title": "Target TUI experience",
       "classification": "target-partial",
+      "group": "tui-target",
+      "channels": [
+        "tui"
+      ],
+      "implementationState": "partial",
       "summary": "How the terminal experience should orchestrate shared workflows through deterministic Bubble Tea states and contextual keyboard actions.",
       "diagram": "content/diagrams/09-target-tui-experience.bpmn",
       "explanation": "content/explanations/09-target-tui-experience.json"
@@ -82,6 +133,11 @@
       "id": "10-target-web-experience",
       "title": "Target web experience",
       "classification": "target-unimplemented",
+      "group": "web-target",
+      "channels": [
+        "web"
+      ],
+      "implementationState": "unimplemented",
       "summary": "A responsive and accessible web adapter over shared lifecycle, reader, mutation, validation, and persistence workflows.",
       "diagram": "content/diagrams/10-target-web-experience.bpmn",
       "explanation": "content/explanations/10-target-web-experience.json"

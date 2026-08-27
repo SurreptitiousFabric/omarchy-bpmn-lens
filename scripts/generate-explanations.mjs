@@ -89,7 +89,13 @@ for (const file of files) {
     schemaVersion: 1,
     id,
     file,
-    ...blueprint,
+    title: blueprint.title,
+    classification: blueprint.classification,
+    summary: blueprint.summary,
+    implementationStatus: blueprint.implementationStatus,
+    tuiDesign: blueprint.tuiDesign,
+    webDesign: blueprint.webDesign,
+    sources: blueprint.sources,
     warnings: warnings.map((warning) => warning.message),
     elements
   };
@@ -99,6 +105,9 @@ for (const file of files) {
     id,
     title: blueprint.title,
     classification: blueprint.classification,
+    group: blueprint.group,
+    channels: blueprint.channels,
+    implementationState: blueprint.implementationState,
     summary: blueprint.summary,
     diagram: `content/diagrams/${file}`,
     explanation: `content/explanations/${explanationFile}`
@@ -107,7 +116,7 @@ for (const file of files) {
 
 await writeFile(
   path.join(root, "public/content/catalog.json"),
-  `${JSON.stringify({ schemaVersion: 1, suite: blueprints.suite, diagrams: catalog }, null, 2)}\n`
+  `${JSON.stringify({ schemaVersion: 2, suite: blueprints.suite, diagrams: catalog }, null, 2)}\n`
 );
 
 console.log(`Generated ${catalog.length} explanation sidecars and catalog.json`);
