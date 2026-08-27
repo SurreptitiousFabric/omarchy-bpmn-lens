@@ -19,12 +19,12 @@ See [Architecture](docs/ARCHITECTURE.md) and [Delivery plan](docs/PLAN.md).
 
 ```bash
 omarchy plugin add https://github.com/surreptitiousfabric/omarchy-bpmn-lens.git --yes
-mise -C ~/.config/omarchy/plugins/surreptitiousfabric.bpmn-lens run setup
 omarchy plugin enable surreptitiousfabric.bpmn-lens
+mise -C ~/.config/omarchy/plugins/surreptitiousfabric.bpmn-lens run app:install
 omarchy-shell shell summon surreptitiousfabric.bpmn-lens '{}'
 ```
 
-Omarchy intentionally does not run plugin install hooks. The one-time `setup` command installs the audited lockfile with lifecycle scripts disabled, regenerates the sidecars, and verifies the checked-in static build.
+The plugin and desktop application use the checked-in static runtime and do not require `node_modules`. For development, the optional `mise run setup` command installs the audited lockfile with lifecycle scripts disabled, regenerates the sidecars, runs tests, and verifies the build.
 
 ## Development
 

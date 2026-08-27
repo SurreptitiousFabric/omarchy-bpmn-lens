@@ -41,6 +41,10 @@ run = "npm run serve"
 description = "Open BPMN Lens locally, starting its static server if needed"
 run = "npm run open"
 
+[tasks."app:install"]
+description = "Install or refresh the BPMN Lens desktop application entry"
+run = "npm run install-app"
+
 [tasks.setup]
 description = "Prepare a fresh plugin checkout and verify it"
 run = [

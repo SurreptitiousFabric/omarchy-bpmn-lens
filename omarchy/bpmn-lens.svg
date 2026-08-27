@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">BPMN Lens</title>
+  <rect width="128" height="128" rx="24" fill="#101315"/>
+  <path d="M21 64 48 37l27 27-27 27Z" fill="none" stroke="#8aadf4" stroke-width="7" stroke-linejoin="round"/>
+  <circle cx="83" cy="55" r="22" fill="none" stroke="#cacccc" stroke-width="7"/>
+  <path d="m99 71 18 18" fill="none" stroke="#cacccc" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="48" cy="64" r="5" fill="#8aadf4"/>
+</svg>

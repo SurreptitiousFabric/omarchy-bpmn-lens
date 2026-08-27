@@ -10,6 +10,7 @@
     "test": "vitest run",
     "validate": "node scripts/validate-content.mjs",
     "generate": "node scripts/generate-explanations.mjs",
+    "install-app": "node scripts/install-app.mjs",
     "serve": "node scripts/server.mjs",
     "open": "node scripts/open.mjs"
   },

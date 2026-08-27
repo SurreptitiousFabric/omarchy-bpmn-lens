@@ -30,4 +30,17 @@ describe("architecture constraints", () => {
     if (!panelEntryPoint) throw new Error("panel entry point is missing");
     expect(await readFile(path.join(root, panelEntryPoint), "utf8")).toContain("mise");
   });
+
+  it("installs the desktop entry through the same mise-owned local boundary", async () => {
+    const [installer, mise] = await Promise.all([
+      readFile(path.join(root, "scripts/install-app.mjs"), "utf8"),
+      readFile(path.join(root, "mise.toml"), "utf8")
+    ]);
+
+    expect(mise).toContain('[tasks."app:install"]');
+    expect(installer).toContain(".local/share/applications");
+    expect(installer).toContain("Exec=mise -C");
+    expect(installer).not.toContain("sudo");
+    expect(installer).not.toContain("shell: true");
+  });
 });
