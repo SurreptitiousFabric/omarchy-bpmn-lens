@@ -49,6 +49,8 @@ Selection has two independent explanation layers. `src/notation.ts` maps BPMN el
 
 Workspace layout state is deliberately local and dependency-free. Native controls expose the process and explanation panels through `aria-controls`/`aria-expanded`; a small versioned `localStorage` value remembers visibility without adding a state library or placing it in shareable diagram URLs. The responsive layout stacks navigation, canvas, and explanation before the side panels would make the canvas unusably narrow.
 
+Diagram focus is transient viewer state, separate from source BPMN and explanation sidecars. Pure geometry and navigation functions calculate a stable spatial order and camera viewbox; the integration layer applies bpmn-js markers and updates the shareable `view=focus` URL. Focus never rewrites, exports, or adds meaning to an element. Elements without a sidecar remain selectable and receive only generic BPMN notation help.
+
 The classification vocabulary protects product reasoning:
 
 - `observed-current`: supported by direct observation or executable evidence;

@@ -2,6 +2,7 @@ import NavigatedViewer from "bpmn-js/lib/NavigatedViewer";
 import "bpmn-js/dist/assets/diagram-js.css";
 import "./styles.css";
 import { loadBundledDiagram, loadCatalog } from "./content";
+import { adjacentElement, elementBounds, focusViewbox, navigableElements } from "./focus";
 import { notationFor } from "./notation";
 import type { Catalog, CatalogItem, DiagramExplanation, ElementExplanation } from "./types";
 
@@ -46,10 +47,18 @@ app.innerHTML = `
           <span id="classification" class="classification"></span>
           <h2 id="diagram-title">Loading diagrams…</h2>
         </div>
-        <div class="zoom-controls" aria-label="Diagram zoom">
-          <button id="zoom-out" type="button" aria-label="Zoom out">−</button>
-          <button id="zoom-fit" type="button">Fit</button>
-          <button id="zoom-in" type="button" aria-label="Zoom in">+</button>
+        <div class="diagram-controls">
+          <div id="focus-controls" class="focus-controls" aria-label="Selection focus" hidden>
+            <button id="focus-previous" type="button" title="Previous element (P)">← <span>Previous</span></button>
+            <button id="focus-selected" type="button" title="Focus selected element (F)">Focus</button>
+            <button id="focus-next" type="button" title="Next element (N)"><span>Next</span> →</button>
+            <button id="focus-overview" type="button" title="Return to overview (O)">Overview</button>
+          </div>
+          <div class="zoom-controls" aria-label="Diagram zoom">
+            <button id="zoom-out" type="button" aria-label="Zoom out">−</button>
+            <button id="zoom-fit" type="button">Fit</button>
+            <button id="zoom-in" type="button" aria-label="Zoom in">+</button>
+          </div>
         </div>
       </div>
       <div id="diagram-canvas" tabindex="0" aria-label="Interactive read-only BPMN diagram"></div>
@@ -72,7 +81,7 @@ app.innerHTML = `
     <p>This is a read-only design companion. It renders BPMN locally and keeps explanatory claims in reviewable JSON sidecars.</p>
     <p><strong>Current</strong> means observed or executable evidence supports the behavior. <strong>Target</strong> means a product or data contract says the behavior should exist; it is not an implementation claim.</p>
     <p>No BPMN file is uploaded. Files opened from your computer remain in this browser session.</p>
-    <p><strong>Keyboard:</strong> <kbd>[</kbd> processes, <kbd>]</kbd> details, <kbd>0</kbd> fit diagram, <kbd>Esc</kbd> close notation.</p>
+    <p><strong>Keyboard:</strong> <kbd>[</kbd> processes, <kbd>]</kbd> details, <kbd>F</kbd> focus, <kbd>P</kbd>/<kbd>N</kbd> previous/next, <kbd>O</kbd> overview, <kbd>0</kbd> fit, <kbd>Esc</kbd> close notation.</p>
   </dialog>
 `;
 
@@ -95,12 +104,16 @@ const diagramNav = get<HTMLElement>("#diagram-nav");
 const explanationPanel = get<HTMLElement>("#explanation-panel");
 const processesToggle = get<HTMLButtonElement>("#toggle-processes");
 const detailsToggle = get<HTMLButtonElement>("#toggle-details");
+const diagramCanvas = get<HTMLDivElement>("#diagram-canvas");
+const focusControls = get<HTMLDivElement>("#focus-controls");
 const viewer = new NavigatedViewer({ container: "#diagram-canvas" });
 
 let catalog: Catalog;
 let activeItem: CatalogItem | undefined;
 let activeExplanation: DiagramExplanation | undefined;
 let selectedElementId: string | undefined;
+let focusActive = false;
+let focusOrder: ReturnType<typeof navigableElements> = [];
 const panelStorageKey = "bpmn-lens.panels.v1";
 let processesOpen = true;
 let detailsOpen = true;
@@ -146,6 +159,11 @@ function fitDiagram(): void {
   viewer.get("canvas").zoom("fit-viewport");
 }
 
+function applyActiveView(): void {
+  if (focusActive && selectedElementId) focusElement(selectedElementId, false);
+  else fitDiagram();
+}
+
 function applyPanelLayout(refit = true): void {
   workspace.classList.toggle("processes-collapsed", !processesOpen);
   workspace.classList.toggle("details-collapsed", !detailsOpen);
@@ -159,7 +177,7 @@ function applyPanelLayout(refit = true): void {
   detailsToggle.setAttribute("aria-label", `${detailsOpen ? "Hide" : "Show"} details panel`);
   processesToggle.classList.toggle("is-collapsed", !processesOpen);
   detailsToggle.classList.toggle("is-collapsed", !detailsOpen);
-  if (refit) window.requestAnimationFrame(fitDiagram);
+  if (refit) window.requestAnimationFrame(applyActiveView);
 }
 
 function toggleProcesses(): void {
@@ -189,13 +207,54 @@ function showNotation(type: string, selectedLabel?: string): void {
   notationOverlay.hidden = false;
 }
 
-function updateUrl(diagramId?: string, elementId?: string): void {
+function updateUrl(diagramId?: string, elementId?: string, focused = focusActive): void {
   const url = new URL(window.location.href);
   if (diagramId) url.searchParams.set("diagram", diagramId);
   else url.searchParams.delete("diagram");
   if (elementId) url.searchParams.set("element", elementId);
   else url.searchParams.delete("element");
+  if (focused && elementId) url.searchParams.set("view", "focus");
+  else url.searchParams.delete("view");
   window.history.replaceState(null, "", url);
+}
+
+function updateFocusControls(): void {
+  focusControls.hidden = !selectedElementId;
+  get<HTMLButtonElement>("#focus-selected").hidden = focusActive;
+  get<HTMLButtonElement>("#focus-overview").hidden = !focusActive;
+  get<HTMLButtonElement>("#focus-previous").disabled = focusOrder.length < 2;
+  get<HTMLButtonElement>("#focus-next").disabled = focusOrder.length < 2;
+}
+
+function clearFocus(refit = false): void {
+  if (selectedElementId) viewer.get("canvas").removeMarker(selectedElementId, "is-focused");
+  focusActive = false;
+  diagramCanvas.classList.remove("focus-mode");
+  updateFocusControls();
+  updateUrl(activeItem?.id, selectedElementId, false);
+  if (refit) fitDiagram();
+}
+
+function focusElement(id: string, announce = true): void {
+  const element = viewer.get("elementRegistry").get(id);
+  const bounds = element && elementBounds(element);
+  if (!element || !bounds) return;
+  if (selectedElementId && selectedElementId !== id) {
+    viewer.get("canvas").removeMarker(selectedElementId, "is-focused");
+  }
+  focusActive = true;
+  diagramCanvas.classList.add("focus-mode");
+  viewer.get("canvas").addMarker(id, "is-focused");
+  viewer.get("canvas").viewbox(focusViewbox(bounds));
+  updateFocusControls();
+  updateUrl(activeItem?.id, id, true);
+  if (announce) status.textContent = "Focused selection. Use Previous, Next, or Overview to continue.";
+}
+
+function moveFocus(direction: -1 | 1): void {
+  if (!selectedElementId) return;
+  const next = adjacentElement(focusOrder, selectedElementId, direction);
+  if (next) selectElement(next.id, true);
 }
 
 function renderDiagramExplanation(explanation: DiagramExplanation): void {
@@ -238,11 +297,15 @@ function renderList(): void {
 
 async function importXml(xml: string): Promise<void> {
   const result = await viewer.importXML(xml);
+  focusOrder = navigableElements(viewer.get("elementRegistry").getAll());
+  focusActive = false;
+  diagramCanvas.classList.remove("focus-mode");
+  updateFocusControls();
   fitDiagram();
   status.textContent = result.warnings.length ? `Opened with ${result.warnings.length} BPMN warning(s).` : "Diagram ready. Select an element to explain it.";
 }
 
-async function openBundled(id: string, requestedElement?: string): Promise<void> {
+async function openBundled(id: string, requestedElement?: string, requestedFocus = false): Promise<void> {
   const item = catalog.diagrams.find((candidate) => candidate.id === id);
   if (!item) return;
   status.textContent = `Opening ${item.title}…`;
@@ -251,6 +314,7 @@ async function openBundled(id: string, requestedElement?: string): Promise<void>
     activeItem = item;
     activeExplanation = loaded.explanation;
     selectedElementId = undefined;
+    focusActive = false;
     hideNotation();
     title.textContent = item.title;
     classification.textContent = classLabel(item.classification);
@@ -259,28 +323,35 @@ async function openBundled(id: string, requestedElement?: string): Promise<void>
     renderDiagramExplanation(loaded.explanation);
     await importXml(loaded.xml);
     updateUrl(item.id);
-    if (requestedElement && loaded.explanation.elements[requestedElement]) selectElement(requestedElement);
+    if (requestedElement) selectElement(requestedElement, requestedFocus);
   } catch (error) {
     status.textContent = error instanceof Error ? error.message : "The diagram could not be opened.";
   }
 }
 
-function selectElement(id: string): void {
+function selectElement(id: string, shouldFocus = false): void {
+  const element = viewer.get("elementRegistry").get(id);
+  if (!element) return;
   const explanation = activeExplanation?.elements[id];
-  if (!explanation) return;
   const canvas = viewer.get("canvas");
-  if (selectedElementId) canvas.removeMarker(selectedElementId, "is-explained");
+  if (selectedElementId) {
+    canvas.removeMarker(selectedElementId, "is-explained");
+    if (selectedElementId !== id) canvas.removeMarker(selectedElementId, "is-focused");
+  }
   selectedElementId = id;
   canvas.addMarker(id, "is-explained");
-  renderElementExplanation(explanation);
-  showNotation(explanation.bpmnType, explanation.label);
-  updateUrl(activeItem?.id, id);
+  const type = element.businessObject?.$type || element.type;
+  const label = explanation?.label || element.businessObject?.name;
+  if (explanation) renderElementExplanation(explanation);
+  showNotation(type, label);
+  updateFocusControls();
+  if (shouldFocus || focusActive) focusElement(id);
+  else updateUrl(activeItem?.id, id, false);
 }
 
 viewer.get("eventBus").on("element.click", (event) => {
   const element = event.element;
   const businessObject = element?.businessObject;
-  if (element) showNotation(businessObject?.$type || element.type, businessObject?.name);
   const id = businessObject?.id || element?.id;
   if (id) selectElement(id);
 });
@@ -293,6 +364,8 @@ filePicker.addEventListener("change", async () => {
     activeItem = undefined;
     activeExplanation = undefined;
     selectedElementId = undefined;
+    focusActive = false;
+    focusOrder = [];
     hideNotation();
     title.textContent = file.name;
     classification.textContent = "Local file · no sidecar";
@@ -316,7 +389,13 @@ get<HTMLButtonElement>("#zoom-out").addEventListener("click", () => {
   const canvas = viewer.get("canvas");
   canvas.zoom(Math.max(0.2, canvas.zoom() / 1.2));
 });
-get<HTMLButtonElement>("#zoom-fit").addEventListener("click", fitDiagram);
+get<HTMLButtonElement>("#zoom-fit").addEventListener("click", () => clearFocus(true));
+get<HTMLButtonElement>("#focus-selected").addEventListener("click", () => {
+  if (selectedElementId) focusElement(selectedElementId);
+});
+get<HTMLButtonElement>("#focus-overview").addEventListener("click", () => clearFocus(true));
+get<HTMLButtonElement>("#focus-previous").addEventListener("click", () => moveFocus(-1));
+get<HTMLButtonElement>("#focus-next").addEventListener("click", () => moveFocus(1));
 processesToggle.addEventListener("click", toggleProcesses);
 detailsToggle.addEventListener("click", toggleDetails);
 get<HTMLButtonElement>("#about-button").addEventListener("click", () => dialog.showModal());
@@ -335,7 +414,19 @@ window.addEventListener("keydown", (event) => {
     toggleDetails();
   } else if (event.key === "0") {
     event.preventDefault();
-    fitDiagram();
+    clearFocus(true);
+  } else if (event.key.toLowerCase() === "f" && selectedElementId) {
+    event.preventDefault();
+    focusElement(selectedElementId);
+  } else if (event.key.toLowerCase() === "p" && selectedElementId) {
+    event.preventDefault();
+    moveFocus(-1);
+  } else if (event.key.toLowerCase() === "n" && selectedElementId) {
+    event.preventDefault();
+    moveFocus(1);
+  } else if (event.key.toLowerCase() === "o" && focusActive) {
+    event.preventDefault();
+    clearFocus(true);
   } else if (event.key === "Escape" && !notationOverlay.hidden) {
     hideNotation();
   }
@@ -350,7 +441,7 @@ async function start(): Promise<void> {
     const requestedId = params.get("diagram");
     const initial = catalog.diagrams.find((item) => item.id === requestedId) || catalog.diagrams[0];
     if (!initial) throw new Error("The catalog contains no diagrams.");
-    await openBundled(initial.id, params.get("element") || undefined);
+    await openBundled(initial.id, params.get("element") || undefined, params.get("view") === "focus");
   } catch (error) {
     status.textContent = error instanceof Error ? error.message : "BPMN Lens could not start.";
   }

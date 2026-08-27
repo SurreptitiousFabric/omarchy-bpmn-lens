@@ -14,12 +14,23 @@ declare module "bpmn-js/lib/NavigatedViewer" {
     zoom(level: "fit-viewport" | number): number;
     addMarker(elementId: string, marker: string): void;
     removeMarker(elementId: string, marker: string): void;
+    viewbox(bounds: { x: number; y: number; width: number; height: number }): void;
   }
 
   interface BpmnElement {
     id: string;
     type: string;
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+    waypoints?: Array<{ x: number; y: number }>;
     businessObject?: { id?: string; name?: string; $type?: string };
+  }
+
+  interface ElementRegistry {
+    get(id: string): BpmnElement | undefined;
+    getAll(): BpmnElement[];
   }
 
   export default class NavigatedViewer {
@@ -27,6 +38,7 @@ declare module "bpmn-js/lib/NavigatedViewer" {
     importXML(xml: string): Promise<ImportResult>;
     get(service: "eventBus"): EventBus;
     get(service: "canvas"): Canvas;
+    get(service: "elementRegistry"): ElementRegistry;
     destroy(): void;
   }
 }
