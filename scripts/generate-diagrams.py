@@ -470,8 +470,17 @@ def gateway_port(bounds, other_center, outbound, clearance):
 
     if outbound:
         if delta_x > 0:
-            branch_spacing = 44 if other_center[1] > center_y else 0
-            return (x + width, center_y), (x + width + clearance + branch_spacing, center_y)
+            if other_center[1] < center_y:
+                port_y = y + height * 0.25
+                branch_spacing = 0
+            elif other_center[1] > center_y:
+                port_y = y + height * 0.75
+                branch_spacing = 44
+            else:
+                port_y = center_y
+                branch_spacing = 0
+            port_x = center_x + width / 2 * (1 - abs(port_y - center_y) / (height / 2))
+            return (port_x, port_y), (x + width + clearance + branch_spacing, port_y)
         return None, None
     if delta_x < 0:
         return (x, center_y), (x - clearance, center_y)

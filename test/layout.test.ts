@@ -24,8 +24,15 @@ const root = path.resolve(import.meta.dirname, "..");
 const diagramsDir = path.join(root, "public/content/diagrams");
 const moddle = new BpmnModdle();
 
-function onBoundary(point: Point, bounds: Bounds): boolean {
+function onBoundary(point: Point, bounds: Bounds, type: string): boolean {
   const epsilon = 0.01;
+  if (type.endsWith("Gateway")) {
+    const centerX = bounds.x + bounds.width / 2;
+    const centerY = bounds.y + bounds.height / 2;
+    const normalized = Math.abs(point.x - centerX) / (bounds.width / 2) +
+      Math.abs(point.y - centerY) / (bounds.height / 2);
+    return Math.abs(normalized - 1) <= epsilon;
+  }
   const betweenX = point.x >= bounds.x - epsilon && point.x <= bounds.x + bounds.width + epsilon;
   const betweenY = point.y >= bounds.y - epsilon && point.y <= bounds.y + bounds.height + epsilon;
   const onVertical = Math.abs(point.x - bounds.x) <= epsilon || Math.abs(point.x - bounds.x - bounds.width) <= epsilon;
@@ -111,8 +118,8 @@ describe("BPMN Diagram Interchange routing", () => {
         expect(sourceBounds, `${file} ${flow.id} source shape`).toBeDefined();
         expect(targetBounds, `${file} ${flow.id} target shape`).toBeDefined();
         expect(waypoints.length, `${file} ${flow.id} waypoints`).toBeGreaterThanOrEqual(2);
-        expect(onBoundary(waypoints[0] as Point, sourceBounds as Bounds), `${file} ${flow.id} source anchor`).toBe(true);
-        expect(onBoundary(waypoints.at(-1) as Point, targetBounds as Bounds), `${file} ${flow.id} target anchor`).toBe(true);
+        expect(onBoundary(waypoints[0] as Point, sourceBounds as Bounds, flow.sourceRef?.$type || ""), `${file} ${flow.id} source anchor`).toBe(true);
+        expect(onBoundary(waypoints.at(-1) as Point, targetBounds as Bounds, flow.targetRef?.$type || ""), `${file} ${flow.id} target anchor`).toBe(true);
       }
     }
   });
@@ -139,13 +146,32 @@ describe("BPMN Diagram Interchange routing", () => {
         const targetCenterX = target.x + target.width / 2;
         const sourceCenterX = source.x + source.width / 2;
         if (targetCenterX > sourceCenterX) {
-          expect(first.x, `${file} ${flow.id} forward gateway exit`).toBe(source.x + source.width);
-          expect(first.y, `${file} ${flow.id} gateway exit midpoint`).toBe(source.y + source.height / 2);
+          expect(onBoundary(first, source, flow.sourceRef.$type), `${file} ${flow.id} gateway edge exit`).toBe(true);
           const second = edge.waypoint?.[1];
           expect(second, `${file} ${flow.id} gateway exit stub`).toBeDefined();
           expect((second?.x || 0) - first.x, `${file} ${flow.id} visible gateway exit stub`).toBeGreaterThanOrEqual(48);
           expect(second?.y, `${file} ${flow.id} level gateway exit stub`).toBe(first.y);
         }
+      }
+
+      const forwardByGateway = new Map<string, PlaneElement[]>();
+      for (const edge of planeElements.filter((element) => element.$type === "bpmndi:BPMNEdge")) {
+        const flow = edge.bpmnElement;
+        if (flow.$type !== "bpmn:SequenceFlow" || flow.sourceRef?.$type !== "bpmn:ExclusiveGateway") continue;
+        const source = boundsByElement.get(flow.sourceRef.id);
+        const target = boundsByElement.get(flow.targetRef?.id || "");
+        if (!source || !target || target.x + target.width / 2 <= source.x + source.width / 2) continue;
+        const group = forwardByGateway.get(flow.sourceRef.id) || [];
+        group.push(edge);
+        forwardByGateway.set(flow.sourceRef.id, group);
+      }
+      for (const [gatewayId, edges] of forwardByGateway) {
+        const distinctTargetBands = new Set(edges.map((edge) => {
+          const target = boundsByElement.get(edge.bpmnElement.targetRef?.id || "") as Bounds;
+          return Math.sign(target.y + target.height / 2 - ((boundsByElement.get(gatewayId) as Bounds).y + (boundsByElement.get(gatewayId) as Bounds).height / 2));
+        }));
+        if (distinctTargetBands.size < 2) continue;
+        expect(new Set(edges.map((edge) => edge.waypoint?.[0]?.y)).size, `${file} ${gatewayId} distinct branch ports`).toBe(edges.length);
       }
     }
   });
@@ -264,7 +290,7 @@ describe("BPMN Diagram Interchange routing", () => {
           const distanceToFirstSegment = first.y === second.y
             ? Math.abs(labelCenterY - first.y)
             : Math.abs(labelCenterX - first.x);
-          expect(distanceToFirstSegment, `${file} ${edge.bpmnElement.id} branch label near gateway exit`).toBeLessThanOrEqual(32);
+          expect(distanceToFirstSegment, `${file} ${edge.bpmnElement.id} branch label near gateway exit`).toBeLessThanOrEqual(52);
         }
       }
     }

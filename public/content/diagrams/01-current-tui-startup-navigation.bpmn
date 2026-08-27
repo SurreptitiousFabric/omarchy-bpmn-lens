@@ -153,12 +153,12 @@
         <di:waypoint x="260" y="138.0" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_02" bpmnElement="Flow_02">
-        <di:waypoint x="312" y="138.0" />
-        <di:waypoint x="412" y="138.0" />
+        <di:waypoint x="299.0" y="151.0" />
+        <di:waypoint x="412" y="151.0" />
         <di:waypoint x="412" y="300.0" />
         <di:waypoint x="470.0" y="300.0" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="338.0" y="106.0" width="48" height="24" />
+          <dc:Bounds x="331.5" y="119.0" width="48" height="24" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_03" bpmnElement="Flow_03">
@@ -178,12 +178,12 @@
         <di:waypoint x="1040" y="514.0" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_06" bpmnElement="Flow_06">
-        <di:waypoint x="1092" y="514.0" />
-        <di:waypoint x="1148" y="514.0" />
+        <di:waypoint x="1079.0" y="501.0" />
+        <di:waypoint x="1148" y="501.0" />
         <di:waypoint x="1148" y="344.0" />
         <di:waypoint x="1230.0" y="344.0" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1096.0" y="482.0" width="48" height="24" />
+          <dc:Bounds x="1089.5" y="441.0" width="48" height="24" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_07" bpmnElement="Flow_07">
@@ -195,12 +195,12 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_08" bpmnElement="Flow_08">
-        <di:waypoint x="312" y="138.0" />
-        <di:waypoint x="412" y="138.0" />
+        <di:waypoint x="299.0" y="151.0" />
+        <di:waypoint x="412" y="151.0" />
         <di:waypoint x="412" y="388.0" />
         <di:waypoint x="470.0" y="388.0" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="334.0" y="78.0" width="56" height="24" />
+          <dc:Bounds x="327.5" y="91.0" width="56" height="24" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_09" bpmnElement="Flow_09">
@@ -213,12 +213,12 @@
         <di:waypoint x="1420.0" y="678.0" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_11" bpmnElement="Flow_11">
-        <di:waypoint x="1092" y="514.0" />
-        <di:waypoint x="1192" y="514.0" />
+        <di:waypoint x="1079.0" y="527.0" />
+        <di:waypoint x="1192" y="527.0" />
         <di:waypoint x="1192" y="678.0" />
         <di:waypoint x="1420.0" y="678.0" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1135.0" y="522.0" width="48" height="24" />
+          <dc:Bounds x="1111.5" y="591.0" width="48" height="24" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_12" bpmnElement="Flow_12">
@@ -262,12 +262,12 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_Flow_19" bpmnElement="Flow_19">
-        <di:waypoint x="2612" y="138.0" />
-        <di:waypoint x="2712" y="138.0" />
+        <di:waypoint x="2599.0" y="151.0" />
+        <di:waypoint x="2712" y="151.0" />
         <di:waypoint x="2712" y="141.0" />
         <di:waypoint x="2750.0" y="141.0" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2638.0" y="106.0" width="48" height="24" />
+          <dc:Bounds x="2631.5" y="119.0" width="48" height="24" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
